@@ -1,0 +1,823 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8061AE25B2F00031C63 /* AppDelegate.swift */; };
+		D92BF8091AE25B2F00031C63 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8081AE25B2F00031C63 /* ViewController.swift */; };
+		D92BF80E1AE25B2F00031C63 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92BF80D1AE25B2F00031C63 /* Images.xcassets */; };
+		D92BF8111AE25B2F00031C63 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D92BF80F1AE25B2F00031C63 /* LaunchScreen.xib */; };
+		D92BF81D1AE25B2F00031C63 /* TZIMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF81C1AE25B2F00031C63 /* TZIMTests.swift */; };
+		D92BF8681AE25B5C00031C63 /* AESCrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF82D1AE25B5B00031C63 /* AESCrypt.m */; };
+		D92BF8691AE25B5C00031C63 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF82F1AE25B5B00031C63 /* NSData+Base64.m */; };
+		D92BF86A1AE25B5C00031C63 /* NSData+CommonCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8311AE25B5B00031C63 /* NSData+CommonCrypto.m */; };
+		D92BF86B1AE25B5C00031C63 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8331AE25B5B00031C63 /* NSString+Base64.m */; };
+		D92BF86C1AE25B5C00031C63 /* AudioMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8341AE25B5B00031C63 /* AudioMessage.swift */; };
+		D92BF86D1AE25B5C00031C63 /* BaseDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8351AE25B5B00031C63 /* BaseDaoHelper.swift */; };
+		D92BF86E1AE25B5C00031C63 /* BaseMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8361AE25B5B00031C63 /* BaseMessage.swift */; };
+		D92BF86F1AE25B5C00031C63 /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8371AE25B5B00031C63 /* ChatManager.swift */; };
+		D92BF8701AE25B5C00031C63 /* ChatMessageDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8381AE25B5B00031C63 /* ChatMessageDaoHelper.swift */; };
+		D92BF8711AE25B5C00031C63 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8391AE25B5C00031C63 /* ConnectionManager.swift */; };
+		D92BF8721AE25B5C00031C63 /* DaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF83A1AE25B5C00031C63 /* DaoHelper.swift */; };
+		D92BF8731AE25B5C00031C63 /* libGexinSdk-1.1.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF83F1AE25B5C00031C63 /* libGexinSdk-1.1.1.a */; };
+		D92BF8741AE25B5C00031C63 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8421AE25B5C00031C63 /* FMDatabase.m */; };
+		D92BF8751AE25B5C00031C63 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8441AE25B5C00031C63 /* FMDatabaseAdditions.m */; };
+		D92BF8761AE25B5C00031C63 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8461AE25B5C00031C63 /* FMDatabasePool.m */; };
+		D92BF8771AE25B5C00031C63 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8481AE25B5C00031C63 /* FMDatabaseQueue.m */; };
+		D92BF8781AE25B5C00031C63 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF84B1AE25B5C00031C63 /* FMResultSet.m */; };
+		D92BF8791AE25B5C00031C63 /* ImageMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF84C1AE25B5C00031C63 /* ImageMessage.swift */; };
+		D92BF87A1AE25B5C00031C63 /* LocationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF84D1AE25B5C00031C63 /* LocationMessage.swift */; };
+		D92BF87B1AE25B5C00031C63 /* LvAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF84E1AE25B5C00031C63 /* LvAppDelegate.swift */; };
+		D92BF87C1AE25B5C00031C63 /* LvSDKManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF84F1AE25B5C00031C63 /* LvSDKManager.swift */; };
+		D92BF87D1AE25B5C00031C63 /* MessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8501AE25B5C00031C63 /* MessageManager.swift */; };
+		D92BF87E1AE25B5C00031C63 /* MessageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8511AE25B5C00031C63 /* MessageProtocol.swift */; };
+		D92BF87F1AE25B5C00031C63 /* MessageReceiveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8521AE25B5C00031C63 /* MessageReceiveManager.swift */; };
+		D92BF8801AE25B5C00031C63 /* MessageSendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8531AE25B5C00031C63 /* MessageSendManager.swift */; };
+		D92BF8811AE25B5C00031C63 /* MetaDataDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8541AE25B5C00031C63 /* MetaDataDaoHelper.swift */; };
+		D92BF8821AE25B5C00031C63 /* PushSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8551AE25B5C00031C63 /* PushSDK.swift */; };
+		D92BF8831AE25B5C00031C63 /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = D92BF85A1AE25B5C00031C63 /* amrFileCodec.mm */; };
+		D92BF8841AE25B5C00031C63 /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = D92BF85C1AE25B5C00031C63 /* wav.mm */; };
+		D92BF8851AE25B5C00031C63 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF85E1AE25B5C00031C63 /* libopencore-amrnb.a */; };
+		D92BF8861AE25B5C00031C63 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF85F1AE25B5C00031C63 /* libopencore-amrwb.a */; };
+		D92BF8871AE25B5C00031C63 /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8671AE25B5C00031C63 /* VoiceConverter.mm */; };
+		D92BF8A01AE25B6B00031C63 /* bubbleMine.png in Resources */ = {isa = PBXBuildFile; fileRef = D92BF88B1AE25B6B00031C63 /* bubbleMine.png */; };
+		D92BF8A11AE25B6B00031C63 /* bubbleMine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D92BF88C1AE25B6B00031C63 /* bubbleMine@2x.png */; };
+		D92BF8A21AE25B6B00031C63 /* bubbleSomeone.png in Resources */ = {isa = PBXBuildFile; fileRef = D92BF88D1AE25B6B00031C63 /* bubbleSomeone.png */; };
+		D92BF8A31AE25B6B00031C63 /* bubbleSomeone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D92BF88E1AE25B6B00031C63 /* bubbleSomeone@2x.png */; };
+		D92BF8A41AE25B6B00031C63 /* NSBubbleData.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8901AE25B6B00031C63 /* NSBubbleData.m */; };
+		D92BF8A51AE25B6B00031C63 /* UIBubbleHeaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8921AE25B6B00031C63 /* UIBubbleHeaderTableViewCell.m */; };
+		D92BF8A61AE25B6B00031C63 /* UIBubbleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8941AE25B6B00031C63 /* UIBubbleTableView.m */; };
+		D92BF8A71AE25B6B00031C63 /* UIBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8961AE25B6B00031C63 /* UIBubbleTableViewCell.m */; };
+		D92BF8A81AE25B6B00031C63 /* UIBubbleTypingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8991AE25B6B00031C63 /* UIBubbleTypingTableViewCell.m */; };
+		D92BF8A91AE25B6B00031C63 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF89C1AE25B6B00031C63 /* ChatViewController.m */; };
+		D92BF8AA1AE25B6B00031C63 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D92BF89D1AE25B6B00031C63 /* ChatViewController.xib */; };
+		D92BF8AB1AE25B6B00031C63 /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BF89F1AE25B6B00031C63 /* ConversationViewController.m */; };
+		D92BF8AD1AE25B7E00031C63 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8AC1AE25B7E00031C63 /* UIKit.framework */; };
+		D92BF8AF1AE25B8300031C63 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8AE1AE25B8300031C63 /* Foundation.framework */; };
+		D92BF8B11AE25B8C00031C63 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8B01AE25B8C00031C63 /* CoreGraphics.framework */; };
+		D92BF8B31AE25B9100031C63 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8B21AE25B9100031C63 /* CFNetwork.framework */; };
+		D92BF8B51AE25B9600031C63 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8B41AE25B9600031C63 /* Security.framework */; };
+		D92BF8B71AE25B9E00031C63 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8B61AE25B9E00031C63 /* SystemConfiguration.framework */; };
+		D92BF8B91AE25BA600031C63 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8B81AE25BA600031C63 /* libsqlite3.dylib */; };
+		D92BF8BB1AE25BAD00031C63 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8BA1AE25BAD00031C63 /* CoreAudio.framework */; };
+		D92BF8BD1AE25BB400031C63 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8BC1AE25BB400031C63 /* AudioToolbox.framework */; };
+		D92BF8BF1AE25BB900031C63 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8BE1AE25BB900031C63 /* AVFoundation.framework */; };
+		D92BF8C11AE25BC000031C63 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D92BF8C01AE25BC000031C63 /* libz.dylib */; };
+		D92BF8C31AE25C6B00031C63 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D92BF8C21AE25C6B00031C63 /* Main.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D92BF8171AE25B2F00031C63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D92BF7F91AE25B2F00031C63 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D92BF8001AE25B2F00031C63;
+			remoteInfo = TZIM;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D92BF8011AE25B2F00031C63 /* TZIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TZIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D92BF8051AE25B2F00031C63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D92BF8061AE25B2F00031C63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D92BF8081AE25B2F00031C63 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D92BF80D1AE25B2F00031C63 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D92BF8101AE25B2F00031C63 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		D92BF8161AE25B2F00031C63 /* TZIMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TZIMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D92BF81B1AE25B2F00031C63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D92BF81C1AE25B2F00031C63 /* TZIMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TZIMTests.swift; sourceTree = "<group>"; };
+		D92BF8261AE25B4000031C63 /* TZIM-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TZIM-Bridging-Header.h"; sourceTree = "<group>"; };
+		D92BF82C1AE25B5B00031C63 /* AESCrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESCrypt.h; sourceTree = "<group>"; };
+		D92BF82D1AE25B5B00031C63 /* AESCrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESCrypt.m; sourceTree = "<group>"; };
+		D92BF82E1AE25B5B00031C63 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		D92BF82F1AE25B5B00031C63 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		D92BF8301AE25B5B00031C63 /* NSData+CommonCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CommonCrypto.h"; sourceTree = "<group>"; };
+		D92BF8311AE25B5B00031C63 /* NSData+CommonCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+CommonCrypto.m"; sourceTree = "<group>"; };
+		D92BF8321AE25B5B00031C63 /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Base64.h"; sourceTree = "<group>"; };
+		D92BF8331AE25B5B00031C63 /* NSString+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
+		D92BF8341AE25B5B00031C63 /* AudioMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioMessage.swift; sourceTree = "<group>"; };
+		D92BF8351AE25B5B00031C63 /* BaseDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDaoHelper.swift; sourceTree = "<group>"; };
+		D92BF8361AE25B5B00031C63 /* BaseMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseMessage.swift; sourceTree = "<group>"; };
+		D92BF8371AE25B5B00031C63 /* ChatManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
+		D92BF8381AE25B5B00031C63 /* ChatMessageDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageDaoHelper.swift; sourceTree = "<group>"; };
+		D92BF8391AE25B5C00031C63 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
+		D92BF83A1AE25B5C00031C63 /* DaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaoHelper.swift; sourceTree = "<group>"; };
+		D92BF83D1AE25B5C00031C63 /* GexinSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GexinSdk.h; sourceTree = "<group>"; };
+		D92BF83E1AE25B5C00031C63 /* GXSdkError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GXSdkError.h; sourceTree = "<group>"; };
+		D92BF83F1AE25B5C00031C63 /* libGexinSdk-1.1.1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libGexinSdk-1.1.1.a"; sourceTree = "<group>"; };
+		D92BF8411AE25B5C00031C63 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		D92BF8421AE25B5C00031C63 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		D92BF8431AE25B5C00031C63 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		D92BF8441AE25B5C00031C63 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		D92BF8451AE25B5C00031C63 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		D92BF8461AE25B5C00031C63 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		D92BF8471AE25B5C00031C63 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		D92BF8481AE25B5C00031C63 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		D92BF8491AE25B5C00031C63 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		D92BF84A1AE25B5C00031C63 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		D92BF84B1AE25B5C00031C63 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		D92BF84C1AE25B5C00031C63 /* ImageMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageMessage.swift; sourceTree = "<group>"; };
+		D92BF84D1AE25B5C00031C63 /* LocationMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationMessage.swift; sourceTree = "<group>"; };
+		D92BF84E1AE25B5C00031C63 /* LvAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LvAppDelegate.swift; sourceTree = "<group>"; };
+		D92BF84F1AE25B5C00031C63 /* LvSDKManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LvSDKManager.swift; sourceTree = "<group>"; };
+		D92BF8501AE25B5C00031C63 /* MessageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageManager.swift; sourceTree = "<group>"; };
+		D92BF8511AE25B5C00031C63 /* MessageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageProtocol.swift; sourceTree = "<group>"; };
+		D92BF8521AE25B5C00031C63 /* MessageReceiveManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageReceiveManager.swift; sourceTree = "<group>"; };
+		D92BF8531AE25B5C00031C63 /* MessageSendManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSendManager.swift; sourceTree = "<group>"; };
+		D92BF8541AE25B5C00031C63 /* MetaDataDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetaDataDaoHelper.swift; sourceTree = "<group>"; };
+		D92BF8551AE25B5C00031C63 /* PushSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushSDK.swift; sourceTree = "<group>"; };
+		D92BF8561AE25B5C00031C63 /* TZIM-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TZIM-Bridging-Header.h"; sourceTree = "<group>"; };
+		D92BF8591AE25B5C00031C63 /* amrFileCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amrFileCodec.h; sourceTree = "<group>"; };
+		D92BF85A1AE25B5C00031C63 /* amrFileCodec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = amrFileCodec.mm; sourceTree = "<group>"; };
+		D92BF85B1AE25B5C00031C63 /* wav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wav.h; sourceTree = "<group>"; };
+		D92BF85C1AE25B5C00031C63 /* wav.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = wav.mm; sourceTree = "<group>"; };
+		D92BF85E1AE25B5C00031C63 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
+		D92BF85F1AE25B5C00031C63 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
+		D92BF8611AE25B5C00031C63 /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
+		D92BF8621AE25B5C00031C63 /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
+		D92BF8641AE25B5C00031C63 /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
+		D92BF8651AE25B5C00031C63 /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
+		D92BF8661AE25B5C00031C63 /* VoiceConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceConverter.h; sourceTree = "<group>"; };
+		D92BF8671AE25B5C00031C63 /* VoiceConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VoiceConverter.mm; sourceTree = "<group>"; };
+		D92BF88B1AE25B6B00031C63 /* bubbleMine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubbleMine.png; sourceTree = "<group>"; };
+		D92BF88C1AE25B6B00031C63 /* bubbleMine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubbleMine@2x.png"; sourceTree = "<group>"; };
+		D92BF88D1AE25B6B00031C63 /* bubbleSomeone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubbleSomeone.png; sourceTree = "<group>"; };
+		D92BF88E1AE25B6B00031C63 /* bubbleSomeone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubbleSomeone@2x.png"; sourceTree = "<group>"; };
+		D92BF88F1AE25B6B00031C63 /* NSBubbleData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBubbleData.h; sourceTree = "<group>"; };
+		D92BF8901AE25B6B00031C63 /* NSBubbleData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBubbleData.m; sourceTree = "<group>"; };
+		D92BF8911AE25B6B00031C63 /* UIBubbleHeaderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBubbleHeaderTableViewCell.h; sourceTree = "<group>"; };
+		D92BF8921AE25B6B00031C63 /* UIBubbleHeaderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBubbleHeaderTableViewCell.m; sourceTree = "<group>"; };
+		D92BF8931AE25B6B00031C63 /* UIBubbleTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBubbleTableView.h; sourceTree = "<group>"; };
+		D92BF8941AE25B6B00031C63 /* UIBubbleTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBubbleTableView.m; sourceTree = "<group>"; };
+		D92BF8951AE25B6B00031C63 /* UIBubbleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBubbleTableViewCell.h; sourceTree = "<group>"; };
+		D92BF8961AE25B6B00031C63 /* UIBubbleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBubbleTableViewCell.m; sourceTree = "<group>"; };
+		D92BF8971AE25B6B00031C63 /* UIBubbleTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBubbleTableViewDataSource.h; sourceTree = "<group>"; };
+		D92BF8981AE25B6B00031C63 /* UIBubbleTypingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBubbleTypingTableViewCell.h; sourceTree = "<group>"; };
+		D92BF8991AE25B6B00031C63 /* UIBubbleTypingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBubbleTypingTableViewCell.m; sourceTree = "<group>"; };
+		D92BF89B1AE25B6B00031C63 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		D92BF89C1AE25B6B00031C63 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		D92BF89D1AE25B6B00031C63 /* ChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
+		D92BF89E1AE25B6B00031C63 /* ConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationViewController.h; sourceTree = "<group>"; };
+		D92BF89F1AE25B6B00031C63 /* ConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationViewController.m; sourceTree = "<group>"; };
+		D92BF8AC1AE25B7E00031C63 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D92BF8AE1AE25B8300031C63 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D92BF8B01AE25B8C00031C63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		D92BF8B21AE25B9100031C63 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		D92BF8B41AE25B9600031C63 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		D92BF8B61AE25B9E00031C63 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		D92BF8B81AE25BA600031C63 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		D92BF8BA1AE25BAD00031C63 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		D92BF8BC1AE25BB400031C63 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		D92BF8BE1AE25BB900031C63 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		D92BF8C01AE25BC000031C63 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		D92BF8C21AE25C6B00031C63 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D92BF7FE1AE25B2F00031C63 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D92BF8C11AE25BC000031C63 /* libz.dylib in Frameworks */,
+				D92BF8BF1AE25BB900031C63 /* AVFoundation.framework in Frameworks */,
+				D92BF8BD1AE25BB400031C63 /* AudioToolbox.framework in Frameworks */,
+				D92BF8BB1AE25BAD00031C63 /* CoreAudio.framework in Frameworks */,
+				D92BF8B91AE25BA600031C63 /* libsqlite3.dylib in Frameworks */,
+				D92BF8B71AE25B9E00031C63 /* SystemConfiguration.framework in Frameworks */,
+				D92BF8B51AE25B9600031C63 /* Security.framework in Frameworks */,
+				D92BF8B31AE25B9100031C63 /* CFNetwork.framework in Frameworks */,
+				D92BF8B11AE25B8C00031C63 /* CoreGraphics.framework in Frameworks */,
+				D92BF8AF1AE25B8300031C63 /* Foundation.framework in Frameworks */,
+				D92BF8AD1AE25B7E00031C63 /* UIKit.framework in Frameworks */,
+				D92BF8731AE25B5C00031C63 /* libGexinSdk-1.1.1.a in Frameworks */,
+				D92BF8861AE25B5C00031C63 /* libopencore-amrwb.a in Frameworks */,
+				D92BF8851AE25B5C00031C63 /* libopencore-amrnb.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D92BF8131AE25B2F00031C63 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D92BF7F81AE25B2F00031C63 = {
+			isa = PBXGroup;
+			children = (
+				D92BF8C01AE25BC000031C63 /* libz.dylib */,
+				D92BF8BE1AE25BB900031C63 /* AVFoundation.framework */,
+				D92BF8BC1AE25BB400031C63 /* AudioToolbox.framework */,
+				D92BF8BA1AE25BAD00031C63 /* CoreAudio.framework */,
+				D92BF8B81AE25BA600031C63 /* libsqlite3.dylib */,
+				D92BF8B61AE25B9E00031C63 /* SystemConfiguration.framework */,
+				D92BF8B41AE25B9600031C63 /* Security.framework */,
+				D92BF8B21AE25B9100031C63 /* CFNetwork.framework */,
+				D92BF8B01AE25B8C00031C63 /* CoreGraphics.framework */,
+				D92BF8AE1AE25B8300031C63 /* Foundation.framework */,
+				D92BF8AC1AE25B7E00031C63 /* UIKit.framework */,
+				D92BF8031AE25B2F00031C63 /* TZIM */,
+				D92BF8191AE25B2F00031C63 /* TZIMTests */,
+				D92BF8021AE25B2F00031C63 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D92BF8021AE25B2F00031C63 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF8011AE25B2F00031C63 /* TZIM.app */,
+				D92BF8161AE25B2F00031C63 /* TZIMTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D92BF8031AE25B2F00031C63 /* TZIM */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF8881AE25B6B00031C63 /* UI */,
+				D92BF82A1AE25B5B00031C63 /* IMSDK */,
+				D92BF8061AE25B2F00031C63 /* AppDelegate.swift */,
+				D92BF8081AE25B2F00031C63 /* ViewController.swift */,
+				D92BF8C21AE25C6B00031C63 /* Main.storyboard */,
+				D92BF80D1AE25B2F00031C63 /* Images.xcassets */,
+				D92BF80F1AE25B2F00031C63 /* LaunchScreen.xib */,
+				D92BF8041AE25B2F00031C63 /* Supporting Files */,
+				D92BF8261AE25B4000031C63 /* TZIM-Bridging-Header.h */,
+			);
+			path = TZIM;
+			sourceTree = "<group>";
+		};
+		D92BF8041AE25B2F00031C63 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF8051AE25B2F00031C63 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D92BF8191AE25B2F00031C63 /* TZIMTests */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF81C1AE25B2F00031C63 /* TZIMTests.swift */,
+				D92BF81A1AE25B2F00031C63 /* Supporting Files */,
+			);
+			path = TZIMTests;
+			sourceTree = "<group>";
+		};
+		D92BF81A1AE25B2F00031C63 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF81B1AE25B2F00031C63 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D92BF82A1AE25B5B00031C63 /* IMSDK */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF82B1AE25B5B00031C63 /* AES */,
+				D92BF8341AE25B5B00031C63 /* AudioMessage.swift */,
+				D92BF8351AE25B5B00031C63 /* BaseDaoHelper.swift */,
+				D92BF8361AE25B5B00031C63 /* BaseMessage.swift */,
+				D92BF8371AE25B5B00031C63 /* ChatManager.swift */,
+				D92BF8381AE25B5B00031C63 /* ChatMessageDaoHelper.swift */,
+				D92BF8391AE25B5C00031C63 /* ConnectionManager.swift */,
+				D92BF83A1AE25B5C00031C63 /* DaoHelper.swift */,
+				D92BF83B1AE25B5C00031C63 /* dist */,
+				D92BF8401AE25B5C00031C63 /* fmdb */,
+				D92BF84C1AE25B5C00031C63 /* ImageMessage.swift */,
+				D92BF84D1AE25B5C00031C63 /* LocationMessage.swift */,
+				D92BF84E1AE25B5C00031C63 /* LvAppDelegate.swift */,
+				D92BF84F1AE25B5C00031C63 /* LvSDKManager.swift */,
+				D92BF8501AE25B5C00031C63 /* MessageManager.swift */,
+				D92BF8511AE25B5C00031C63 /* MessageProtocol.swift */,
+				D92BF8521AE25B5C00031C63 /* MessageReceiveManager.swift */,
+				D92BF8531AE25B5C00031C63 /* MessageSendManager.swift */,
+				D92BF8541AE25B5C00031C63 /* MetaDataDaoHelper.swift */,
+				D92BF8551AE25B5C00031C63 /* PushSDK.swift */,
+				D92BF8561AE25B5C00031C63 /* TZIM-Bridging-Header.h */,
+				D92BF8571AE25B5C00031C63 /* VoiceConvert */,
+			);
+			path = IMSDK;
+			sourceTree = "<group>";
+		};
+		D92BF82B1AE25B5B00031C63 /* AES */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF82C1AE25B5B00031C63 /* AESCrypt.h */,
+				D92BF82D1AE25B5B00031C63 /* AESCrypt.m */,
+				D92BF82E1AE25B5B00031C63 /* NSData+Base64.h */,
+				D92BF82F1AE25B5B00031C63 /* NSData+Base64.m */,
+				D92BF8301AE25B5B00031C63 /* NSData+CommonCrypto.h */,
+				D92BF8311AE25B5B00031C63 /* NSData+CommonCrypto.m */,
+				D92BF8321AE25B5B00031C63 /* NSString+Base64.h */,
+				D92BF8331AE25B5B00031C63 /* NSString+Base64.m */,
+			);
+			path = AES;
+			sourceTree = "<group>";
+		};
+		D92BF83B1AE25B5C00031C63 /* dist */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF83C1AE25B5C00031C63 /* include */,
+				D92BF83F1AE25B5C00031C63 /* libGexinSdk-1.1.1.a */,
+			);
+			path = dist;
+			sourceTree = "<group>";
+		};
+		D92BF83C1AE25B5C00031C63 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF83D1AE25B5C00031C63 /* GexinSdk.h */,
+				D92BF83E1AE25B5C00031C63 /* GXSdkError.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		D92BF8401AE25B5C00031C63 /* fmdb */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF8411AE25B5C00031C63 /* FMDatabase.h */,
+				D92BF8421AE25B5C00031C63 /* FMDatabase.m */,
+				D92BF8431AE25B5C00031C63 /* FMDatabaseAdditions.h */,
+				D92BF8441AE25B5C00031C63 /* FMDatabaseAdditions.m */,
+				D92BF8451AE25B5C00031C63 /* FMDatabasePool.h */,
+				D92BF8461AE25B5C00031C63 /* FMDatabasePool.m */,
+				D92BF8471AE25B5C00031C63 /* FMDatabaseQueue.h */,
+				D92BF8481AE25B5C00031C63 /* FMDatabaseQueue.m */,
+				D92BF8491AE25B5C00031C63 /* FMDB.h */,
+				D92BF84A1AE25B5C00031C63 /* FMResultSet.h */,
+				D92BF84B1AE25B5C00031C63 /* FMResultSet.m */,
+			);
+			path = fmdb;
+			sourceTree = "<group>";
+		};
+		D92BF8571AE25B5C00031C63 /* VoiceConvert */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF8581AE25B5C00031C63 /* amrwapper */,
+				D92BF85D1AE25B5C00031C63 /* lib */,
+				D92BF8601AE25B5C00031C63 /* opencore-amrnb */,
+				D92BF8631AE25B5C00031C63 /* opencore-amrwb */,
+				D92BF8661AE25B5C00031C63 /* VoiceConverter.h */,
+				D92BF8671AE25B5C00031C63 /* VoiceConverter.mm */,
+			);
+			path = VoiceConvert;
+			sourceTree = "<group>";
+		};
+		D92BF8581AE25B5C00031C63 /* amrwapper */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF8591AE25B5C00031C63 /* amrFileCodec.h */,
+				D92BF85A1AE25B5C00031C63 /* amrFileCodec.mm */,
+				D92BF85B1AE25B5C00031C63 /* wav.h */,
+				D92BF85C1AE25B5C00031C63 /* wav.mm */,
+			);
+			path = amrwapper;
+			sourceTree = "<group>";
+		};
+		D92BF85D1AE25B5C00031C63 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF85E1AE25B5C00031C63 /* libopencore-amrnb.a */,
+				D92BF85F1AE25B5C00031C63 /* libopencore-amrwb.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		D92BF8601AE25B5C00031C63 /* opencore-amrnb */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF8611AE25B5C00031C63 /* interf_dec.h */,
+				D92BF8621AE25B5C00031C63 /* interf_enc.h */,
+			);
+			path = "opencore-amrnb";
+			sourceTree = "<group>";
+		};
+		D92BF8631AE25B5C00031C63 /* opencore-amrwb */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF8641AE25B5C00031C63 /* dec_if.h */,
+				D92BF8651AE25B5C00031C63 /* if_rom.h */,
+			);
+			path = "opencore-amrwb";
+			sourceTree = "<group>";
+		};
+		D92BF8881AE25B6B00031C63 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF8891AE25B6B00031C63 /* libs */,
+				D92BF89A1AE25B6B00031C63 /* ViewController */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		D92BF8891AE25B6B00031C63 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF88A1AE25B6B00031C63 /* BubbleViewController */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		D92BF88A1AE25B6B00031C63 /* BubbleViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF88B1AE25B6B00031C63 /* bubbleMine.png */,
+				D92BF88C1AE25B6B00031C63 /* bubbleMine@2x.png */,
+				D92BF88D1AE25B6B00031C63 /* bubbleSomeone.png */,
+				D92BF88E1AE25B6B00031C63 /* bubbleSomeone@2x.png */,
+				D92BF88F1AE25B6B00031C63 /* NSBubbleData.h */,
+				D92BF8901AE25B6B00031C63 /* NSBubbleData.m */,
+				D92BF8911AE25B6B00031C63 /* UIBubbleHeaderTableViewCell.h */,
+				D92BF8921AE25B6B00031C63 /* UIBubbleHeaderTableViewCell.m */,
+				D92BF8931AE25B6B00031C63 /* UIBubbleTableView.h */,
+				D92BF8941AE25B6B00031C63 /* UIBubbleTableView.m */,
+				D92BF8951AE25B6B00031C63 /* UIBubbleTableViewCell.h */,
+				D92BF8961AE25B6B00031C63 /* UIBubbleTableViewCell.m */,
+				D92BF8971AE25B6B00031C63 /* UIBubbleTableViewDataSource.h */,
+				D92BF8981AE25B6B00031C63 /* UIBubbleTypingTableViewCell.h */,
+				D92BF8991AE25B6B00031C63 /* UIBubbleTypingTableViewCell.m */,
+			);
+			path = BubbleViewController;
+			sourceTree = "<group>";
+		};
+		D92BF89A1AE25B6B00031C63 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF89B1AE25B6B00031C63 /* ChatViewController.h */,
+				D92BF89C1AE25B6B00031C63 /* ChatViewController.m */,
+				D92BF89D1AE25B6B00031C63 /* ChatViewController.xib */,
+				D92BF89E1AE25B6B00031C63 /* ConversationViewController.h */,
+				D92BF89F1AE25B6B00031C63 /* ConversationViewController.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D92BF8001AE25B2F00031C63 /* TZIM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D92BF8201AE25B2F00031C63 /* Build configuration list for PBXNativeTarget "TZIM" */;
+			buildPhases = (
+				D92BF7FD1AE25B2F00031C63 /* Sources */,
+				D92BF7FE1AE25B2F00031C63 /* Frameworks */,
+				D92BF7FF1AE25B2F00031C63 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TZIM;
+			productName = TZIM;
+			productReference = D92BF8011AE25B2F00031C63 /* TZIM.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D92BF8151AE25B2F00031C63 /* TZIMTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D92BF8231AE25B2F00031C63 /* Build configuration list for PBXNativeTarget "TZIMTests" */;
+			buildPhases = (
+				D92BF8121AE25B2F00031C63 /* Sources */,
+				D92BF8131AE25B2F00031C63 /* Frameworks */,
+				D92BF8141AE25B2F00031C63 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D92BF8181AE25B2F00031C63 /* PBXTargetDependency */,
+			);
+			name = TZIMTests;
+			productName = TZIMTests;
+			productReference = D92BF8161AE25B2F00031C63 /* TZIMTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D92BF7F91AE25B2F00031C63 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = com.aizou.www;
+				TargetAttributes = {
+					D92BF8001AE25B2F00031C63 = {
+						CreatedOnToolsVersion = 6.3;
+					};
+					D92BF8151AE25B2F00031C63 = {
+						CreatedOnToolsVersion = 6.3;
+						TestTargetID = D92BF8001AE25B2F00031C63;
+					};
+				};
+			};
+			buildConfigurationList = D92BF7FC1AE25B2F00031C63 /* Build configuration list for PBXProject "TZIM" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D92BF7F81AE25B2F00031C63;
+			productRefGroup = D92BF8021AE25B2F00031C63 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D92BF8001AE25B2F00031C63 /* TZIM */,
+				D92BF8151AE25B2F00031C63 /* TZIMTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D92BF7FF1AE25B2F00031C63 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D92BF8A31AE25B6B00031C63 /* bubbleSomeone@2x.png in Resources */,
+				D92BF8A21AE25B6B00031C63 /* bubbleSomeone.png in Resources */,
+				D92BF8A11AE25B6B00031C63 /* bubbleMine@2x.png in Resources */,
+				D92BF8C31AE25C6B00031C63 /* Main.storyboard in Resources */,
+				D92BF8111AE25B2F00031C63 /* LaunchScreen.xib in Resources */,
+				D92BF8A01AE25B6B00031C63 /* bubbleMine.png in Resources */,
+				D92BF8AA1AE25B6B00031C63 /* ChatViewController.xib in Resources */,
+				D92BF80E1AE25B2F00031C63 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D92BF8141AE25B2F00031C63 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D92BF7FD1AE25B2F00031C63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D92BF87C1AE25B5C00031C63 /* LvSDKManager.swift in Sources */,
+				D92BF86C1AE25B5C00031C63 /* AudioMessage.swift in Sources */,
+				D92BF8711AE25B5C00031C63 /* ConnectionManager.swift in Sources */,
+				D92BF87B1AE25B5C00031C63 /* LvAppDelegate.swift in Sources */,
+				D92BF87A1AE25B5C00031C63 /* LocationMessage.swift in Sources */,
+				D92BF86B1AE25B5C00031C63 /* NSString+Base64.m in Sources */,
+				D92BF8A51AE25B6B00031C63 /* UIBubbleHeaderTableViewCell.m in Sources */,
+				D92BF8741AE25B5C00031C63 /* FMDatabase.m in Sources */,
+				D92BF8801AE25B5C00031C63 /* MessageSendManager.swift in Sources */,
+				D92BF8A61AE25B6B00031C63 /* UIBubbleTableView.m in Sources */,
+				D92BF87E1AE25B5C00031C63 /* MessageProtocol.swift in Sources */,
+				D92BF87F1AE25B5C00031C63 /* MessageReceiveManager.swift in Sources */,
+				D92BF8841AE25B5C00031C63 /* wav.mm in Sources */,
+				D92BF8701AE25B5C00031C63 /* ChatMessageDaoHelper.swift in Sources */,
+				D92BF8791AE25B5C00031C63 /* ImageMessage.swift in Sources */,
+				D92BF8091AE25B2F00031C63 /* ViewController.swift in Sources */,
+				D92BF8A81AE25B6B00031C63 /* UIBubbleTypingTableViewCell.m in Sources */,
+				D92BF8831AE25B5C00031C63 /* amrFileCodec.mm in Sources */,
+				D92BF8781AE25B5C00031C63 /* FMResultSet.m in Sources */,
+				D92BF8A41AE25B6B00031C63 /* NSBubbleData.m in Sources */,
+				D92BF8A91AE25B6B00031C63 /* ChatViewController.m in Sources */,
+				D92BF8721AE25B5C00031C63 /* DaoHelper.swift in Sources */,
+				D92BF8A71AE25B6B00031C63 /* UIBubbleTableViewCell.m in Sources */,
+				D92BF86E1AE25B5C00031C63 /* BaseMessage.swift in Sources */,
+				D92BF8691AE25B5C00031C63 /* NSData+Base64.m in Sources */,
+				D92BF86F1AE25B5C00031C63 /* ChatManager.swift in Sources */,
+				D92BF8821AE25B5C00031C63 /* PushSDK.swift in Sources */,
+				D92BF86A1AE25B5C00031C63 /* NSData+CommonCrypto.m in Sources */,
+				D92BF86D1AE25B5C00031C63 /* BaseDaoHelper.swift in Sources */,
+				D92BF87D1AE25B5C00031C63 /* MessageManager.swift in Sources */,
+				D92BF8681AE25B5C00031C63 /* AESCrypt.m in Sources */,
+				D92BF8AB1AE25B6B00031C63 /* ConversationViewController.m in Sources */,
+				D92BF8811AE25B5C00031C63 /* MetaDataDaoHelper.swift in Sources */,
+				D92BF8761AE25B5C00031C63 /* FMDatabasePool.m in Sources */,
+				D92BF8771AE25B5C00031C63 /* FMDatabaseQueue.m in Sources */,
+				D92BF8871AE25B5C00031C63 /* VoiceConverter.mm in Sources */,
+				D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */,
+				D92BF8751AE25B5C00031C63 /* FMDatabaseAdditions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D92BF8121AE25B2F00031C63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D92BF81D1AE25B2F00031C63 /* TZIMTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D92BF8181AE25B2F00031C63 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D92BF8001AE25B2F00031C63 /* TZIM */;
+			targetProxy = D92BF8171AE25B2F00031C63 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D92BF80F1AE25B2F00031C63 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D92BF8101AE25B2F00031C63 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D92BF81E1AE25B2F00031C63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D92BF81F1AE25B2F00031C63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D92BF8211AE25B2F00031C63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = TZIM/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TZIM/IMSDK/dist",
+					"$(PROJECT_DIR)/TZIM/IMSDK/VoiceConvert/lib",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TZIM/TZIM-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D92BF8221AE25B2F00031C63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = TZIM/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TZIM/IMSDK/dist",
+					"$(PROJECT_DIR)/TZIM/IMSDK/VoiceConvert/lib",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TZIM/TZIM-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		D92BF8241AE25B2F00031C63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TZIMTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TZIM.app/TZIM";
+			};
+			name = Debug;
+		};
+		D92BF8251AE25B2F00031C63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TZIMTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TZIM.app/TZIM";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D92BF7FC1AE25B2F00031C63 /* Build configuration list for PBXProject "TZIM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D92BF81E1AE25B2F00031C63 /* Debug */,
+				D92BF81F1AE25B2F00031C63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D92BF8201AE25B2F00031C63 /* Build configuration list for PBXNativeTarget "TZIM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D92BF8211AE25B2F00031C63 /* Debug */,
+				D92BF8221AE25B2F00031C63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D92BF8231AE25B2F00031C63 /* Build configuration list for PBXNativeTarget "TZIMTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D92BF8241AE25B2F00031C63 /* Debug */,
+				D92BF8251AE25B2F00031C63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D92BF7F91AE25B2F00031C63 /* Project object */;
+}
