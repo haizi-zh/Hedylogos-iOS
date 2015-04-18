@@ -12,6 +12,7 @@ let isiOS8 = (UIDevice.currentDevice().systemVersion as NSString).doubleValue >=
 
 extension AppDelegate {
     
+    
     func lvApplication(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         if isiOS8 {
             var userType = UIUserNotificationType.Badge | UIUserNotificationType.Alert | UIUserNotificationType.Sound

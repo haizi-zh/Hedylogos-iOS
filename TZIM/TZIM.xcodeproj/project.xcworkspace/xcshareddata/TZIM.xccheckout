@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>40D66FCB-4B60-490A-B2CF-CE1D684FC561</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TZIM</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C8F81546603BD6F394F42AF800CD5BB3919F870A</key>
+		<string>github.com:haizi-zh/Hedylogos-iOS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TZIM/TZIM.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C8F81546603BD6F394F42AF800CD5BB3919F870A</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:haizi-zh/Hedylogos-iOS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C8F81546603BD6F394F42AF800CD5BB3919F870A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C8F81546603BD6F394F42AF800CD5BB3919F870A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Hedylogos-iOS</string>
+		</dict>
+	</array>
+</dict>
+</plist>
