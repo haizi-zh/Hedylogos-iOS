@@ -9,8 +9,23 @@
 import UIKit
 
 class BaseDaoHelper: NSObject {
-    class func tableIsExit(tableName: String, db:FMDatabase) -> Bool {
-        var rs: FMResultSet = db.executeQuery("select count(*) as 'count' from sqlite_master where type ='table' and name = ?", withArgumentsInArray: [tableName])
+    
+    let dataBase: FMDatabase
+    
+    init(db: FMDatabase) {
+        dataBase = db
+        super.init()
+    }
+    
+    init(db: FMDatabase, queue:FMDatabaseQueue) {
+        dataBase = db
+        super.init()
+    }
+
+    func tableIsExit(tableName: String) -> Bool {
+        var sql = "select count(*) as 'count' from sqlite_master where type ='table' and name = ?"
+        var rs = dataBase.executeQuery(sql, withArgumentsInArray: [tableName])
+        if (rs != nil) {
             while (rs.next())
             {
                 var count: Int32 = rs.intForColumn("count")
@@ -20,6 +35,7 @@ class BaseDaoHelper: NSObject {
                     return true;
                 }
             }
-        return true;
+        }
+        return false;
     }
 }

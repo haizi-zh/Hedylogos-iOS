@@ -19,7 +19,8 @@
 @property (strong, nonatomic) IBOutlet UIBubbleTableView *bubbleTable;
 @property (strong, nonatomic) UIImage *myImage;
 @property (strong, nonatomic) UIImage *otherImage;
-@property (strong, nonatomic) NSString *otherUserID;
+@property (copy, nonatomic) NSString *otherUserID;
+@property (nonatomic) NSInteger userID;
 
 @property (copy, nonatomic) NSString *chatWith;
 

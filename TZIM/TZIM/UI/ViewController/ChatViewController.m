@@ -38,7 +38,7 @@ static NSString *messageCellIdentifier = @"messageCell";
 {
     [super viewDidLoad];
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-    [imClientManager.messageManager addMessageDelegate:self];
+    [imClientManager addMessageDelegate:self];
     
      keyboardIsShow = NO;
     [self.view setFrame:[[UIScreen mainScreen] bounds]];
@@ -230,12 +230,13 @@ static NSString *messageCellIdentifier = @"messageCell";
         [self.bubbleTable scrollBubbleViewToBottomAnimated:YES];
     }
     
-    ChatManager *chatManager = [[ChatManager alloc] init];
     NSLog(@"%lf", [[NSDate date] timeIntervalSince1970]);
     BaseMessage *chatMsg = [[BaseMessage alloc] initWithTLocalId:1000 tServerId:10001 tStatus:1 tCreateTime:[[NSDate date] timeIntervalSince1970] tSendType:1];
-    chatMsg.messageContent = _messageToSend.text;
+    chatMsg.message = _messageToSend.text;
     
-    [chatManager asyncSendMessage:chatMsg receiver:@"liang" isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    [imClientManager addMessageDelegate:self];
+    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver:[NSString stringWithFormat:@"%d", _userID] isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
         if (isSuccess) {
             NSLog(@"hello world");
         }

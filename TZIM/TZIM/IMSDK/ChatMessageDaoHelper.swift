@@ -14,11 +14,7 @@ protocol ChatMessageDaoHelperProtocol{
     func updateMessageServerId(tableName: String, localId:Int, serverId: Int) -> Bool 
 }
 
-class ChatMessageDaoHelper: ChatMessageDaoHelperProtocol{
-    private let dataBase: FMDatabase
-    init(db: FMDatabase) {
-        dataBase = db
-    }
+class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     
     /**
     当数据库没打开的时候创建聊天表
@@ -38,7 +34,7 @@ class ChatMessageDaoHelper: ChatMessageDaoHelperProtocol{
     :returns: 创建是否成功
     */
     func createChatTable(tableName: String) -> Bool {
-        var sql = "create table '\(tableName)' (LocalId INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, ServerId INTEGER, Status int(4), Type int(4), Message TEXT, CreateTime INTEGER, SendType int, MetaId INTEGER)"
+        var sql = "create table '\(tableName)' (LocalId INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, ServerId INTEGER, Status int(4), Type int(4), Message TEXT, CreateTime INTEGER, SendType int)"
         if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
             println("执行 sql 语句：\(sql)")
             return true
@@ -53,34 +49,28 @@ class ChatMessageDaoHelper: ChatMessageDaoHelperProtocol{
     :returns: 更新是否成功
     */
     func updateChatMessageDataWithName(tableName: String, message:BaseMessage) -> Bool {
-        if dataBase.open() {
-            if !BaseDaoHelper.tableIsExit(tableName, db: dataBase) {
-                self.createChatTable(tableName)
-            }
-            var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType) values (?,?,?,?,?,?)"
-            var array = [message.serverId, message.status, message.type, message.messageContent, message.createTime, message.sendType]
-            if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
-                dataBase.close()
-                println("执行 sql 语句：\(sql)")
-                return true
-            }
-            dataBase.close()
+        if !super.tableIsExit(tableName) {
+            self.createChatTable(tableName)
+        }
+        var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType) values (?,?,?,?,?,?)"
+        var array = [message.serverId, message.status, message.type, message.message, message.createTime, message.sendType]
+        if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
+            println("执行 sql 语句：\(sql)")
+            return true
+        } else {
             return false
         }
-        return false
     }
     
     /**
     更新表的 serverId
-    
     :param: tableName 需要更新的表
     :param: serverId  需要更新的记录
-    
     :returns: 是否更新成功
     */
     func updateMessageServerId(tableName: String, localId:Int, serverId: Int) -> Bool {
         if dataBase.open() {
-            if !BaseDaoHelper.tableIsExit(tableName, db: dataBase) {
+            if !super.tableIsExit(tableName) {
                 self.createChatTable(tableName)
             }
             var sql = "update \(tableName) set serverId = ? where localId = ?"

@@ -31,5 +31,4 @@ class ConnectionManager: NSObject, PushConnectionDelegate {
     func getuiDidConnection(clientId: String) {
         println("GexinSdkDidRegisterClient： \(clientId)")
     }
-    
 }

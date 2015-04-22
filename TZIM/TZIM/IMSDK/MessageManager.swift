@@ -19,21 +19,25 @@ import UIKit
 
 class MessageManager: NSObject {
     
-    private var messageManagerDelegateArray: NSMutableArray = []
-    
-    private let messageReceiveManager = MessageReceiveManager()
-    private let messageSendManager = MessageSendManager()
+    var messageManagerDelegateArray: NSMutableArray = []
     
     override init() {
         var tableView = UITableView()
         super.init()
-        messageReceiveManager.messageManagerDeleagteArray = messageManagerDelegateArray
     }
     
+    /**
+    添加消息的监听者
+    :param: delegate 需要监听消息的
+    */
     func addMessageDelegate(delegate: MessageManagerDelegate) {
         messageManagerDelegateArray.addObject(delegate)
     }
     
+    /**
+    移除消息的监听者
+    :param: delegate 不需要监听消息的
+    */
     func removeMessageDelegate(delegate: MessageManagerDelegate) {
         for tempDelegate in messageManagerDelegateArray {
             if delegate === tempDelegate {

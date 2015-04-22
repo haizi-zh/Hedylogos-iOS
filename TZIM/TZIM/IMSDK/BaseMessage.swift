@@ -11,7 +11,7 @@ import UIKit
 class BaseMessage: NSObject {
     var localId: Int!
     var serverId: Int = -1
-    var messageContent: String = ""
+    var message: String = ""
     var type: Int = -1
     var status: Int = -1
     var createTime: Int = 0
@@ -25,6 +25,16 @@ class BaseMessage: NSObject {
         sendType = tSendType
         type = 0
         super.init()
+    }
+    
+    func prepareMessage2Send(receiverId: String) ->  NSDictionary{
+        var retDic = NSMutableDictionary()
+        retDic.setValue(localId, forKey: "localId")
+        retDic.setValue(type, forKey: "type")
+        retDic.setValue(message, forKey: "contents")
+        retDic.setValue("10001", forKey: "sender")
+        retDic.setValue(receiverId, forKey: "receiver")
+        return retDic
     }
     
     override init() {

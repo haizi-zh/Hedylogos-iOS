@@ -12,13 +12,19 @@ private let iMClientManager = IMClientManager()
 
 class IMClientManager: NSObject {
     let connectionManager: ConnectionManager
-    let messageManager: MessageManager
+    let messageReceiveManager: MessageReceiveManager
+    let messageSendManager: MessageSendManager
+    let conversationManager: ChatConversationManager
     let pushSDKManager: PushSDKManager
+    let frendManager: FrendManager
     
     override init() {
         connectionManager = ConnectionManager()
-        messageManager = MessageManager()
+        messageReceiveManager = MessageReceiveManager()
+        messageSendManager = MessageSendManager()
         pushSDKManager = PushSDKManager()
+        conversationManager = ChatConversationManager()
+        frendManager = FrendManager()
         super.init()
     }
     
@@ -28,5 +34,10 @@ class IMClientManager: NSObject {
     
     class var shareInstance : IMClientManager {
         return iMClientManager
+    }
+    
+    func addMessageDelegate(messageDelegate: MessageManagerDelegate) {
+        messageReceiveManager.addMessageDelegate(messageDelegate)
+        messageSendManager.addMessageDelegate(messageDelegate)
     }
 }
