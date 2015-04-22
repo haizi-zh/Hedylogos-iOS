@@ -10,8 +10,8 @@ import UIKit
 
 class ChatConversation: NSObject {
     var chatterId: Int = -1
-    var chattterName: String?
-    var lastUpdateTime: Int?
+    var chatterName: String = ""
+    var lastUpdateTime: Int = -1
     var lastMessage: BaseMessage?
-    var chatType: Int?
+    var chatType: Int = -1
 }

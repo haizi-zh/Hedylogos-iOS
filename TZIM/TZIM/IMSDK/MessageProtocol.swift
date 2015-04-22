@@ -8,6 +8,6 @@
 
 import UIKit
 
-protocol chatDaoProtocol: ChatMessageDaoHelperProtocol, MetadataDaoHelperProtocol {
+protocol ChatDaoProtocol: ChatMessageDaoHelperProtocol, MetadataDaoHelperProtocol {
     
 }

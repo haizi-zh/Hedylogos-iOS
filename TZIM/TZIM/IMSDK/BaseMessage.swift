@@ -9,7 +9,7 @@
 import UIKit
 
 class BaseMessage: NSObject {
-    var localId: Int!
+    var localId: Int = -1
     var serverId: Int = -1
     var message: String = ""
     var type: Int = -1

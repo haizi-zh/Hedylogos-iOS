@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0228EBB9277C91B46CCC1962 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C3F1E40AE1504999FDF8060 /* libPods.a */; };
+		D907E2181AE75A3400B37D56 /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D907E2171AE75A3400B37D56 /* ChatManager.swift */; };
 		D90840A01AE5F90900FA31C0 /* ChatConversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908409F1AE5F90900FA31C0 /* ChatConversation.swift */; };
 		D90840A31AE5F94800FA31C0 /* ChatConversationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90840A21AE5F94800FA31C0 /* ChatConversationManager.swift */; };
 		D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8061AE25B2F00031C63 /* AppDelegate.swift */; };
@@ -91,6 +92,7 @@
 		0C3F1E40AE1504999FDF8060 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		75097DFCEAAC3FB1955D3992 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A591CD351345A019841A1FAF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		D907E2171AE75A3400B37D56 /* ChatManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
 		D908409F1AE5F90900FA31C0 /* ChatConversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatConversation.swift; sourceTree = "<group>"; };
 		D90840A21AE5F94800FA31C0 /* ChatConversationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatConversationManager.swift; sourceTree = "<group>"; };
 		D92BF8011AE25B2F00031C63 /* TZIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TZIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -243,6 +245,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		D907E2161AE75A1600B37D56 /* ChatManager */ = {
+			isa = PBXGroup;
+			children = (
+				D907E2171AE75A3400B37D56 /* ChatManager.swift */,
+			);
+			name = ChatManager;
+			sourceTree = "<group>";
+		};
 		D90840A11AE5F91000FA31C0 /* ChatConversation */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,6 +300,7 @@
 				D92BF82A1AE25B5B00031C63 /* IMSDK */,
 				D92BF8041AE25B2F00031C63 /* Supporting Files */,
 				D92BF8261AE25B4000031C63 /* TZIM-Bridging-Header.h */,
+				D92BF81A1AE25B2F00031C63 /* Supporting Files */,
 			);
 			path = TZIM;
 			sourceTree = "<group>";
@@ -311,7 +322,6 @@
 			isa = PBXGroup;
 			children = (
 				D92BF81C1AE25B2F00031C63 /* TZIMTests.swift */,
-				D92BF81A1AE25B2F00031C63 /* Supporting Files */,
 			);
 			path = TZIMTests;
 			sourceTree = "<group>";
@@ -335,7 +345,7 @@
 				D92BF84E1AE25B5C00031C63 /* LvAppDelegate.swift */,
 				D92BF8551AE25B5C00031C63 /* PushSDK.swift */,
 				D92BF84F1AE25B5C00031C63 /* LvSDKManager.swift */,
-				D90840A11AE5F91000FA31C0 /* ChatConversation */,
+				D907E2161AE75A1600B37D56 /* ChatManager */,
 				D9C932021AE684F7003FEBA3 /* UserManager */,
 				D9E6B9EA1AE498A100C95767 /* MessageManager */,
 			);
@@ -501,6 +511,7 @@
 		D9C931FE1AE66B42003FEBA3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D90840A11AE5F91000FA31C0 /* ChatConversation */,
 				D9C931FF1AE66B4C003FEBA3 /* FrendModel */,
 				D9E6B9E81AE4984800C95767 /* MessageModel */,
 			);
@@ -800,6 +811,7 @@
 				D92BF8A71AE25B6B00031C63 /* UIBubbleTableViewCell.m in Sources */,
 				D92BF86E1AE25B5C00031C63 /* BaseMessage.swift in Sources */,
 				D9E6B9F11AE4FA5000C95767 /* UserDaoHelper.swift in Sources */,
+				D907E2181AE75A3400B37D56 /* ChatManager.swift in Sources */,
 				D92BF8691AE25B5C00031C63 /* NSData+Base64.m in Sources */,
 				D92BF8821AE25B5C00031C63 /* PushSDK.swift in Sources */,
 				D92BF86A1AE25B5C00031C63 /* NSData+CommonCrypto.m in Sources */,

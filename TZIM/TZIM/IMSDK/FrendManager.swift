@@ -13,11 +13,22 @@ protocol FrendManagerProtocol {
 }
 
 class FrendManager: NSObject, FrendManagerProtocol {
+    
     func addFrend(frend: FrendModel) {
         var daoHelper = DaoHelper()
         if daoHelper.openDB() {
             daoHelper.addFrend2DB(frend)
             daoHelper.closeDB()
         }
+    }
+    
+    func getAllMyContacts() -> NSArray {
+        var retArray = NSArray()
+        var daoHelper = DaoHelper()
+        if daoHelper.openDB() {
+            retArray = daoHelper.selectAllContacts()
+            daoHelper.closeDB()
+        }
+        return retArray
     }
 }

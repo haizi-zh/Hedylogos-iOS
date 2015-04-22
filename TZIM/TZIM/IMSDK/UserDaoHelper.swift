@@ -30,6 +30,13 @@ protocol UserDaoProtocol {
     :returns:
     */
     func addFrend2DB(frend: FrendModel) -> Bool
+    
+    /**
+    获取所有的是我的好友的列表
+    :returns:
+    */
+    func selectAllContacts() -> NSArray
+
 }
 
 class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
@@ -62,5 +69,36 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
         dataBase.executeUpdate(sql, withArgumentsInArray: array as [AnyObject])
         return true
     }
+    
+    /**
+    获取所有的是我的好友的列表
+    :returns:
+    */
+    func selectAllContacts() -> NSArray {
+        var retArray = NSMutableArray()
+        var sql = "select * from \(frendTableName) where Type = ?"
+        var rs = dataBase.executeQuery(sql, withArgumentsInArray: [1])
+        if (rs != nil) {
+            while rs.next() {
+                var frend = FrendModel()
+                frend.userId = Int(rs.intForColumn("UserId"))
+                frend.nickName = rs.stringForColumn("NickName")
+                frend.avatar = rs.stringForColumn("Avatar")
+                frend.avatarSmall = rs.stringForColumn("AvatarSmall")
+                frend.signature = rs.stringForColumn("Signature")
+                frend.sex = Int(rs.intForColumn("Sex"))
+                frend.type = Int(rs.intForColumn("Type"))
+                frend.memo = rs.stringForColumn("memo")
+                retArray.addObject(frend)
+            }
+        }
+        
+        return retArray
+    }
+    
+    
+    
+    
+    
     
 }

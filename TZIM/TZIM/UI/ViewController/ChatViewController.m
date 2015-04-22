@@ -41,34 +41,34 @@ static NSString *messageCellIdentifier = @"messageCell";
     [imClientManager addMessageDelegate:self];
     
      keyboardIsShow = NO;
-    [self.view setFrame:[[UIScreen mainScreen] bounds]];
     _bubbleTable.bubbleDataSource = self;
     _bubbleTable.showAvatars = YES;
-  //  _bubbleTable.snapInterval = 120;
-
+    
     if (!_chatDataSource) {
         _chatDataSource = [[NSMutableArray alloc]init];
     }
+    
+    NSLog(@"开始加载聊天数据");
+    NSArray *chatlogArray = [imClientManager.chatManager selectChatMessageList:_userID untilLocalId:MAXFLOAT messageCount:100];
+    NSLog(@"结束加载聊天数据");
+
     _messageToSend.layer.cornerRadius = 3.0f;
     _messageToSend.delegate = self;
-    NSMutableArray *chatlogArray;
-    for (NSDictionary *dic in chatlogArray) {
-        NSBubbleData *chatData;
-        if ([[dic objectForKey:@"chatType"] isEqualToString:@"receiver"]) {
-            NSDate *chatdate = [NSDate dateWithTimeIntervalSince1970:[[dic objectForKey:@"chatDate"] doubleValue]-8*3600];
 
-            chatData = [[NSBubbleData alloc] initWithText:[dic objectForKey:@"detail"] date:chatdate type:BubbleTypeSomeoneElse];
-            chatData.avatar = _otherImage;
-
+    for (BaseMessage *message in chatlogArray) {
+        NSBubbleData *bubbleData;
+        NSLog(@"%d", message.localId);
+        if (message.sendType == -1) {
+            bubbleData = [[NSBubbleData alloc] initWithText:message.message date:[NSDate dateWithTimeIntervalSince1970:1429684002] type:BubbleTypeSomeoneElse];
         } else {
-            NSDate *chatdate = [NSDate dateWithTimeIntervalSince1970:[[dic objectForKey:@"chatDate"] doubleValue]-8*3600];
-            
-            chatData = [[NSBubbleData alloc] initWithText:[dic objectForKey:@"detail"] date:chatdate type:BubbleTypeMine];
-            chatData.avatar = _myImage;
+            bubbleData = [[NSBubbleData alloc] initWithText:message.message date:[NSDate dateWithTimeIntervalSince1970:1429684002] type:BubbleTypeMine];
         }
-        
-        [_chatDataSource addObject:chatData];
+        bubbleData.avatar = _otherImage;
+        [_chatDataSource addObject:bubbleData];
     }
+    [_bubbleTable reloadData];
+//    [_bubbleTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_chatDataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    [_bubbleTable scrollBubbleViewToBottomAnimated:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -76,7 +76,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
     self.navigationItem.title = _chatWith;
-    [super viewWillAppear:animated];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillHide :) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillShow :) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatView:) name:@"updateChatView" object:nil];
@@ -86,21 +86,11 @@ static NSString *messageCellIdentifier = @"messageCell";
 {
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
-    [super viewWillAppear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateChatView" object:nil];
     
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    if (_chatDataSource.count>0) {
-        if ((int)[_chatDataSource objectAtIndex:(_chatDataSource.count-1)] > 380) {
-            [self.bubbleTable scrollBubbleViewToBottomAnimated:NO];
-        }
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -233,10 +223,11 @@ static NSString *messageCellIdentifier = @"messageCell";
     NSLog(@"%lf", [[NSDate date] timeIntervalSince1970]);
     BaseMessage *chatMsg = [[BaseMessage alloc] initWithTLocalId:1000 tServerId:10001 tStatus:1 tCreateTime:[[NSDate date] timeIntervalSince1970] tSendType:1];
     chatMsg.message = _messageToSend.text;
+    chatMsg.sendType = 1;
     
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     [imClientManager addMessageDelegate:self];
-    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver:[NSString stringWithFormat:@"%d", _userID] isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
+    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: _userID isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
         if (isSuccess) {
             NSLog(@"hello world");
         }

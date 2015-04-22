@@ -35,8 +35,15 @@ class ChatConversationManager: NSObject {
             conversationList = daoHelper.getAllConversationList() as! NSMutableArray
             daoHelper.closeDB()
         }
-        
+        fillConversationWithUserInfo()
         NSLog("****结束获取会话列表*****")
+    }
+    
+    /**
+    将会话填充上用户属性
+    */
+    func fillConversationWithUserInfo() {
+        
     }
     
     /**

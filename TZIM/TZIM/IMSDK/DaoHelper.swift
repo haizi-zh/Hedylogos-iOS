@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DaoHelper:NSObject, chatDaoProtocol, UserDaoProtocol, ConversationDaoProtocol {
+public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationDaoProtocol {
     private let db: FMDatabase
     private let queue: FMDatabaseQueue
     
@@ -32,6 +32,13 @@ class DaoHelper:NSObject, chatDaoProtocol, UserDaoProtocol, ConversationDaoProto
         super.init()
     }
     
+    /**
+    测试的时候获取 database
+    */
+    func getDB4Test()-> FMDatabase {
+        return db
+    }
+    
     func openDB() -> Bool {
         return db.open()
     }
@@ -40,6 +47,7 @@ class DaoHelper:NSObject, chatDaoProtocol, UserDaoProtocol, ConversationDaoProto
         return db.close()
     }
     
+    //MARK:ChatMessageDaoHelperProtocol
     func createChatTable(tableName: String) -> Bool {
         return chatMessageDaoHelper.createChatTable(tableName)
     }
@@ -48,12 +56,16 @@ class DaoHelper:NSObject, chatDaoProtocol, UserDaoProtocol, ConversationDaoProto
         return metaDataDaoHelper.createAudioMessageTable(tableName)
     }
     
-    func updateChatMessageDataWithName(tableName: String, message:BaseMessage) -> Bool {
-        return chatMessageDaoHelper.updateChatMessageDataWithName(tableName, message:message)
+    func insertChatMessage(tableName: String, message:BaseMessage) -> Bool {
+        return chatMessageDaoHelper.insertChatMessage(tableName, message:message)
     }
     
     func updateMessageServerId(tableName: String, localId:Int, serverId: Int) -> Bool {
         return chatMessageDaoHelper.updateMessageServerId(tableName, localId: localId, serverId: serverId)
+    }
+    
+    func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray {
+        return chatMessageDaoHelper.selectChatMessageList(fromTable, untilLocalId: untilLocalId, messageCount: messageCount)
     }
     
     //MARK:UserDaoProtocol
@@ -67,6 +79,10 @@ class DaoHelper:NSObject, chatDaoProtocol, UserDaoProtocol, ConversationDaoProto
     
     func addFrend2DB(frend: FrendModel) -> Bool {
         return userDaoHelper.addFrend2DB(frend)
+    }
+    
+    func selectAllContacts() -> NSArray {
+        return userDaoHelper.selectAllContacts()
     }
     
     //MARK: ConversationDaoProtocol 

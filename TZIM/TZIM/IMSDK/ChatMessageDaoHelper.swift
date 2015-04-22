@@ -10,8 +10,17 @@ import UIKit
 
 protocol ChatMessageDaoHelperProtocol{
     func createChatTable(tableName: String) -> Bool
-    func updateChatMessageDataWithName(tableName: String, message:BaseMessage) -> Bool
-    func updateMessageServerId(tableName: String, localId:Int, serverId: Int) -> Bool 
+    func insertChatMessage(tableName: String, message:BaseMessage) -> Bool
+    func updateMessageServerId(tableName: String, localId:Int, serverId: Int) -> Bool
+    
+    /**
+    按条件获取聊天列表
+    :param: fromTable    获取聊天信息的表
+    :param: untilLocalId 获取到哪条localid
+    :param: messageCount 需要获取的数量
+    :returns: 获取到的聊天信息
+    */
+    func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray 
 }
 
 class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
@@ -48,7 +57,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :param: table 表明
     :returns: 更新是否成功
     */
-    func updateChatMessageDataWithName(tableName: String, message:BaseMessage) -> Bool {
+    func insertChatMessage(tableName: String, message:BaseMessage) -> Bool {
         if !super.tableIsExit(tableName) {
             self.createChatTable(tableName)
         }
@@ -84,7 +93,29 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         }
         return false
     }
+    
+    func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray {
+        var retArray = NSMutableArray()
+        var sql = "select * from (select * from \(fromTable) where LocalId < ? order by LocalId desc limit \(messageCount)) order by LocalId"
+        var rs = dataBase.executeQuery(sql, withArgumentsInArray: [untilLocalId, messageCount])
+
+        if (rs != nil) {
+            while rs.next() {
+                var message = BaseMessage()
+                message.message = rs.stringForColumn("Message")
+                message.sendType = Int(rs.intForColumn("SendType"))
+                message.createTime = Int(rs.intForColumn("CreateTime"))
+                message.localId = Int(rs.intForColumn("LocalId"))
+                retArray.addObject(message)
+            }
+        }
+        return retArray
+    }
 }
+
+
+
+
 
 
 

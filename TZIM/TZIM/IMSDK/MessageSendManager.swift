@@ -29,7 +29,7 @@ class MessageSendManager: MessageManager {
     func asyncSendMessage(message: BaseMessage, receiver: Int, isChatGroup: Bool, completionBlock: (isSuccess: Bool, errorCode: Int)->()) {
         var daoHelper = DaoHelper()
         if daoHelper.openDB() {
-            daoHelper.updateChatMessageDataWithName("chat_\(receiver)", message: message)
+            daoHelper.insertChatMessage("chat_\(receiver)", message: message)
             daoHelper.closeDB()
         }
         var networkManager = NetworkTransportManager()
@@ -50,7 +50,7 @@ class MessageSendManager: MessageManager {
         var daoHelper = DaoHelper()
         if daoHelper.openDB() {
             for message in messageArray {
-                daoHelper.updateChatMessageDataWithName("chat_\(receiver)", message: (message as! BaseMessage))
+                daoHelper.insertChatMessage("chat_\(receiver)", message: (message as! BaseMessage))
             }
             daoHelper.closeDB()
         }

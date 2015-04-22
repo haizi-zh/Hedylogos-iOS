@@ -4,7 +4,6 @@
 //
 //  Created by liangpengshuai on 4/21/15.
 //  Copyright (c) 2015 com.aizou.www. All rights reserved.
-//
 
 import UIKit
 
@@ -34,21 +33,22 @@ protocol ConversationDaoProtocol {
 class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     
     // MARK: private method
-    
     /**
     从会话列表数据库里获取所有的会话列表,按照时间逆序排列
     :returns: 包含所有会话列表
     */
     private func getAllCoversation() -> NSArray {
         var retArray = NSMutableArray()
-        var sql = "select * from \(conversationTableName) order by LastUpdateTime DESC"
+        var sql = "select * from \(conversationTableName) left join \(frendTableName) on \(conversationTableName).UserId = \(frendTableName).UserId order by LastUpdateTime DESC"
         var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
         if rs != nil {
             while rs.next() {
                 var conversation = ChatConversation()
                 conversation.chatterId =  Int(rs.intForColumn("UserId"))
                 conversation.lastUpdateTime = Int(rs.intForColumn("LastUpdateTime"))
-                self.fillConversationWithMessage(conversation);
+                conversation.chatterName =  rs.stringForColumn("NickName")
+                conversation.chatType = Int(rs.intForColumn("Type"))
+                self.fillConversationWithMessage(conversation)
                 retArray .addObject(conversation)
             }
         }
@@ -100,11 +100,6 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         return retArray
     }
    
-    
-    
-    
-    
-    
     
     
     
