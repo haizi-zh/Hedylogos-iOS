@@ -16,6 +16,8 @@ class BaseMessage: NSObject {
     var status: Int = -1
     var createTime: Int = 0
     var sendType: Int = -1
+    var sender: Int = -1
+    var reveiver: Int = -1
     
     init(tLocalId: Int, tServerId: Int, tStatus: Int, tCreateTime: Int, tSendType: Int) {
         localId = tLocalId
@@ -29,11 +31,10 @@ class BaseMessage: NSObject {
     
     func prepareMessage2Send(receiverId: String) ->  NSDictionary{
         var retDic = NSMutableDictionary()
-        retDic.setValue(localId, forKey: "localId")
-        retDic.setValue(type, forKey: "type")
+        retDic.setValue(type, forKey: "msgType")
         retDic.setValue(message, forKey: "contents")
-        retDic.setValue("10001", forKey: "sender")
-        retDic.setValue(receiverId, forKey: "receiver")
+        retDic.setValue(1, forKey: "sender")
+        retDic.setValue(2, forKey: "receiver")
         return retDic
     }
     

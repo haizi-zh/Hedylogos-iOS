@@ -9,7 +9,7 @@
 #import "ChatViewController.h"
 #import "TZIM-swift.h"
 
-@interface ChatViewController () <MessageManagerDelegate>
+@interface ChatViewController () <MessageTransferManagerDelegate>
 {
     float currentKeyboardHeigh;
     BOOL keyboardIsShow;
@@ -49,7 +49,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     }
     
     NSLog(@"开始加载聊天数据");
-    NSArray *chatlogArray = [imClientManager.chatManager selectChatMessageList:_userID untilLocalId:MAXFLOAT messageCount:100];
+    NSArray *chatlogArray = [imClientManager.chatManager selectChatMessageList:_userID untilLocalId:MAXFLOAT messageCount:10];
     NSLog(@"结束加载聊天数据");
 
     _messageToSend.layer.cornerRadius = 3.0f;
@@ -57,7 +57,6 @@ static NSString *messageCellIdentifier = @"messageCell";
 
     for (BaseMessage *message in chatlogArray) {
         NSBubbleData *bubbleData;
-        NSLog(@"%d", message.localId);
         if (message.sendType == -1) {
             bubbleData = [[NSBubbleData alloc] initWithText:message.message date:[NSDate dateWithTimeIntervalSince1970:1429684002] type:BubbleTypeSomeoneElse];
         } else {
@@ -67,7 +66,6 @@ static NSString *messageCellIdentifier = @"messageCell";
         [_chatDataSource addObject:bubbleData];
     }
     [_bubbleTable reloadData];
-//    [_bubbleTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_chatDataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     [_bubbleTable scrollBubbleViewToBottomAnimated:NO];
 }
 
@@ -137,8 +135,6 @@ static NSString *messageCellIdentifier = @"messageCell";
     if (_bubbleTable.contentSize.height > self.view.bounds.size.height) {
         [self.bubbleTable scrollBubbleViewToBottomAnimated:YES];
     }
-
-    
 }
 
 #pragma -UIBubbleTableViewDataSource
@@ -227,7 +223,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     [imClientManager addMessageDelegate:self];
-    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: _userID isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
+    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: 1 isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
         if (isSuccess) {
             NSLog(@"hello world");
         }
@@ -235,8 +231,16 @@ static NSString *messageCellIdentifier = @"messageCell";
     [_messageToSend setText:@""];
 }
 
-- (IBAction)audioRecord:(id)sender {
-    
+- (IBAction)startRecrodAudio:(UIButton *)sender {
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    [imClientManager.chatManager beginRecordAudio];
+}
+- (IBAction)stopRecrodAudio:(UIButton *)sender {
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    [imClientManager.chatManager stopRecordAudio];
+}
+
+- (IBAction)selectImage:(id)sender {
 }
 
 #pragma mark - UITextViewDelegate

@@ -8,6 +8,8 @@
 
 import UIKit
 
+let loginUrl = "http://hedy.zephyre.me/users/login"
+
 let sendMessageURL = "http://hedy.zephyre.me/chats"
 
 protocol NetworkTransportProtocol {
@@ -18,12 +20,12 @@ protocol NetworkTransportProtocol {
     :param: message         消息的格式
     :param: completionBlock 完成后的回掉
     */
-    func asyncSendMessage(message: NSDictionary, completionBlock: (isSuccess: Bool, errorCode: Int) -> ())
+    static func asyncSendMessage(message: NSDictionary, completionBlock: (isSuccess: Bool, errorCode: Int) -> ())
 }
 
-class NetworkTransportManager: NSObject, NetworkTransportProtocol {
+class NetworkTransportAPI: NSObject, NetworkTransportProtocol {
     
-    func asyncSendMessage(message: NSDictionary, completionBlock: (isSuccess: Bool, errorCode: Int) -> ()) {
+    class func asyncSendMessage(message: NSDictionary, completionBlock: (isSuccess: Bool, errorCode: Int) -> ()) {
         let manager = AFHTTPRequestOperationManager()
         
         let requestSerializer = AFJSONRequestSerializer()

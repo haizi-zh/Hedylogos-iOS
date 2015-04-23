@@ -88,6 +88,7 @@ class GetuiPush: GexinSdk {
         var pushSDKManager = PushSDKManager.shareInstance()
         var err: NSError
         return GexinSdk.createSdkWithAppId(kAppId, appKey: kAppKey, appSecret: kAppSecret, appVersion: "1.0.0", delegate:pushSDKManager, error: nil)
+        
     }
     
     deinit {

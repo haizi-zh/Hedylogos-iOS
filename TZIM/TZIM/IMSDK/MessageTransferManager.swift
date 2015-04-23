@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc protocol MessageManagerDelegate {
+@objc protocol MessageTransferManagerDelegate {
     /**
     收到新消息
     :param: message 消息内容
@@ -17,9 +17,9 @@ import UIKit
     func receiveNewMessage(message: BaseMessage, fromUser:String)
 }
 
-class MessageManager: NSObject {
+class MessageTransferManager: NSObject {
     
-    var messageManagerDelegateArray: NSMutableArray = []
+    var messageTransferManagerDelegateArray: NSMutableArray = []
     
     override init() {
         var tableView = UITableView()
@@ -30,18 +30,18 @@ class MessageManager: NSObject {
     添加消息的监听者
     :param: delegate 需要监听消息的
     */
-    func addMessageDelegate(delegate: MessageManagerDelegate) {
-        messageManagerDelegateArray.addObject(delegate)
+    func addMessageDelegate(delegate: MessageTransferManagerDelegate) {
+        messageTransferManagerDelegateArray.addObject(delegate)
     }
     
     /**
     移除消息的监听者
     :param: delegate 不需要监听消息的
     */
-    func removeMessageDelegate(delegate: MessageManagerDelegate) {
-        for tempDelegate in messageManagerDelegateArray {
+    func removeMessageDelegate(delegate: MessageTransferManagerDelegate) {
+        for tempDelegate in messageTransferManagerDelegateArray {
             if delegate === tempDelegate {
-                messageManagerDelegateArray.removeObject(tempDelegate)
+                messageTransferManagerDelegateArray.removeObject(tempDelegate)
                 break
             }
         }

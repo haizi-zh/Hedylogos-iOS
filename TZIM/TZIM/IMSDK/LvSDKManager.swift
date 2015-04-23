@@ -38,7 +38,7 @@ class IMClientManager: NSObject {
         return iMClientManager
     }
     
-    func addMessageDelegate(messageDelegate: MessageManagerDelegate) {
+    func addMessageDelegate(messageDelegate: MessageTransferManagerDelegate) {
         messageReceiveManager.addMessageDelegate(messageDelegate)
         messageSendManager.addMessageDelegate(messageDelegate)
     }

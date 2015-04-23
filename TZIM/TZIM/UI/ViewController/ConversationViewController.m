@@ -9,7 +9,7 @@
 #import "ConversationViewController.h"
 #import "ChatViewController.h"
 
-@interface ConversationViewController () <UITableViewDataSource, UITableViewDelegate, MessageManagerDelegate>
+@interface ConversationViewController () <UITableViewDataSource, UITableViewDelegate, MessageTransferManagerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *dataSource;
 

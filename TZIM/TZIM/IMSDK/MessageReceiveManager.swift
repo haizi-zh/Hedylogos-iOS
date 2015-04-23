@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessageReceiveManager: MessageManager, PushMessageDelegate {
+class MessageReceiveManager: MessageTransferManager, PushMessageDelegate {
     let pushSDKManager = PushSDKManager.shareInstance()
     
     override init() {
@@ -18,10 +18,10 @@ class MessageReceiveManager: MessageManager, PushMessageDelegate {
     
     //MARK: PushMessageDelegate
     func receiveGetuiMessage(message: NSString) {
-        println("receiveGetuiMessage：\(message)")
+        
         var message = BaseMessage()
-        for messageManagerDelegate in super.messageManagerDelegateArray {
-            (messageManagerDelegate as! MessageManagerDelegate).receiveNewMessage(message, fromUser: "")
+        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+            (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage(message, fromUser: "")
         }
     }
 }

@@ -8,6 +8,8 @@
 
 import UIKit
 
+let documentPath: String = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as! String
+
 public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationDaoProtocol {
     private let db: FMDatabase
     private let queue: FMDatabaseQueue
@@ -17,8 +19,7 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
     private let metaDataDaoHelper: MetaDataDaoHelper
     private let userDaoHelper: UserDaoHelper
     private let conversationHelper: ConversationDaoHelper
-    
-    private let documentPath: String = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as! String
+
     
     override init() {
         var dbPath: String = documentPath.stringByAppendingPathComponent("user.sqlite")

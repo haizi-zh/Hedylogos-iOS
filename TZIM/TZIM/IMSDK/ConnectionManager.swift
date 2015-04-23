@@ -30,5 +30,11 @@ class ConnectionManager: NSObject, PushConnectionDelegate {
     
     func getuiDidConnection(clientId: String) {
         println("GexinSdkDidRegisterClient： \(clientId)")
+        
+        NetworkUserAPI.asyncLogin(userId: 1, registionId: clientId) { (isSuccess: Bool, errorCode: Int) -> () in
+            if isSuccess {
+                println("login success")
+            }
+        }
     }
 }

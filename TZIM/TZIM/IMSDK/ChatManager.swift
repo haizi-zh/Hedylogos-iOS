@@ -8,16 +8,33 @@
 
 import UIKit
 
-class ChatManager: NSObject {
+class ChatManager: NSObject, ChatManagerMessageProtocol, ChatManagerAudioProtocol {
     
-    func selectChatMessageList(chatterId:Int, untilLocalId localId: Int, messageCount: Int) -> NSArray {
-        var daoHelper = DaoHelper()
-        var tableName = "chat_\(chatterId)"
-        var retArray = NSArray()
-        if daoHelper.openDB() {
-            retArray = daoHelper.selectChatMessageList(tableName, untilLocalId: localId, messageCount: messageCount)
-            daoHelper.closeDB()
-        }
-        return retArray
+    private let chatManagerMessage: ChatManagerMessage!
+    private let chatManagerAudio: ChatManagerAudio!
+    
+    override init() {
+        chatManagerMessage = ChatManagerMessage()
+        chatManagerAudio = ChatManagerAudio()
+    }
+    
+    func selectChatMessageList(chatterId: Int, untilLocalId localId: Int, messageCount: Int) -> NSArray {
+        return chatManagerMessage.selectChatMessageList(chatterId, untilLocalId: localId, messageCount: messageCount)
+    }
+   
+    func beginRecordAudio() {
+        chatManagerAudio.beginRecordAudio()
+    }
+    
+    func stopRecordAudio() {
+        chatManagerAudio.stopRecordAudio()
+    }
+    
+    func deleteRecordAudio(audioPath: String) {
+        chatManagerAudio.deleteRecordAudio(audioPath)
+    }
+    
+    func deleteRecordAudio() {
+        chatManagerAudio.deleteRecordAudio()
     }
 }

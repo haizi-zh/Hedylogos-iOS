@@ -22,8 +22,8 @@ protocol MessageSendDelegate {
     
 }
 
-class MessageSendManager: MessageManager {
-    var messageManagerDelegate: MessageManagerDelegate?
+class MessageSendManager: MessageTransferManager {
+    var messageManagerDelegate: MessageTransferManagerDelegate?
     
     //MARK: MessageSendDelegate
     func asyncSendMessage(message: BaseMessage, receiver: Int, isChatGroup: Bool, completionBlock: (isSuccess: Bool, errorCode: Int)->()) {
@@ -32,8 +32,7 @@ class MessageSendManager: MessageManager {
             daoHelper.insertChatMessage("chat_\(receiver)", message: message)
             daoHelper.closeDB()
         }
-        var networkManager = NetworkTransportManager()
-        networkManager.asyncSendMessage(message.prepareMessage2Send(String(receiver)), completionBlock: { (isSuccess, errorCode) -> () in
+        NetworkTransportAPI.asyncSendMessage(message.prepareMessage2Send(String(receiver)), completionBlock: { (isSuccess, errorCode) -> () in
             completionBlock(isSuccess: isSuccess, errorCode: errorCode)
         })
     }
