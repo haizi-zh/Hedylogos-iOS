@@ -32,7 +32,8 @@ class MessageSendManager: MessageTransferManager {
             daoHelper.insertChatMessage("chat_\(receiver)", message: message)
             daoHelper.closeDB()
         }
-        NetworkTransportAPI.asyncSendMessage(message.prepareMessage2Send(String(receiver)), completionBlock: { (isSuccess, errorCode) -> () in
+        
+        NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: 1, message: message), completionBlock: { (isSuccess, errorCode) -> () in
             completionBlock(isSuccess: isSuccess, errorCode: errorCode)
         })
     }

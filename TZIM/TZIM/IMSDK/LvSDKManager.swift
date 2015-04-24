@@ -11,6 +11,7 @@ import UIKit
 private let iMClientManager = IMClientManager()
 
 class IMClientManager: NSObject {
+    
     let connectionManager: ConnectionManager
     let messageReceiveManager: MessageReceiveManager
     let messageSendManager: MessageSendManager

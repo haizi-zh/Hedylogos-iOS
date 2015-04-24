@@ -43,7 +43,7 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
     :param: userId   用户名
     :param: password 密码
     */
-    func login(userId:String, password:String) {
+    func login(userId:Int, password:String) {
         gexinSdk = GetuiPush.login()
     }
     
@@ -81,14 +81,13 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
 class GetuiPush: GexinSdk {
     
     class func login() -> GexinSdk {
-        let kAppKey = "vFYAPNNkz9653Akzxe3zd8"
-        let kAppId = "GiZGT1lA4oAcKbQYJR89F2"
-        let kAppSecret = "izddty80Ch5OVlzmnSqYa6"
+        let kAppKey = "2FaPekdgKz9QULo2X4iEq5"
+        let kAppId = "PSrYJWRPN765o211bIkFM3"
+        let kAppSecret = "Zvl1NOaajv5KkByR8iolgA"
         
         var pushSDKManager = PushSDKManager.shareInstance()
-        var err: NSError
-        return GexinSdk.createSdkWithAppId(kAppId, appKey: kAppKey, appSecret: kAppSecret, appVersion: "1.0.0", delegate:pushSDKManager, error: nil)
-        
+        var err: NSErrorPointer = NSErrorPointer()
+        return GexinSdk.createSdkWithAppId(kAppId, appKey: kAppKey, appSecret: kAppSecret, appVersion: "1.0.0", delegate:pushSDKManager, error: err)
     }
     
     deinit {

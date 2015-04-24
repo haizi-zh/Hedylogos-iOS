@@ -9,8 +9,7 @@
 #import "ConversationViewController.h"
 #import "ChatViewController.h"
 
-@interface ConversationViewController () <UITableViewDataSource, UITableViewDelegate, MessageTransferManagerDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@interface ConversationViewController () <MessageTransferManagerDelegate>
 @property (nonatomic, strong) NSArray *dataSource;
 
 @end
@@ -19,12 +18,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.automaticallyAdjustsScrollViewInsets = YES;
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     [imClientManager addMessageDelegate:self];
     [imClientManager.conversationManager updateConversationList];
     _dataSource = imClientManager.conversationManager.conversationList;
-    [_tableView reloadData];
+    [self.tableView reloadData];
     
 }
 
@@ -36,9 +35,9 @@
     
 }
 
-- (void)receiveNewMessage:(BaseMessage * __nonnull)message fromUser:(NSString * __nonnull)fromUser
+- (void)receiveNewMessage:(BaseMessage * __nonnull)message fromUser:(NSInteger)fromUser
 {
-    NSLog(@"收到一条消息");
+    NSLog(@"收到一条消息: %@", message.message);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

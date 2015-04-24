@@ -23,8 +23,6 @@ extension AppDelegate {
             var remoteType = UIRemoteNotificationType.Badge | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Sound
             application.registerForRemoteNotificationTypes(remoteType)
         }
-        var manager = IMClientManager.shareInstance
-        manager.connectionManager.login("", password: "")
         return true
     }
     

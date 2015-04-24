@@ -116,10 +116,10 @@ static NSString *messageCellIdentifier = @"messageCell";
 
 #pragma mark - MessageManagerDelegate
 
-- (void)receiveNewMessage:(BaseMessage *)message fromUser:(NSString *)fromUser
+- (void)receiveNewMessage:(BaseMessage * __nonnull)message fromUser:(NSInteger)fromUser
 {
     NSMutableDictionary *insertToDBdic = [[NSMutableDictionary alloc] init];
-    [insertToDBdic setObject:@"我收到一条新消息" forKey:@"msgdetail"];
+    [insertToDBdic setObject:message.message forKey:@"msgdetail"];
     [insertToDBdic setObject:[NSNumber numberWithInt:1] forKey:@"msgstatus"];
     NSDate *date = [NSDate date];
     NSTimeZone *zone = [NSTimeZone systemTimeZone];
@@ -128,7 +128,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     NSInteger intervalfrom1970 = [localeDate timeIntervalSince1970];
     [insertToDBdic setObject:[NSNumber numberWithDouble:intervalfrom1970] forKey:@"msgdate"];
     
-    NSBubbleData *bubbleData = [NSBubbleData dataWithText:@"我收到一条新消息" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+    NSBubbleData *bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
     bubbleData.avatar = _myImage;
     [_chatDataSource addObject:bubbleData];
     [_bubbleTable reloadData];
@@ -198,6 +198,11 @@ static NSString *messageCellIdentifier = @"messageCell";
 
 - (void)sendMessage
 {
+    [_messageToSend.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (_messageToSend.text.length == 0) {
+        return;
+    }
+
     NSMutableDictionary *insertToDBdic = [[NSMutableDictionary alloc] init];
     [insertToDBdic setObject:_messageToSend.text forKey:@"msgdetail"];
     [insertToDBdic setObject:[NSNumber numberWithInt:1] forKey:@"msgstatus"];
@@ -225,7 +230,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     [imClientManager addMessageDelegate:self];
     [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: 1 isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
         if (isSuccess) {
-            NSLog(@"hello world");
+            NSLog(@"send Message Success");
         }
     }];
     [_messageToSend setText:@""];

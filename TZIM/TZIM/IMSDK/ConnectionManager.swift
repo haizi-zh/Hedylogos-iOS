@@ -8,9 +8,15 @@
 
 import UIKit
 
+protocol ConnectionManagerDelegate {
+    func userDidLogin();
+}
+
 class ConnectionManager: NSObject, PushConnectionDelegate {
     
     let pushSDKManager = PushSDKManager.shareInstance()
+    var connectionManagerDelegate: ConnectionManagerDelegate?
+    private var userId: Int?
     
     override init() {
         super.init()
@@ -22,7 +28,8 @@ class ConnectionManager: NSObject, PushConnectionDelegate {
     :param: userId   用户名
     :param: password 密码
     */
-    func login(userId:String, password:String) {
+    func login(userId:Int, password:String) {
+        self.userId = userId
         pushSDKManager.login(userId, password: password)
     }
 
@@ -31,9 +38,9 @@ class ConnectionManager: NSObject, PushConnectionDelegate {
     func getuiDidConnection(clientId: String) {
         println("GexinSdkDidRegisterClient： \(clientId)")
         
-        NetworkUserAPI.asyncLogin(userId: 1, registionId: clientId) { (isSuccess: Bool, errorCode: Int) -> () in
+        NetworkUserAPI.asyncLogin(userId: self.userId!, registionId: clientId) { (isSuccess: Bool, errorCode: Int) -> () in
             if isSuccess {
-                println("login success")
+                self.connectionManagerDelegate?.userDidLogin()
             }
         }
     }

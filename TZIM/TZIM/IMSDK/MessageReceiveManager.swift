@@ -18,10 +18,15 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate {
     
     //MARK: PushMessageDelegate
     func receiveGetuiMessage(message: NSString) {
-        
-        var message = BaseMessage()
+        println("收到消息：\(message)")
+        var message = MessageManager.messageModelWithMessage(message)
         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-            (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage(message, fromUser: "")
+            (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage(message, fromUser: 2)
+        }
+        var daoHelper = DaoHelper()
+        if daoHelper.openDB() {
+            daoHelper.insertChatMessage("chat_2", message: message)
+            daoHelper.closeDB()
         }
     }
 }

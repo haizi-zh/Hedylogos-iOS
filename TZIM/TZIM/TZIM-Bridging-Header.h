@@ -6,3 +6,4 @@
 #import "AESCrypt.h"
 #import "GexinSdk.h"
 #import "AFNetworking.h"
+#import "ConversationViewController.h"

@@ -35,6 +35,7 @@ class NetworkTransportAPI: NSObject, NetworkTransportProtocol {
         manager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
         manager.requestSerializer.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
+        println("发送消息接口\(message)")
         manager.POST(sendMessageURL, parameters: message, success:
             {
                 (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
