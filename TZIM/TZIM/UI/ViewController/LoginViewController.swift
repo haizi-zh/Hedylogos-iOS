@@ -19,7 +19,6 @@ class LoginViewController: UIViewController, ConnectionManagerDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
 
     @IBAction func login(sender: AnyObject) {
         var manager = IMClientManager.shareInstance
@@ -27,12 +26,14 @@ class LoginViewController: UIViewController, ConnectionManagerDelegate {
         if let userId = userIdTextField.text.toInt() {
             manager.connectionManager.login(userId, password: "")
             manager.connectionManager.connectionManagerDelegate = self
-            
+            SVProgressHUD.show()
+            self.view.endEditing(true)
         }
     }
     
     //MARK: ConnectionManagerDelegate
     func userDidLogin() {
+        SVProgressHUD.dismiss()
         var storyBoard = UIStoryboard(name: "Main", bundle: nil)
         var conversationCtl = storyBoard.instantiateViewControllerWithIdentifier("conversationCtl") as! ConversationViewController
         self.navigationController?.viewControllers[0] = conversationCtl

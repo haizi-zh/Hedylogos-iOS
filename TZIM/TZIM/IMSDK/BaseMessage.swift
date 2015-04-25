@@ -9,25 +9,24 @@
 import UIKit
 
 class BaseMessage: NSObject {
-    var localId: Int = -1
-    var serverId: Int = -1
-    var message: String = ""
-    var type: Int = -1
-    var status: Int = -1
-    var createTime: Int = 0
-    var sendType: Int = -1
+    var localId: Int
+    var serverId: Int
+    var message: String
+    var messageType: IMMessageType
+    var status: IMMessageStatus
+    var createTime: Int
+    var sendType: IMMessageSendType
+    var chatterId: Int
     
-    init(tLocalId: Int, tServerId: Int, tStatus: Int, tCreateTime: Int, tSendType: Int) {
-        localId = tLocalId
-        serverId = tServerId
-        status = tStatus
-        createTime = tCreateTime
-        sendType = tSendType
-        type = 0
-        super.init()
-    }
-
     override init() {
+        localId = -1
+        serverId = -1
+        message = ""
+        messageType = .TextMessageType
+        status = .IMMessageReaded
+        createTime = 0
+        sendType = .MessageSendMine
+        chatterId = -1
         super.init()
     }
 }

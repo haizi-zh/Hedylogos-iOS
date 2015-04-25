@@ -9,7 +9,12 @@
 import UIKit
 
 class LocationMessage: BaseMessage {
-    var longitude: Double?
-    var latitude: Double?
-    var address: String?
+    var longitude: Double = 0
+    var latitude: Double = 0
+    var address: String = ""
+    
+    override init() {
+        super.init()
+        messageType = .TextMessageType
+    }
 }

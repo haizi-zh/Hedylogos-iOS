@@ -14,7 +14,7 @@ import UIKit
     :param: message 消息内容
     :param: fromUser 消息来自哪里
     */
-    func receiveNewMessage(message: BaseMessage, fromUser:Int)
+    optional func receiveNewMessage(message: BaseMessage)
 }
 
 class MessageTransferManager: NSObject {

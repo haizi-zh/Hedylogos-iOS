@@ -33,7 +33,9 @@ class MessageSendManager: MessageTransferManager {
             daoHelper.closeDB()
         }
         
-        NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: 1, message: message), completionBlock: { (isSuccess, errorCode) -> () in
+        var accountManager = AccountManager.shareInstance()
+        
+        NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.userId, message: message), completionBlock: { (isSuccess, errorCode) -> () in
             completionBlock(isSuccess: isSuccess, errorCode: errorCode)
         })
     }

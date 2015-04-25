@@ -16,7 +16,6 @@ class ConnectionManager: NSObject, PushConnectionDelegate {
     
     let pushSDKManager = PushSDKManager.shareInstance()
     var connectionManagerDelegate: ConnectionManagerDelegate?
-    private var userId: Int?
     
     override init() {
         super.init()
@@ -29,19 +28,25 @@ class ConnectionManager: NSObject, PushConnectionDelegate {
     :param: password 密码
     */
     func login(userId:Int, password:String) {
-        self.userId = userId
+        var accountManager = AccountManager.shareInstance()
+        accountManager.userId = userId
         pushSDKManager.login(userId, password: password)
     }
 
     //MARK:PushConnectionDelegate
-    
     func getuiDidConnection(clientId: String) {
         println("GexinSdkDidRegisterClient： \(clientId)")
-        
-        NetworkUserAPI.asyncLogin(userId: self.userId!, registionId: clientId) { (isSuccess: Bool, errorCode: Int) -> () in
+        var accountManager = AccountManager.shareInstance()
+        NetworkUserAPI.asyncLogin(userId: accountManager.userId, registionId: clientId) { (isSuccess: Bool, errorCode: Int) -> () in
             if isSuccess {
                 self.connectionManagerDelegate?.userDidLogin()
             }
         }
     }
 }
+
+
+
+
+
+

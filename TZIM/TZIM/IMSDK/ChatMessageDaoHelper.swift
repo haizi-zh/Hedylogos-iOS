@@ -62,7 +62,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
             self.createChatTable(tableName)
         }
         var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType) values (?,?,?,?,?,?)"
-        var array = [message.serverId, message.status, message.type, message.message, message.createTime, message.sendType]
+        var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue]
         if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
             println("执行 sql 语句：\(sql)")
             return true
@@ -98,20 +98,63 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         var retArray = NSMutableArray()
         var sql = "select * from (select * from \(fromTable) where LocalId < ? order by LocalId desc limit \(messageCount)) order by LocalId"
         var rs = dataBase.executeQuery(sql, withArgumentsInArray: [untilLocalId, messageCount])
-
         if (rs != nil) {
             while rs.next() {
-                var message = BaseMessage()
-                message.message = rs.stringForColumn("Message")
-                message.sendType = Int(rs.intForColumn("SendType"))
-                message.createTime = Int(rs.intForColumn("CreateTime"))
-                message.localId = Int(rs.intForColumn("LocalId"))
-                retArray.addObject(message)
+                if let message = ChatMessageDaoHelper.messageModelWithFMResultSet(rs) {
+                    retArray.addObject(message)
+                }
             }
         }
         return retArray
     }
+    
+    //MARK: class methods
+    
+    /**
+    将数据库的查询结果转为 messagemodel
+    :param: rs 数据库查询结果
+    :returns: 转换的message model
+    */
+    class func messageModelWithFMResultSet(rs: FMResultSet) -> BaseMessage? {
+        var retMessage: BaseMessage?
+        if let messageType = IMMessageType(rawValue: Int(rs.intForColumn("Type"))) {
+            switch messageType {
+            case .TextMessageType:
+                retMessage = TextMessage()
+                
+            case .AudioMessageType:
+                retMessage = AudioMessage()
+                
+            case .ImageMessageType:
+                retMessage = ImageMessage()
+                
+            case .LocationMessageType:
+                retMessage = LocationMessage()
+            
+            default:
+                break
+            }
+            
+            retMessage?.message = rs.stringForColumn("Message")
+            retMessage?.sendType = IMMessageSendType(rawValue: Int(rs.intForColumn("SendType")))!
+            retMessage?.createTime = Int(rs.intForColumn("CreateTime"))
+            retMessage?.localId = Int(rs.intForColumn("LocalId"))
+            retMessage?.serverId = Int(rs.intForColumn("ServerId"))
+            if let status = IMMessageStatus(rawValue: Int(rs.intForColumn("status"))) {
+                retMessage?.status = status
+            }
+        }
+        return retMessage
+    }
 }
+
+
+
+
+
+
+
+
 
 
 

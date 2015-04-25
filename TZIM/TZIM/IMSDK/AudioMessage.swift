@@ -14,6 +14,7 @@ class AudioMessage: BaseMessage {
     
     override init() {
         super.init()
+        messageType = .AudioMessageType
     }
    
 }

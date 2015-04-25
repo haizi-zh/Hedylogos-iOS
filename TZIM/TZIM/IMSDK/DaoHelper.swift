@@ -12,20 +12,24 @@ let documentPath: String = NSSearchPathForDirectoriesInDomains(NSSearchPathDirec
 
 public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationDaoProtocol {
     private let db: FMDatabase
-    private let queue: FMDatabaseQueue
-    
-
     private let chatMessageDaoHelper: ChatMessageDaoHelper
     private let metaDataDaoHelper: MetaDataDaoHelper
     private let userDaoHelper: UserDaoHelper
     private let conversationHelper: ConversationDaoHelper
-
     
     override init() {
-        var dbPath: String = documentPath.stringByAppendingPathComponent("user.sqlite")
-        db = FMDatabase(path: dbPath)
-        queue = FMDatabaseQueue(path: dbPath)
         
+        var userId = AccountManager.shareInstance().userId
+        
+        var dbPath: String = documentPath.stringByAppendingPathComponent("\(userId)/user.sqlite")
+        var fileManager = NSFileManager.defaultManager()
+        
+        if !fileManager.fileExistsAtPath(dbPath) {
+            var directryPath = documentPath.stringByAppendingPathComponent("\(userId)")
+            fileManager.createDirectoryAtPath(directryPath, withIntermediateDirectories: true, attributes: nil, error: nil)
+        }
+        
+        db = FMDatabase(path: dbPath)
         chatMessageDaoHelper = ChatMessageDaoHelper(db: db)
         metaDataDaoHelper = MetaDataDaoHelper(db: db)
         userDaoHelper = UserDaoHelper(db: db)

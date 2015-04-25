@@ -19,17 +19,16 @@ class MessageManager: NSObject {
     */
     class func prepareMessage2Send(#receiverId: Int, senderId: Int, message:BaseMessage) ->  NSDictionary {
         var retDic = NSMutableDictionary()
-        retDic.setValue(message.type, forKey: "msgType")
-        retDic.setValue(100, forKey: "sender")
-        retDic.setValue(1, forKey: "receiver")
+        retDic.setValue(message.messageType.rawValue, forKey: "msgType")
+        retDic.setValue(senderId, forKey: "sender")
+        retDic.setValue(receiverId, forKey: "receiver")
         retDic.setValue(message.message, forKey: "contents")
         
-        switch message {
-        case message as LocationMessage :
+        switch message.messageType {
+        case .LocationMessageType :
             retDic .setValue("locationMessage", forKey: "contents")
-        case message as TextMessage:
+        case .TextMessageType :
             retDic.setValue(message.message, forKey: "contents")
-            
         default:
             break
         }
@@ -41,30 +40,54 @@ class MessageManager: NSObject {
     :param: messageObjc
     :returns:
     */
-    class func messageModelWithMessage(messageObjc: AnyObject) -> BaseMessage {
+    class func messageModelWithMessage(messageObjc: AnyObject) -> BaseMessage? {
         if let messageDic = messageObjc as? NSDictionary {
             return MessageManager.messageModelWithMessageDic(messageDic)
-        } else {
-            var messageModel = BaseMessage()
-            messageModel.message = messageObjc as! String
-            return messageModel
+        } else if let messageStr = messageObjc as? String {
+            return MessageManager.messageModelWithMessageDic(MessageManager.jsonObjcWithString(messageStr))
         }
+        return nil
     }
         
-    private class func messageModelWithMessageDic(messageDic: NSDictionary) -> BaseMessage {
-        var messageModel: BaseMessage
-        let messageType = messageDic.objectForKey("msgType")?.integerValue
-        switch messageType! {
-        case 0 :
-            messageModel = TextMessage()
-        case 1 :
-            messageModel = ImageMessage()
-        default :
-            messageModel = BaseMessage()
+    private class func messageModelWithMessageDic(messageDic: NSDictionary) -> BaseMessage? {
+        var messageModel: BaseMessage?
+        let messageTypeInteger = messageDic.objectForKey("msgType")?.integerValue
+        if let messageType = IMMessageType(rawValue: messageTypeInteger!) {
+            switch messageType {
+            case .TextMessageType :
+                messageModel = TextMessage()
+            case .ImageMessageType :
+                messageModel = ImageMessage()
+            case .AudioMessageType:
+                messageModel = AudioMessage()
+            default :
+                messageModel = BaseMessage()
+            }
+            if let message = messageDic.objectForKey("contents") as? String {
+                messageModel!.message = message
+            }
+            messageModel!.createTime = Int(NSDate().timeIntervalSince1970)
+            if let senderId = messageDic.objectForKey("senderId") as? Int {
+                messageModel!.chatterId = senderId
+            }
         }
-        messageModel.message = messageDic.objectForKey("contents") as! String
-        messageModel.createTime = Int(NSDate().timeIntervalSince1970)
-        messageModel.sendType = 1
         return messageModel
     }
+    
+    private class func jsonObjcWithString(messageStr: String) -> NSDictionary {
+        var mseesageData = messageStr.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
+        var messageJson: AnyObject? = NSJSONSerialization.JSONObjectWithData(mseesageData!, options:.AllowFragments, error: nil)
+        if messageJson is NSDictionary {
+            return messageJson as! NSDictionary
+        } else {
+            return NSDictionary()
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
 }

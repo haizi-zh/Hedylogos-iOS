@@ -15,6 +15,8 @@
 		D908E91F1AE8EADC00C984C7 /* MessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E91E1AE8EADC00C984C7 /* MessageManager.swift */; };
 		D908E9211AE8ECD100C984C7 /* TextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9201AE8ECD100C984C7 /* TextMessage.swift */; };
 		D908E9231AE90E0F00C984C7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9221AE90E0F00C984C7 /* LoginViewController.swift */; };
+		D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9241AE9E33100C984C7 /* AccountManager.swift */; };
+		D921BFA31AEA20830054DD99 /* IMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D921BFA21AEA20830054DD99 /* IMConstants.swift */; };
 		D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8061AE25B2F00031C63 /* AppDelegate.swift */; };
 		D92BF80E1AE25B2F00031C63 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92BF80D1AE25B2F00031C63 /* Images.xcassets */; };
 		D92BF8111AE25B2F00031C63 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D92BF80F1AE25B2F00031C63 /* LaunchScreen.xib */; };
@@ -106,6 +108,8 @@
 		D908E91E1AE8EADC00C984C7 /* MessageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageManager.swift; sourceTree = "<group>"; };
 		D908E9201AE8ECD100C984C7 /* TextMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextMessage.swift; sourceTree = "<group>"; };
 		D908E9221AE90E0F00C984C7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		D908E9241AE9E33100C984C7 /* AccountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		D921BFA21AEA20830054DD99 /* IMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMConstants.swift; sourceTree = "<group>"; };
 		D92BF8011AE25B2F00031C63 /* TZIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TZIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92BF8051AE25B2F00031C63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D92BF8061AE25B2F00031C63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -278,6 +282,18 @@
 			name = ChatConversation;
 			sourceTree = "<group>";
 		};
+		D921BFA41AEA27590054DD99 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D92BF84D1AE25B5C00031C63 /* LocationMessage.swift */,
+				D92BF8341AE25B5B00031C63 /* AudioMessage.swift */,
+				D92BF8361AE25B5B00031C63 /* BaseMessage.swift */,
+				D92BF84C1AE25B5C00031C63 /* ImageMessage.swift */,
+				D908E9201AE8ECD100C984C7 /* TextMessage.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		D92BF7F81AE25B2F00031C63 = {
 			isa = PBXGroup;
 			children = (
@@ -360,6 +376,7 @@
 				D9E6B9EB1AE498CE00C95767 /* ConnectionManager */,
 				D92BF84E1AE25B5C00031C63 /* LvAppDelegate.swift */,
 				D92BF8551AE25B5C00031C63 /* PushSDK.swift */,
+				D921BFA21AEA20830054DD99 /* IMConstants.swift */,
 				D92BF84F1AE25B5C00031C63 /* LvSDKManager.swift */,
 				D907E2161AE75A1600B37D56 /* ChatManager */,
 				D9C932021AE684F7003FEBA3 /* UserManager */,
@@ -554,6 +571,7 @@
 			isa = PBXGroup;
 			children = (
 				D9C932031AE6852C003FEBA3 /* FrendManager.swift */,
+				D908E9241AE9E33100C984C7 /* AccountManager.swift */,
 			);
 			name = UserManager;
 			sourceTree = "<group>";
@@ -562,11 +580,7 @@
 			isa = PBXGroup;
 			children = (
 				D908E91E1AE8EADC00C984C7 /* MessageManager.swift */,
-				D92BF84D1AE25B5C00031C63 /* LocationMessage.swift */,
-				D92BF8341AE25B5B00031C63 /* AudioMessage.swift */,
-				D92BF8361AE25B5B00031C63 /* BaseMessage.swift */,
-				D92BF84C1AE25B5C00031C63 /* ImageMessage.swift */,
-				D908E9201AE8ECD100C984C7 /* TextMessage.swift */,
+				D921BFA41AEA27590054DD99 /* Model */,
 			);
 			name = MessageModel;
 			sourceTree = "<group>";
@@ -829,6 +843,7 @@
 				D92BF87F1AE25B5C00031C63 /* MessageReceiveManager.swift in Sources */,
 				D908E9211AE8ECD100C984C7 /* TextMessage.swift in Sources */,
 				D92BF8841AE25B5C00031C63 /* wav.mm in Sources */,
+				D921BFA31AEA20830054DD99 /* IMConstants.swift in Sources */,
 				D92BF8701AE25B5C00031C63 /* ChatMessageDaoHelper.swift in Sources */,
 				D96393471AE79FE200725E4C /* ChatManagerMessage.swift in Sources */,
 				D9C932041AE6852C003FEBA3 /* FrendManager.swift in Sources */,
@@ -842,6 +857,7 @@
 				D96393431AE7963500725E4C /* AudioDeviceManager.swift in Sources */,
 				D92BF8721AE25B5C00031C63 /* DaoHelper.swift in Sources */,
 				D92BF8A71AE25B6B00031C63 /* UIBubbleTableViewCell.m in Sources */,
+				D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */,
 				D92BF86E1AE25B5C00031C63 /* BaseMessage.swift in Sources */,
 				D9E6B9F11AE4FA5000C95767 /* UserDaoHelper.swift in Sources */,
 				D96393451AE79FB000725E4C /* ChatManagerAudio.swift in Sources */,

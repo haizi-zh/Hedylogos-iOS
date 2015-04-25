@@ -45,6 +45,16 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
     创建 frend 表，frend 表存的是所有好友和非好友的人。利用 type 来区分类型
     :returns:
     */
+    
+    class func createFrendTable(DB: FMDatabase) -> Bool {
+        var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER)"
+        if (DB.executeUpdate(sql, withArgumentsInArray: nil)) {
+            println("执行 sql 语句：\(sql)")
+            return true
+        }
+        return false
+    }
+    
     func createFrendTable() -> Bool {
         var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER)"
         if (super.dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {

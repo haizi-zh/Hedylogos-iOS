@@ -7,3 +7,4 @@
 #import "GexinSdk.h"
 #import "AFNetworking.h"
 #import "ConversationViewController.h"
+#import "SVProgressHUD.h"

@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol ChatConversationDelegate {
+protocol ChatConversationManagerDelegate {
     
     /**
     会话列表需要更新
     
     :param: conversationList 更新后的会话列表
     */
-    func conversationsNeedUpdate(conversationList: NSArray)
+    func conversationListNeedUpdate(conversationList: NSArray)
 }
 
 class ChatConversationManager: NSObject {
@@ -35,15 +35,7 @@ class ChatConversationManager: NSObject {
             conversationList = daoHelper.getAllConversationList() as! NSMutableArray
             daoHelper.closeDB()
         }
-        fillConversationWithUserInfo()
         NSLog("****结束获取会话列表*****")
-    }
-    
-    /**
-    将会话填充上用户属性
-    */
-    func fillConversationWithUserInfo() {
-        
     }
     
     /**
@@ -66,8 +58,11 @@ class ChatConversationManager: NSObject {
         var daoHelper = DaoHelper()
         var time = NSDate().timeIntervalSince1970
         var timeInt: Int = Int(round(time))
-        daoHelper.addConversation(chatterId, lastUpdateTime: timeInt)
-        self.addConversation2ConversationList(chatterId, lastUpdateTime: timeInt)
+        if daoHelper.openDB() {
+            daoHelper.addConversation(chatterId, lastUpdateTime: timeInt)
+            daoHelper.closeDB()
+            self.addConversation2ConversationList(chatterId, lastUpdateTime: timeInt)
+        }
     }
     
     /**
@@ -82,7 +77,14 @@ class ChatConversationManager: NSObject {
         conversationList.addObject(conversation)
     }
     
-    
-    
-   
 }
+
+
+
+
+
+
+
+
+
+

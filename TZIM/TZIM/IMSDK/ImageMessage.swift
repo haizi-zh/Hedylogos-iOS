@@ -12,4 +12,9 @@ class ImageMessage: BaseMessage {
     var imageHight: Int?
     var imageWidth: Int?
     var imageRatio: Float?
+    
+    override init() {
+        super.init()
+        messageType = .ImageMessageType
+    }
 }

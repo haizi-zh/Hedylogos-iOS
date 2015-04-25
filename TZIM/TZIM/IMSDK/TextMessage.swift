@@ -9,5 +9,10 @@
 import UIKit
 
 class TextMessage: BaseMessage {
+    
+    override init() {
+        
+        super.init()
+    }
    
 }

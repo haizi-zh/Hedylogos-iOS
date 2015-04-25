@@ -57,7 +57,7 @@ static NSString *messageCellIdentifier = @"messageCell";
 
     for (BaseMessage *message in chatlogArray) {
         NSBubbleData *bubbleData;
-        if (message.sendType == -1) {
+        if (message.sendType == 1) {
             bubbleData = [[NSBubbleData alloc] initWithText:message.message date:[NSDate dateWithTimeIntervalSince1970:1429684002] type:BubbleTypeSomeoneElse];
         } else {
             bubbleData = [[NSBubbleData alloc] initWithText:message.message date:[NSDate dateWithTimeIntervalSince1970:1429684002] type:BubbleTypeMine];
@@ -116,7 +116,7 @@ static NSString *messageCellIdentifier = @"messageCell";
 
 #pragma mark - MessageManagerDelegate
 
-- (void)receiveNewMessage:(BaseMessage * __nonnull)message fromUser:(NSInteger)fromUser
+- (void)receiveNewMessage:(BaseMessage * __nonnull)message
 {
     NSMutableDictionary *insertToDBdic = [[NSMutableDictionary alloc] init];
     [insertToDBdic setObject:message.message forKey:@"msgdetail"];
@@ -128,7 +128,12 @@ static NSString *messageCellIdentifier = @"messageCell";
     NSInteger intervalfrom1970 = [localeDate timeIntervalSince1970];
     [insertToDBdic setObject:[NSNumber numberWithDouble:intervalfrom1970] forKey:@"msgdate"];
     
-    NSBubbleData *bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+    NSBubbleData *bubbleData;
+    if (message.sendType == IMMessageSendTypeMessageSendMine) {
+        bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+    } else {
+        bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+    }
     bubbleData.avatar = _myImage;
     [_chatDataSource addObject:bubbleData];
     [_bubbleTable reloadData];
@@ -222,13 +227,15 @@ static NSString *messageCellIdentifier = @"messageCell";
     }
     
     NSLog(@"%lf", [[NSDate date] timeIntervalSince1970]);
-    BaseMessage *chatMsg = [[BaseMessage alloc] initWithTLocalId:1000 tServerId:10001 tStatus:1 tCreateTime:[[NSDate date] timeIntervalSince1970] tSendType:1];
+    BaseMessage *chatMsg = [[TextMessage alloc] init];
+    chatMsg.createTime = [[NSDate date] timeIntervalSince1970];
+    chatMsg.status = IMMessageStatusIMMessageSending;
     chatMsg.message = _messageToSend.text;
-    chatMsg.sendType = 1;
+    chatMsg.sendType = IMMessageSendTypeMessageSendMine;
     
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     [imClientManager addMessageDelegate:self];
-    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: 1 isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
+    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: _userID isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
         if (isSuccess) {
             NSLog(@"send Message Success");
         }

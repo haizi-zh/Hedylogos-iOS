@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PushMessageDelegate {
-    func receiveGetuiMessage(message: NSString)
+    func receivePushMessage(message: NSString)
 }
 
 protocol PushConnectionDelegate {
@@ -66,7 +66,7 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         var length = payload?.length
         var bytes = payload?.bytes
         var payloadMsg = NSString(bytes:bytes! , length: length!, encoding: NSUTF8StringEncoding)
-        pushMessageDelegate?.receiveGetuiMessage(payloadMsg!)
+        pushMessageDelegate?.receivePushMessage(payloadMsg!)
     }
     
     /**

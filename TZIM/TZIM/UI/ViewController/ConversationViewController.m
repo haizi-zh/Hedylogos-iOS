@@ -24,7 +24,6 @@
     [imClientManager.conversationManager updateConversationList];
     _dataSource = imClientManager.conversationManager.conversationList;
     [self.tableView reloadData];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,9 +34,8 @@
     
 }
 
-- (void)receiveNewMessage:(BaseMessage * __nonnull)message fromUser:(NSInteger)fromUser
+- (void)receiveNewMessage:(BaseMessage * __nonnull)message 
 {
-    NSLog(@"收到一条消息: %@", message.message);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
