@@ -554,7 +554,6 @@
 			isa = PBXGroup;
 			children = (
 				D90840A11AE5F91000FA31C0 /* ChatConversation */,
-				D9C931FF1AE66B4C003FEBA3 /* FrendModel */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -570,6 +569,7 @@
 		D9C932021AE684F7003FEBA3 /* UserManager */ = {
 			isa = PBXGroup;
 			children = (
+				D9C931FF1AE66B4C003FEBA3 /* FrendModel */,
 				D9C932031AE6852C003FEBA3 /* FrendManager.swift */,
 				D908E9241AE9E33100C984C7 /* AccountManager.swift */,
 			);

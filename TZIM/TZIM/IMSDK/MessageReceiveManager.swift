@@ -27,6 +27,12 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate {
     //MARK: private method
     func destributionMessage(message: BaseMessage?) {
         if let message = message {
+            let daoHelper = DaoHelper()
+            if daoHelper.openDB() {
+                var tableName = "chat_\(message.chatterId)"
+                daoHelper.insertChatMessage(tableName, message: message)
+                daoHelper.closeDB()
+            }
             switch message {
             case let textMsg as TextMessage:
                 for messageManagerDelegate in super.messageTransferManagerDelegateArray {
@@ -35,12 +41,6 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate {
                 
             default:
                 break
-            }
-            let daoHelper = DaoHelper()
-            if daoHelper.openDB() {
-                var tableName = "chat_\(message.chatterId)"
-                daoHelper.insertChatMessage(tableName, message: message)
-                daoHelper.closeDB()
             }
         }
     }

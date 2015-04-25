@@ -59,27 +59,39 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     /**
     新建会话列表, 会话的 用户 id
     */
-    func createNewConversation(chatterId: Int) {
-        self.addConversation(chatterId)
+    func createNewConversation(chatterId: Int) -> ChatConversation {
+        var conversation = ChatConversation(chatterId: chatterId)
+        var time = NSDate().timeIntervalSince1970
+        var timeInt: Int = Int(round(time))
+        conversation.lastUpdateTime = timeInt
+        return conversation
     }
     
     /**
      添加一个会话到会话列表里
     :param: chatterId
     */
-    func addConversation(chatterId: Int) {
-        for conversation in conversationList {
-            if (conversation as! ChatConversation).chatterId == chatterId {
+    func addConversation(conversation: ChatConversation) {
+        for exitConversation in conversationList {
+            if (exitConversation as! ChatConversation).chatterId == conversation.chatterId {
                 return
             }
         }
+        
+        //如果这个好友在本地不存在，那么去服务器加载一个好友
+        var frendManager = FrendManager.shareInstance()
+        if !frendManager.frendIsExit(conversation.chatterId) {
+            var frendModel = FrendModel()
+            frendModel.userId = conversation.chatterId
+            frendModel.nickName = "测试用户"
+            frendManager.addFrend(frendModel)
+        }
+
         var daoHelper = DaoHelper()
-        var time = NSDate().timeIntervalSince1970
-        var timeInt: Int = Int(round(time))
         if daoHelper.openDB() {
-            daoHelper.addConversation(chatterId, lastUpdateTime: timeInt)
+            daoHelper.addConversation(conversation)
             daoHelper.closeDB()
-            self.addConversation2ConversationList(chatterId, lastUpdateTime: timeInt)
+            self.addConversation2ConversationList(conversation)
         }
         delegate?.conversationsHaveAdded(conversationList)
     }
@@ -112,12 +124,9 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
 //MARK: private methods
     /**
     添加一个会话到会话列表里
-    :param: userId         会话列表 id
-    :param: lastUpdateTime 最后更新的时间
+    :param: conversation         会话
     */
-    private func addConversation2ConversationList(userId: Int, lastUpdateTime: Int) {
-        var conversation = ChatConversation(chatterId: userId)
-        conversation.lastUpdateTime = lastUpdateTime
+    private func addConversation2ConversationList(conversation: ChatConversation) {
         conversationList.addObject(conversation)
     }
     
@@ -137,7 +146,12 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
                 }
             }
         }
-        createNewConversation(message.chatterId)
+        
+        //如果在所有的已有会话里找不到这条消息的会话，那么新建一个会话并加入到会话列表里
+        var conversation = createNewConversation(message.chatterId)
+        conversation.updateLastLocalMessage(message)
+        conversation.updateLastServerMessage(message)
+        addConversation(conversation)
     }
     
     /**
@@ -172,7 +186,6 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
             }
         }
     }
-    
     
 //MARK: MessageTransferManagerDelegate
     

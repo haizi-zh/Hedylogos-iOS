@@ -95,8 +95,8 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
         return conversationHelper.createConversationsTable()
     }
     
-    func addConversation(userId: Int, lastUpdateTime: Int) {
-        return conversationHelper.addConversation(userId, lastUpdateTime: lastUpdateTime)
+    func addConversation(conversation :ChatConversation) {
+        return conversationHelper.addConversation(conversation)
     }
     
     func getAllConversationList() -> NSArray {

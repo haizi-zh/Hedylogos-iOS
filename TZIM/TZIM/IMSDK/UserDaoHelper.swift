@@ -36,7 +36,7 @@ protocol UserDaoProtocol {
     :returns:
     */
     func selectAllContacts() -> NSArray
-
+    
 }
 
 class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {

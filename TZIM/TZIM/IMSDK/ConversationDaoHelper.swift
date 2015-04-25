@@ -21,7 +21,7 @@ protocol ConversationDaoProtocol {
     :param: userId 会话列表 id
     :param: lastUpdateTime 会话列表最后一次更新的时间
     */
-    func addConversation(userId: Int, lastUpdateTime: Int)
+    func addConversation(conversation :ChatConversation)
     
     /**
     获取所有的聊天会话列表
@@ -61,7 +61,10 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
                 if let chatterName = rs.stringForColumn("NickName") {
                     conversation.chatterName = chatterName
                 }
-                conversation.chatType = IMChatType(rawValue: Int(rs.intForColumn("Type")))!
+                var typeValue  = rs.intForColumn("Type")
+                if let type = IMChatType(rawValue: Int(typeValue)) {
+                    conversation.chatType = type
+                }
                 self.fillConversationWithMessage(conversation)
                 retArray .addObject(conversation)
             }
@@ -114,12 +117,12 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     :param: userId         会话的 chatter ID
     :param: lastUpdateTime 最后一次更新的时间
     */
-    func addConversation(userId: Int, lastUpdateTime: Int) {
+    func addConversation(conversation :ChatConversation) {
         if !tableIsExit(conversationTableName) {
             self.createConversationsTable()
         }
         var sql = "insert into \(conversationTableName) (UserId, LastUpdateTime) values (?,?)"
-        var array = [userId, lastUpdateTime]
+        var array = [conversation.chatterId, conversation.lastUpdateTime]
         if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
             println("执行 sql 语句：\(sql)")
         }

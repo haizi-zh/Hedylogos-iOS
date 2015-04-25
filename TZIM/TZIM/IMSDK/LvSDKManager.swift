@@ -17,7 +17,6 @@ class IMClientManager: NSObject {
     let messageSendManager: MessageSendManager
     let conversationManager: ChatConversationManager
     let pushSDKManager: PushSDKManager
-    let frendManager: FrendManager
     
     override init() {
         connectionManager = ConnectionManager()
@@ -25,7 +24,6 @@ class IMClientManager: NSObject {
         messageSendManager = MessageSendManager()
         pushSDKManager = PushSDKManager()
         conversationManager = ChatConversationManager()
-        frendManager = FrendManager()
         super.init()
         self.addMessageDelegate(conversationManager)
     }

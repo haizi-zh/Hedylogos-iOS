@@ -8,21 +8,38 @@
 
 import UIKit
 
-protocol FrendManagerProtocol {
-    func addFrend(frend: FrendModel)
-}
+let frendManger = FrendManager()
 
-class FrendManager: NSObject, FrendManagerProtocol {
+class FrendManager: NSObject {
     
+    let frendList: NSMutableArray!
+    
+    class func shareInstance() -> FrendManager {
+        return frendManger
+    }
+    
+    override init() {
+        frendList = FrendManager.getAllMyContacts().mutableCopy() as! NSMutableArray
+    }
+    
+    /**
+    添加一个好友
+    :param: frend
+    */
     func addFrend(frend: FrendModel) {
         var daoHelper = DaoHelper()
         if daoHelper.openDB() {
             daoHelper.addFrend2DB(frend)
+            frendList.addObject(frend)
             daoHelper.closeDB()
         }
     }
     
-    func getAllMyContacts() -> NSArray {
+    /**
+    获取所有的好友列表
+    :returns:
+    */
+    private class func getAllMyContacts() -> NSArray {
         var retArray = NSArray()
         var daoHelper = DaoHelper()
         if daoHelper.openDB() {
@@ -30,5 +47,19 @@ class FrendManager: NSObject, FrendManagerProtocol {
             daoHelper.closeDB()
         }
         return retArray
+    }
+    
+    /**
+    用户是否在本地数据里存在
+    :param: userId 查询的用户 id
+    :returns:
+    */
+    func frendIsExit(userId: Int) -> Bool {
+        for model in frendList {
+            if (model as! FrendModel).userId == userId {
+                return true
+            }
+        }
+        return false
     }
 }
