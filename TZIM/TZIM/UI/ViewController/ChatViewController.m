@@ -208,35 +208,18 @@ static NSString *messageCellIdentifier = @"messageCell";
     if (_messageToSend.text.length == 0) {
         return;
     }
-
-    NSMutableDictionary *insertToDBdic = [[NSMutableDictionary alloc] init];
-    [insertToDBdic setObject:_messageToSend.text forKey:@"msgdetail"];
-    [insertToDBdic setObject:[NSNumber numberWithInt:1] forKey:@"msgstatus"];
-    NSDate *date = [NSDate date];
-    NSTimeZone *zone = [NSTimeZone systemTimeZone];
-    NSInteger interval = [zone secondsFromGMTForDate: date];
-    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
-    NSInteger intervalfrom1970 = [localeDate timeIntervalSince1970];
-    [insertToDBdic setObject:[NSNumber numberWithDouble:intervalfrom1970] forKey:@"msgdate"];
-
-    NSBubbleData *bubbleData = [NSBubbleData dataWithText:_messageToSend.text date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-    bubbleData.avatar = _myImage;
-    [_chatDataSource addObject:bubbleData];
-    [_bubbleTable reloadData];
-    if (_bubbleTable.contentSize.height > self.view.bounds.size.height) {
-        [self.bubbleTable scrollBubbleViewToBottomAnimated:YES];
-    }
     
     NSLog(@"%lf", [[NSDate date] timeIntervalSince1970]);
     BaseMessage *chatMsg = [[TextMessage alloc] init];
     chatMsg.createTime = [[NSDate date] timeIntervalSince1970];
     chatMsg.status = IMMessageStatusIMMessageSending;
     chatMsg.message = _messageToSend.text;
+    chatMsg.chatterId = _conversation.chatterId;
     chatMsg.sendType = IMMessageSendTypeMessageSendMine;
     
     IMClientManager *imClientManager = [IMClientManager shareInstance];
 
-    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: _userID isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
+    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: _conversation.chatterId isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
         if (isSuccess) {
             NSLog(@"send Message Success");
         }

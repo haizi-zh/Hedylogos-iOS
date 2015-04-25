@@ -52,9 +52,5 @@ class MessageSendManager: MessageTransferManager {
             }
             daoHelper.closeDB()
         }
-//        var networkManager = NetworkTransportManager()
-//        networkManager.asyncSendMessage(message.prepareMessage2Send(String(receiver)), completionBlock: { (isSuccess, errorCode) -> () in
-//            completionBlock(isSuccess: isSuccess, errorCode: errorCode)
-//        })
     }
 }
