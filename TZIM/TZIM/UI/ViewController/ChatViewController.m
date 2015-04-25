@@ -9,7 +9,7 @@
 #import "ChatViewController.h"
 #import "TZIM-swift.h"
 
-@interface ChatViewController () <MessageTransferManagerDelegate>
+@interface ChatViewController () <ChatConversationDelegate>
 {
     float currentKeyboardHeigh;
     BOOL keyboardIsShow;
@@ -37,19 +37,17 @@ static NSString *messageCellIdentifier = @"messageCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    IMClientManager *imClientManager = [IMClientManager shareInstance];
-    [imClientManager addMessageDelegate:self];
-    
+    _conversation.delegate = self;
      keyboardIsShow = NO;
     _bubbleTable.bubbleDataSource = self;
     _bubbleTable.showAvatars = YES;
     
     if (!_chatDataSource) {
-        _chatDataSource = [[NSMutableArray alloc]init];
+        _chatDataSource = [[NSMutableArray alloc] init];
     }
     
     NSLog(@"开始加载聊天数据");
-    NSArray *chatlogArray = [imClientManager.chatManager selectChatMessageList:_userID untilLocalId:MAXFLOAT messageCount:10];
+    NSArray *chatlogArray = _conversation.chatMessageList;
     NSLog(@"结束加载聊天数据");
 
     _messageToSend.layer.cornerRadius = 3.0f;
@@ -116,32 +114,35 @@ static NSString *messageCellIdentifier = @"messageCell";
 
 #pragma mark - MessageManagerDelegate
 
-- (void)receiveNewMessage:(BaseMessage * __nonnull)message
+- (void)someMessageAddedInConversation:(NSArray * __nonnull)messageChangedList
 {
-    NSMutableDictionary *insertToDBdic = [[NSMutableDictionary alloc] init];
-    [insertToDBdic setObject:message.message forKey:@"msgdetail"];
-    [insertToDBdic setObject:[NSNumber numberWithInt:1] forKey:@"msgstatus"];
-    NSDate *date = [NSDate date];
-    NSTimeZone *zone = [NSTimeZone systemTimeZone];
-    NSInteger interval = [zone secondsFromGMTForDate: date];
-    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
-    NSInteger intervalfrom1970 = [localeDate timeIntervalSince1970];
-    [insertToDBdic setObject:[NSNumber numberWithDouble:intervalfrom1970] forKey:@"msgdate"];
-    
-    NSBubbleData *bubbleData;
-    if (message.sendType == IMMessageSendTypeMessageSendMine) {
-        bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-    } else {
-        bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
-    }
-    bubbleData.avatar = _myImage;
-    [_chatDataSource addObject:bubbleData];
-    [_bubbleTable reloadData];
-    if (_bubbleTable.contentSize.height > self.view.bounds.size.height) {
-        [self.bubbleTable scrollBubbleViewToBottomAnimated:YES];
+    for (BaseMessage *message in messageChangedList) {
+        NSLog(@"ChatViewController receiveNewMessage:%@", message);
+        NSMutableDictionary *insertToDBdic = [[NSMutableDictionary alloc] init];
+        [insertToDBdic setObject:message.message forKey:@"msgdetail"];
+        [insertToDBdic setObject:[NSNumber numberWithInt:1] forKey:@"msgstatus"];
+        NSDate *date = [NSDate date];
+        NSTimeZone *zone = [NSTimeZone systemTimeZone];
+        NSInteger interval = [zone secondsFromGMTForDate: date];
+        NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
+        NSInteger intervalfrom1970 = [localeDate timeIntervalSince1970];
+        [insertToDBdic setObject:[NSNumber numberWithDouble:intervalfrom1970] forKey:@"msgdate"];
+        
+        NSBubbleData *bubbleData;
+        if (message.sendType == IMMessageSendTypeMessageSendMine) {
+            bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        } else {
+            bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        }
+        bubbleData.avatar = _myImage;
+        [_chatDataSource addObject:bubbleData];
+        [_bubbleTable reloadData];
+        if (_bubbleTable.contentSize.height > self.view.bounds.size.height) {
+            [self.bubbleTable scrollBubbleViewToBottomAnimated:YES];
+        }
     }
 }
-
+   
 #pragma -UIBubbleTableViewDataSource
 
 - (NSInteger)rowsForBubbleTable:(UIBubbleTableView *)tableView
@@ -234,7 +235,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     chatMsg.sendType = IMMessageSendTypeMessageSendMine;
     
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-    [imClientManager addMessageDelegate:self];
+
     [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: _userID isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
         if (isSuccess) {
             NSLog(@"send Message Success");
@@ -244,12 +245,10 @@ static NSString *messageCellIdentifier = @"messageCell";
 }
 
 - (IBAction)startRecrodAudio:(UIButton *)sender {
-    IMClientManager *imClientManager = [IMClientManager shareInstance];
-    [imClientManager.chatManager beginRecordAudio];
+    [_conversation.chatManager beginRecordAudio];
 }
 - (IBAction)stopRecrodAudio:(UIButton *)sender {
-    IMClientManager *imClientManager = [IMClientManager shareInstance];
-    [imClientManager.chatManager stopRecordAudio];
+    [_conversation.chatManager stopRecordAudio];
 }
 
 - (IBAction)selectImage:(id)sender {

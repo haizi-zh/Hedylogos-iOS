@@ -10,22 +10,11 @@ import UIKit
 
 protocol MessageSendDelegate {
     
-    /**
-    发送消息
-    
-    :param: message         消息内容
-    :param: receiver        接受者
-    :param: isChatGroup     是否是群聊天
-    :param: completionBlock 发送的回掉
-    */
-    func asyncSendMessage(message: BaseMessage, receiver: Int, isChatGroup: Bool, completionBlock: (isSuccess: Bool, errorCode: Int)->())
-    
 }
 
 class MessageSendManager: MessageTransferManager {
     var messageManagerDelegate: MessageTransferManagerDelegate?
     
-    //MARK: MessageSendDelegate
     func asyncSendMessage(message: BaseMessage, receiver: Int, isChatGroup: Bool, completionBlock: (isSuccess: Bool, errorCode: Int)->()) {
         var daoHelper = DaoHelper()
         if daoHelper.openDB() {
@@ -33,10 +22,17 @@ class MessageSendManager: MessageTransferManager {
             daoHelper.closeDB()
         }
         
+        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+            (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(message)
+        }
         var accountManager = AccountManager.shareInstance()
-        
         NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.userId, message: message), completionBlock: { (isSuccess, errorCode) -> () in
             completionBlock(isSuccess: isSuccess, errorCode: errorCode)
+            if isSuccess {
+                for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+                    (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(message)
+                }
+            }
         })
     }
     

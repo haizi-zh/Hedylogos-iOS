@@ -32,6 +32,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate {
                 for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                     (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
                 }
+                
             default:
                 break
             }

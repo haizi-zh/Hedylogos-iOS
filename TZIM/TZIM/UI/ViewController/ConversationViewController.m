@@ -9,8 +9,8 @@
 #import "ConversationViewController.h"
 #import "ChatViewController.h"
 
-@interface ConversationViewController () <MessageTransferManagerDelegate>
-@property (nonatomic, strong) NSArray *dataSource;
+@interface ConversationViewController () <MessageTransferManagerDelegate, ChatConversationManagerDelegate>
+@property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
 
@@ -21,8 +21,8 @@
     self.automaticallyAdjustsScrollViewInsets = YES;
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     [imClientManager addMessageDelegate:self];
-    [imClientManager.conversationManager updateConversationList];
-    _dataSource = imClientManager.conversationManager.conversationList;
+    imClientManager.conversationManager.delegate = self;
+    _dataSource = [[imClientManager.conversationManager getConversationList] mutableCopy];
     [self.tableView reloadData];
 }
 
@@ -61,13 +61,67 @@
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ChatConversation *conversation = [_dataSource objectAtIndex:indexPath.row];
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    [imClientManager.conversationManager removeConversation:conversation.chatterId];
+}
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ChatViewController *chatCtl = [[ChatViewController alloc] init];
     ChatConversation *conversation = [_dataSource objectAtIndex:indexPath.row];
     chatCtl.userID = conversation.chatterId;
+    chatCtl.conversation = conversation;
     [self.navigationController pushViewController:chatCtl animated:YES];
 }
 
+#pragma mark - ChatConversationManagerDelegate
+- (void)conversationsHaveAdded:(NSArray * __nonnull)conversationList
+{
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    NSLog(@"ChatConversationManagerDelegate - conversationListNeedUpdate");
+    _dataSource = [imClientManager.conversationManager.getConversationList mutableCopy];
+    [self.tableView reloadData];
+}
+
+- (void)conversationsHaveRemoved:(NSArray * __nonnull)conversationList
+{
+    for (ChatConversation *addedConversation in conversationList) {
+        for (ChatConversation *conversation in _dataSource) {
+            if (addedConversation.chatterId == conversation.chatterId) {
+                NSInteger row = [_dataSource indexOfObject:conversation];
+                [_dataSource removeObject:conversation];
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:row inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+        }
+    }
+}
+
+- (void)conversationStatusHasChanged:(ChatConversation * __nonnull)conversation
+{
+    for (ChatConversation *oldConversation in _dataSource) {
+        if (oldConversation.chatterId == conversation.chatterId) {
+            NSInteger index = [_dataSource indexOfObject:oldConversation];
+            [_dataSource replaceObjectAtIndex:index withObject:conversation];
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            return;
+        }
+    }
+}
+
 @end
+
+
+
+
+
+

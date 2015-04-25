@@ -22,6 +22,9 @@
 @property (copy, nonatomic) NSString *otherUserID;
 @property (nonatomic) NSInteger userID;
 
+@property (nonatomic, strong) ChatConversation *conversation;
+
+
 @property (copy, nonatomic) NSString *chatWith;
 
 @end

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ChatConversationDelegate {
+@objc protocol ChatConversationDelegate {
     
     /**
     会话中的消息
@@ -19,7 +19,7 @@ protocol ChatConversationDelegate {
 }
 
 class ChatConversation: NSObject {
-    var chatterId: Int = -1
+    var chatterId: Int
     var chatterName: String = ""
     var lastUpdateTime: Int = 0
     var lastLocalMessage: BaseMessage?
@@ -28,9 +28,14 @@ class ChatConversation: NSObject {
     var chatType: IMChatType
     var delegate: ChatConversationDelegate?
     
-    override init() {
+    let chatManager: ChatManager
+    
+    init(chatterId: Int) {
+        self.chatterId = chatterId
         chatMessageList = NSMutableArray()
         chatType = IMChatType.IMChatSingleType
+        chatManager = ChatManager()
+        chatMessageList = chatManager.selectChatMessageList(chatterId, untilLocalId: Int.max, messageCount: 20).mutableCopy() as! NSMutableArray
         super.init()
     }
     
@@ -50,9 +55,16 @@ class ChatConversation: NSObject {
         lastServerMessage = message
     }
     
-    func addMessage(messageList: NSArray) {
-        
+    func addMessageList(messageList: NSArray) {
+        for message in messageList {
+            chatMessageList .addObject(message)
+        }
         delegate?.someMessageAddedInConversation(messageList)
+    }
+    
+    func addMessage(message: BaseMessage) {
+        chatMessageList.addObject(message)
+        delegate?.someMessageAddedInConversation([message])
     }
     
 }

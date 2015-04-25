@@ -12,9 +12,20 @@ import UIKit
     /**
     收到新消息
     :param: message 消息内容
-    :param: fromUser 消息来自哪里
     */
     optional func receiveNewMessage(message: BaseMessage)
+    
+    /**
+    发送新消息
+    :param: message
+    */
+    optional func sendNewMessage(message: BaseMessage)
+    
+    /**
+    发送的消息已经发送成功
+    :param: message 发送成功的消息
+    */
+    optional func messageHasSended(message: BaseMessage)
 }
 
 class MessageTransferManager: NSObject {
@@ -46,6 +57,5 @@ class MessageTransferManager: NSObject {
             }
         }
     }
-
    
 }

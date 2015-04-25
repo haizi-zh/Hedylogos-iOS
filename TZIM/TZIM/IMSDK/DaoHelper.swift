@@ -103,6 +103,10 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
         return conversationHelper.getAllConversationList()
     }
     
+    func removeConversationfromDB(chatterId: Int) -> Bool {
+        return conversationHelper.removeConversationfromDB(chatterId)
+    }
+    
 }
 
 

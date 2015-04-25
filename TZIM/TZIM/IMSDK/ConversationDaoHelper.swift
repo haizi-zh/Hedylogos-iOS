@@ -28,6 +28,13 @@ protocol ConversationDaoProtocol {
     :returns:
     */
     func getAllConversationList() -> NSArray
+    
+    /**
+    移除一个 conversation
+    :param: chatterId 需要移除的 ID
+    :returns: 移除是否成功
+    */
+    func removeConversationfromDB(chatterId: Int) -> Bool
 }
 
 class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
@@ -49,10 +56,11 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
         if rs != nil {
             while rs.next() {
-                var conversation = ChatConversation()
-                conversation.chatterId =  Int(rs.intForColumn("UserId"))
+                var conversation = ChatConversation(chatterId: Int(rs.intForColumn("UserId")))
                 conversation.lastUpdateTime = Int(rs.intForColumn("LastUpdateTime"))
-                conversation.chatterName =  rs.stringForColumn("NickName")
+                if let chatterName = rs.stringForColumn("NickName") {
+                    conversation.chatterName = chatterName
+                }
                 conversation.chatType = IMChatType(rawValue: Int(rs.intForColumn("Type")))!
                 self.fillConversationWithMessage(conversation)
                 retArray .addObject(conversation)
@@ -126,8 +134,10 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         return retArray
     }
    
-    
-    
+    func removeConversationfromDB(chatterId: Int) -> Bool {
+        var sql = "delete from \(conversationTableName) where userId = ?"
+        return dataBase.executeUpdate(sql, withArgumentsInArray: [chatterId])
+    }
     
     
     
