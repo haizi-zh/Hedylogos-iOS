@@ -56,8 +56,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"conversationCell"];
     }
     ChatConversation *conversation = [_dataSource objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ chatType:%d", conversation.chatterName, conversation.chatType];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", conversation.lastMessage.message];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ chatType:%ld", conversation.chatterName, (long)conversation.chatType];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", conversation.lastLocalMessage.message];
     return cell;
 }
 

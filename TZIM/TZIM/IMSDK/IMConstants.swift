@@ -34,7 +34,6 @@ import UIKit
     case IMMessageReaded = 0
     case IMMessageSending = 1
     case IMMessageFailed = 2
-    case IMMessageUnRead = 3
 }
 
 /**
