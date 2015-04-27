@@ -8,8 +8,14 @@
 
 import UIKit
 
+private let messageReceiveManager = MessageReceiveManager()
+
 class MessageReceiveManager: MessageTransferManager, PushMessageDelegate {
     let pushSDKManager = PushSDKManager.shareInstance()
+    
+    class func shareInstance() -> MessageReceiveManager {
+        return messageReceiveManager
+    }
     
     override init() {
         super.init()

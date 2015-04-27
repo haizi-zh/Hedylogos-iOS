@@ -11,7 +11,7 @@ import UIKit
 protocol ChatMessageDaoHelperProtocol{
     func createChatTable(tableName: String) -> Bool
     func insertChatMessage(tableName: String, message:BaseMessage) -> Bool
-    func updateMessageServerId(tableName: String, localId:Int, serverId: Int) -> Bool
+    func updateMessageInDB(tableName: String, message:BaseMessage) -> Bool 
     
     /**
     按条件获取聊天列表
@@ -65,6 +65,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue]
         if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
             println("执行 sql 语句：\(sql)")
+            message.localId = Int(dataBase.lastInsertRowId())
             return true
         } else {
             return false
@@ -77,13 +78,13 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :param: serverId  需要更新的记录
     :returns: 是否更新成功
     */
-    func updateMessageServerId(tableName: String, localId:Int, serverId: Int) -> Bool {
+    func updateMessageInDB(tableName: String, message:BaseMessage) -> Bool {
         if dataBase.open() {
             if !super.tableIsExit(tableName) {
                 self.createChatTable(tableName)
             }
-            var sql = "update \(tableName) set serverId = ? where localId = ?"
-            if dataBase.executeUpdate(sql, withArgumentsInArray:[serverId, localId]) {
+            var sql = "update \(tableName) set ServerId = ?, Status = ?  where LocalId = ?"
+            if dataBase.executeUpdate(sql, withArgumentsInArray:[message.serverId, message.status.rawValue, message.localId]) {
                 dataBase.close()
                 println("执行 sql 语句：\(sql)")
                 return true
@@ -108,7 +109,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         return retArray
     }
     
-    //MARK: class methods
+//MARK: class methods
     
     /**
     将数据库的查询结果转为 messagemodel

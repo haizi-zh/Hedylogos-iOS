@@ -89,7 +89,6 @@
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     NSLog(@"ChatConversationManagerDelegate - conversationListNeedUpdate");
     _dataSource = [imClientManager.conversationManager.getConversationList mutableCopy];
-    ChatConversation *conversation = [_dataSource objectAtIndex:0];
 
     [self.tableView reloadData];
 }

@@ -65,8 +65,8 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
         return chatMessageDaoHelper.insertChatMessage(tableName, message:message)
     }
     
-    func updateMessageServerId(tableName: String, localId:Int, serverId: Int) -> Bool {
-        return chatMessageDaoHelper.updateMessageServerId(tableName, localId: localId, serverId: serverId)
+    func updateMessageInDB(tableName: String, message:BaseMessage) -> Bool {
+        return chatMessageDaoHelper.updateMessageInDB(tableName, message: message)
     }
     
     func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray {

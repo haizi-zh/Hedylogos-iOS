@@ -15,17 +15,26 @@ import UIKit
     
     :param: messageChangedList
     */
-    func someMessageAddedInConversation(messageChangedList: NSArray)
+    func receiverMessage(message: BaseMessage)
+    
+    /**
+    消息发送完成
+    :param: message   发送完成后的消息
+    :param: errorCode 发送的错误代码
+    */
+    optional func didSendMessage(message: BaseMessage)
 }
 
 class ChatConversation: NSObject {
     var chatterId: Int
     var chatterName: String = ""
     var lastUpdateTime: Int = 0
+    var unReadMsgCount: Int = 0
     var lastLocalMessage: BaseMessage?
     var lastServerMessage: BaseMessage?
     var chatMessageList: NSMutableArray
     var chatType: IMChatType
+    
     var delegate: ChatConversationDelegate?
     
     let chatManager: ChatManager
@@ -37,34 +46,79 @@ class ChatConversation: NSObject {
         chatManager = ChatManager()
         chatMessageList = chatManager.selectChatMessageList(chatterId, untilLocalId: Int.max, messageCount: 20).mutableCopy() as! NSMutableArray
         super.init()
+        updateLastLocalMessage()
+        updateLastServerMessage()
     }
+    
+//MARK: private function
     
     /**
     更新最新一条本地消息
-    :param: message
     */
-    func updateLastLocalMessage(message: BaseMessage) {
-        lastLocalMessage = message
+    private func updateLastLocalMessage() {
+        lastLocalMessage = chatMessageList.lastObject as? BaseMessage
     }
     
     /**
-    更新最后一条与服务器同步的 message
+    更新最后一条与服务器同步的 message, 默认的 serverid 为-1，如果大于0则为与服务器同步的 message
+    */
+    private func updateLastServerMessage() {
+        for var i=chatMessageList.count-1; i>0; i-- {
+            var message = chatMessageList.objectAtIndex(i) as! BaseMessage
+            if message.serverId > 0 {
+                lastServerMessage = message
+                return
+            }
+        }
+    }
+    
+//MARK: public Internal function
+    
+    /**
+    添加收到的消息到消息列表中
+    :param: messageList
+    */
+    func addReceiveMessage(message: BaseMessage) {
+        chatMessageList.addObject(message)
+        updateLastLocalMessage()
+        updateLastServerMessage()
+        delegate?.receiverMessage(message)
+    }
+    
+    /**
+    添加一条发送的消息的发送列表中
     :param: message
     */
-    func updateLastServerMessage(message: BaseMessage) {
-        lastServerMessage = message
-    }
-    
-    func addMessageList(messageList: NSArray) {
-        for message in messageList {
-            chatMessageList .addObject(message)
-        }
-        delegate?.someMessageAddedInConversation(messageList)
-    }
-    
-    func addMessage(message: BaseMessage) {
+    func addSendingMessage(message: BaseMessage) {
+        chatMessageList .addObject(message)
         chatMessageList.addObject(message)
-        delegate?.someMessageAddedInConversation([message])
+        updateLastLocalMessage()
     }
     
+    /**
+    消息发送完成，可能成功可能失败
+    :param: message   发送完后的消息
+    */
+    func messageHaveSended(message: BaseMessage) {
+        for var i=chatMessageList.count-1; i>0; i-- {
+            var tempMessage = chatMessageList.objectAtIndex(i) as! BaseMessage
+            if tempMessage.localId == message.localId {
+                tempMessage.status = message.status
+                tempMessage.serverId = message.serverId
+            }
+        }
+        delegate?.didSendMessage?(message)
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+

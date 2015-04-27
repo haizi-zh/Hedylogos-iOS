@@ -86,7 +86,7 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         }
 
         var serverSql = "select * from chat_\(conversation.chatterId) where status = ? order by LocalId DESC LIMIT 1"
-        var serverRS = dataBase.executeQuery(serverSql, withArgumentsInArray: [IMMessageStatus.IMMessageReaded.rawValue])
+        var serverRS = dataBase.executeQuery(serverSql, withArgumentsInArray: [IMMessageStatus.IMMessageSuccessful.rawValue])
         
         if serverRS != nil {
             while serverRS.next() {

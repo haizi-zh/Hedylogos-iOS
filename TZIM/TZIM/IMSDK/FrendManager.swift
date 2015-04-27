@@ -63,3 +63,9 @@ class FrendManager: NSObject {
         return false
     }
 }
+
+
+
+
+
+

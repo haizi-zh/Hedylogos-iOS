@@ -20,8 +20,8 @@ class IMClientManager: NSObject {
     
     override init() {
         connectionManager = ConnectionManager()
-        messageReceiveManager = MessageReceiveManager()
-        messageSendManager = MessageSendManager()
+        messageReceiveManager = MessageReceiveManager.shareInstance()
+        messageSendManager = MessageSendManager.shareInstance()
         pushSDKManager = PushSDKManager()
         conversationManager = ChatConversationManager()
         super.init()

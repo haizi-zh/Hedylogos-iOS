@@ -132,7 +132,6 @@ class AudioRecordDeviceManager: NSObject, AVAudioRecorderDelegate {
         }
     }
     
-    
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder!, successfully flag: Bool) {
         println("录音结束")
         audioManagerDelegate?.audioRecordEnd()

@@ -23,7 +23,7 @@ class BaseMessage: NSObject {
         serverId = -1
         message = ""
         messageType = .TextMessageType
-        status = .IMMessageReaded
+        status = .IMMessageSuccessful
         createTime = 0
         sendType = .MessageSendMine
         chatterId = -1

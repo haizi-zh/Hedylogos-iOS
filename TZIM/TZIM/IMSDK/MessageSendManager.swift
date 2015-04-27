@@ -12,8 +12,14 @@ protocol MessageSendDelegate {
     
 }
 
+private let messageSendManager = MessageSendManager()
+
 class MessageSendManager: MessageTransferManager {
     var messageManagerDelegate: MessageTransferManagerDelegate?
+    
+    class func shareInstance() -> MessageSendManager {
+        return messageSendManager
+    }
     
     func asyncSendMessage(message: BaseMessage, receiver: Int, isChatGroup: Bool, completionBlock: (isSuccess: Bool, errorCode: Int)->()) {
         var daoHelper = DaoHelper()
@@ -26,12 +32,21 @@ class MessageSendManager: MessageTransferManager {
             (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(message)
         }
         var accountManager = AccountManager.shareInstance()
-        NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.userId, message: message), completionBlock: { (isSuccess, errorCode) -> () in
+        NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.userId, message: message), completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
             completionBlock(isSuccess: isSuccess, errorCode: errorCode)
             if isSuccess {
-                for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                    (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(message)
+                message.status = IMMessageStatus.IMMessageSuccessful
+                if let retMessage = retMessage {
+                    if let serverId = retMessage.objectForKey("msgId") as? Int {
+                        message.serverId = serverId
+                    }
                 }
+            } else {
+                message.status = IMMessageStatus.IMMessageFailed
+            }
+            daoHelper.updateMessageInDB("chat_\(receiver)", message: message)
+            for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+                (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(message)
             }
         })
     }

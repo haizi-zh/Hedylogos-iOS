@@ -12,7 +12,7 @@ let loginUrl = "http://hedy.zephyre.me/users/login"
 
 let sendMessageURL = "http://hedy.zephyre.me/chats"
 
-protocol NetworkTransportProtocol {
+class NetworkTransportAPI: NSObject {
     
     /**
     向服务器发送一条消息
@@ -20,12 +20,7 @@ protocol NetworkTransportProtocol {
     :param: message         消息的格式
     :param: completionBlock 完成后的回掉
     */
-    static func asyncSendMessage(message: NSDictionary, completionBlock: (isSuccess: Bool, errorCode: Int) -> ())
-}
-
-class NetworkTransportAPI: NSObject, NetworkTransportProtocol {
-    
-    class func asyncSendMessage(message: NSDictionary, completionBlock: (isSuccess: Bool, errorCode: Int) -> ()) {
+    class func asyncSendMessage(message: NSDictionary, completionBlock: (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> ()) {
         let manager = AFHTTPRequestOperationManager()
         
         let requestSerializer = AFJSONRequestSerializer()
@@ -39,13 +34,15 @@ class NetworkTransportAPI: NSObject, NetworkTransportProtocol {
         manager.POST(sendMessageURL, parameters: message, success:
             {
                 (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
-                completionBlock(isSuccess: true, errorCode: 200)
+                if let reslutDic = responseObject.objectForKey("result") as? NSDictionary {
+                    completionBlock(isSuccess: true, errorCode: 0, retMessage: reslutDic)
+                }
                 
             })
             {
                 (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 print(error)
-                completionBlock(isSuccess: false, errorCode: 400)
+                completionBlock(isSuccess: false, errorCode: 0, retMessage: nil)
         }
     }
 }

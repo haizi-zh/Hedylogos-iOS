@@ -138,9 +138,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         for conversation in conversationList {
             if let conversation = conversation as? ChatConversation {
                 if conversation.chatterId == message.chatterId {
-                    conversation.addMessage(message)
-                    conversation.updateLastLocalMessage(message)
-                    conversation.updateLastServerMessage(message)
+                    conversation.addReceiveMessage(message)
                     delegate?.conversationStatusHasChanged(conversation)
                     return
                 }
@@ -149,8 +147,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         
         //如果在所有的已有会话里找不到这条消息的会话，那么新建一个会话并加入到会话列表里
         var conversation = createNewConversation(message.chatterId)
-        conversation.updateLastLocalMessage(message)
-        conversation.updateLastServerMessage(message)
+        conversation.addReceiveMessage(message)
         addConversation(conversation)
     }
     
@@ -162,8 +159,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         for conversation in conversationList {
             if let conversation = conversation as? ChatConversation {
                 if conversation.chatterId == message.chatterId {
-                    conversation.addMessage(message)
-                    conversation.updateLastLocalMessage(message)
+                    conversation.addSendingMessage(message)
                     delegate?.conversationStatusHasChanged(conversation)
                     return
                 }
@@ -179,7 +175,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         for conversation in conversationList {
             if let conversation = conversation as? ChatConversation {
                 if conversation.chatterId == message.chatterId {
-                    conversation.updateLastServerMessage(message)
+                    conversation.messageHaveSended(message)
                     delegate?.conversationStatusHasChanged(conversation)
                     return
                 }

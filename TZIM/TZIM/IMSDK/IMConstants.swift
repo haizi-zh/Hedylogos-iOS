@@ -31,7 +31,7 @@ import UIKit
 - IMMessageUnRead: 消息未读
 */
 @objc enum IMMessageStatus: Int {
-    case IMMessageReaded = 0
+    case IMMessageSuccessful = 0
     case IMMessageSending = 1
     case IMMessageFailed = 2
 }

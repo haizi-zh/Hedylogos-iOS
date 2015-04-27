@@ -112,37 +112,34 @@ static NSString *messageCellIdentifier = @"messageCell";
     [_messageToSend resignFirstResponder];
 }
 
-#pragma mark - MessageManagerDelegate
-
-- (void)someMessageAddedInConversation:(NSArray * __nonnull)messageChangedList
+- (void)addMessageToDataSource:(BaseMessage *)message
 {
-    for (BaseMessage *message in messageChangedList) {
-        NSLog(@"ChatViewController receiveNewMessage:%@", message);
-        NSMutableDictionary *insertToDBdic = [[NSMutableDictionary alloc] init];
-        [insertToDBdic setObject:message.message forKey:@"msgdetail"];
-        [insertToDBdic setObject:[NSNumber numberWithInt:1] forKey:@"msgstatus"];
-        NSDate *date = [NSDate date];
-        NSTimeZone *zone = [NSTimeZone systemTimeZone];
-        NSInteger interval = [zone secondsFromGMTForDate: date];
-        NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
-        NSInteger intervalfrom1970 = [localeDate timeIntervalSince1970];
-        [insertToDBdic setObject:[NSNumber numberWithDouble:intervalfrom1970] forKey:@"msgdate"];
-        
-        NSBubbleData *bubbleData;
-        if (message.sendType == IMMessageSendTypeMessageSendMine) {
-            bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-        } else {
-            bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
-        }
-        bubbleData.avatar = _myImage;
-        [_chatDataSource addObject:bubbleData];
-        [_bubbleTable reloadData];
-        if (_bubbleTable.contentSize.height > self.view.bounds.size.height) {
-            [self.bubbleTable scrollBubbleViewToBottomAnimated:YES];
-        }
+    NSBubbleData *bubbleData;
+    if (message.sendType == IMMessageSendTypeMessageSendMine) {
+        bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+    } else {
+        bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
     }
+    bubbleData.avatar = _myImage;
+    [_chatDataSource addObject:bubbleData];
+    [_bubbleTable reloadData];
+    if (_bubbleTable.contentSize.height > self.view.bounds.size.height) {
+        [self.bubbleTable scrollBubbleViewToBottomAnimated:YES];
+    }
+
 }
-   
+
+#pragma mark - MessageManagerDelegate
+- (void)receiverMessage:(BaseMessage* __nonnull)message
+{
+    [self addMessageToDataSource:message];
+}
+
+- (void)didSendMessage:(BaseMessage * __nonnull)message
+{
+    NSLog(@"didSendMessage: %@", message);
+}
+
 #pragma -UIBubbleTableViewDataSource
 
 - (NSInteger)rowsForBubbleTable:(UIBubbleTableView *)tableView
@@ -187,7 +184,6 @@ static NSString *messageCellIdentifier = @"messageCell";
             _textView.frame = frame;
         }];
     }
-
 }
 
 - (void)KeyboardWillHide:(NSNotification*)aNotification
@@ -225,11 +221,13 @@ static NSString *messageCellIdentifier = @"messageCell";
         }
     }];
     [_messageToSend setText:@""];
+    [self addMessageToDataSource:chatMsg];
 }
 
 - (IBAction)startRecrodAudio:(UIButton *)sender {
     [_conversation.chatManager beginRecordAudio];
 }
+
 - (IBAction)stopRecrodAudio:(UIButton *)sender {
     [_conversation.chatManager stopRecordAudio];
 }
