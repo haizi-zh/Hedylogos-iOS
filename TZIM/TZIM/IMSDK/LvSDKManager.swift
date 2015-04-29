@@ -32,7 +32,7 @@ class IMClientManager: NSObject {
         println("IMClientManager deinit")
     }
     
-    class var shareInstance : IMClientManager {
+    class func shareInstance() -> IMClientManager {
         return iMClientManager
     }
     

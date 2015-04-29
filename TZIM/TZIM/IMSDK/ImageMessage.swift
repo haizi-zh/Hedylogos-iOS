@@ -12,6 +12,9 @@ class ImageMessage: BaseMessage {
     var imageHight: Int?
     var imageWidth: Int?
     var imageRatio: Float?
+    var localPath: String?
+    var HDUrl: String?
+    var thumbUrl: String?
     
     override init() {
         super.init()

@@ -29,6 +29,10 @@ class MessageManager: NSObject {
             retDic .setValue("locationMessage", forKey: "contents")
         case .TextMessageType :
             retDic.setValue(message.message, forKey: "contents")
+            
+        case .ImageMessageType :
+            retDic.setValue("image: \(message.localId)", forKey: "contents")
+            
         default:
             break
         }
@@ -48,7 +52,8 @@ class MessageManager: NSObject {
         }
         return nil
     }
-        
+       
+//MARK: private methods
     private class func messageModelWithMessageDic(messageDic: NSDictionary) -> BaseMessage? {
         var messageModel: BaseMessage?
         let messageTypeInteger = messageDic.objectForKey("msgType")?.integerValue
@@ -85,7 +90,7 @@ class MessageManager: NSObject {
     }
     
     
-    
+
     
     
     

@@ -21,7 +21,7 @@ class LoginViewController: UIViewController, ConnectionManagerDelegate {
     }
 
     @IBAction func login(sender: AnyObject) {
-        var manager = IMClientManager.shareInstance
+        var manager = IMClientManager.shareInstance()
         
         if let userId = userIdTextField.text.toInt() {
             manager.connectionManager.login(userId, password: "")
@@ -32,11 +32,17 @@ class LoginViewController: UIViewController, ConnectionManagerDelegate {
     }
     
     //MARK: ConnectionManagerDelegate
-    func userDidLogin() {
+    func userDidLogin(isSuccess: Bool, errorCode: Int) {
+        
         SVProgressHUD.dismiss()
-        var storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        var conversationCtl = storyBoard.instantiateViewControllerWithIdentifier("conversationCtl") as! ConversationViewController
-        self.navigationController?.viewControllers[0] = conversationCtl
+        
+        if isSuccess {
+            var storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            var conversationCtl = storyBoard.instantiateViewControllerWithIdentifier("conversationCtl") as! ConversationViewController
+            self.navigationController?.viewControllers[0] = conversationCtl
+        } else {
+            SVProgressHUD.showErrorWithStatus("登录失败: code :\(errorCode)")
+        }
     }
 }
 

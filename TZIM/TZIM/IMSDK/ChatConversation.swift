@@ -43,7 +43,7 @@ class ChatConversation: NSObject {
         self.chatterId = chatterId
         chatMessageList = NSMutableArray()
         chatType = IMChatType.IMChatSingleType
-        chatManager = ChatManager()
+        chatManager = ChatManager(chatterId: chatterId, chatType: chatType)
         chatMessageList = chatManager.selectChatMessageList(chatterId, untilLocalId: Int.max, messageCount: 20).mutableCopy() as! NSMutableArray
         super.init()
         updateLastLocalMessage()

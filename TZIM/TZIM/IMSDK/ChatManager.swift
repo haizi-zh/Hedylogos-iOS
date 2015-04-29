@@ -13,9 +13,9 @@ class ChatManager: NSObject, ChatManagerMessageProtocol, ChatManagerAudioProtoco
     private let chatManagerMessage: ChatManagerMessage!
     private let chatManagerAudio: ChatManagerAudio!
     
-    override init() {
+    init(chatterId: Int, chatType: IMChatType) {
         chatManagerMessage = ChatManagerMessage()
-        chatManagerAudio = ChatManagerAudio()
+        chatManagerAudio = ChatManagerAudio(tChatterId: chatterId, tChatType: chatType)
     }
     
     func selectChatMessageList(chatterId: Int, untilLocalId localId: Int, messageCount: Int) -> NSArray {

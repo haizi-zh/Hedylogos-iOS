@@ -8,3 +8,5 @@
 #import "AFNetworking.h"
 #import "ConversationViewController.h"
 #import "SVProgressHUD.h"
+#import "QiniuSDK.h"
+#import "VoiceConverter.h"

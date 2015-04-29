@@ -79,6 +79,7 @@
 		D96393431AE7963500725E4C /* AudioDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96393421AE7963500725E4C /* AudioDeviceManager.swift */; };
 		D96393451AE79FB000725E4C /* ChatManagerAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96393441AE79FB000725E4C /* ChatManagerAudio.swift */; };
 		D96393471AE79FE200725E4C /* ChatManagerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96393461AE79FE200725E4C /* ChatManagerMessage.swift */; };
+		D970978B1AEE68B900B9D3AF /* MetadataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D970978A1AEE68B900B9D3AF /* MetadataManager.swift */; };
 		D9C931FD1AE605C6003FEBA3 /* ConversationDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C931FC1AE605C6003FEBA3 /* ConversationDaoHelper.swift */; };
 		D9C932011AE66B66003FEBA3 /* FrendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C932001AE66B66003FEBA3 /* FrendModel.swift */; };
 		D9C932041AE6852C003FEBA3 /* FrendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C932031AE6852C003FEBA3 /* FrendManager.swift */; };
@@ -205,6 +206,7 @@
 		D96393421AE7963500725E4C /* AudioDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioDeviceManager.swift; sourceTree = "<group>"; };
 		D96393441AE79FB000725E4C /* ChatManagerAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatManagerAudio.swift; sourceTree = "<group>"; };
 		D96393461AE79FE200725E4C /* ChatManagerMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatManagerMessage.swift; sourceTree = "<group>"; };
+		D970978A1AEE68B900B9D3AF /* MetadataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataManager.swift; sourceTree = "<group>"; };
 		D9C931FC1AE605C6003FEBA3 /* ConversationDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationDaoHelper.swift; sourceTree = "<group>"; };
 		D9C932001AE66B66003FEBA3 /* FrendModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrendModel.swift; sourceTree = "<group>"; };
 		D9C932031AE6852C003FEBA3 /* FrendManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrendManager.swift; sourceTree = "<group>"; };
@@ -550,6 +552,14 @@
 			name = AudioDeviceManager;
 			sourceTree = "<group>";
 		};
+		D97097891AEE68A600B9D3AF /* MetadataManager */ = {
+			isa = PBXGroup;
+			children = (
+				D970978A1AEE68B900B9D3AF /* MetadataManager.swift */,
+			);
+			name = MetadataManager;
+			sourceTree = "<group>";
+		};
 		D9C931FE1AE66B42003FEBA3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -600,6 +610,7 @@
 		D9E6B9EA1AE498A100C95767 /* MessageManager */ = {
 			isa = PBXGroup;
 			children = (
+				D97097891AEE68A600B9D3AF /* MetadataManager */,
 				D9E6B9E81AE4984800C95767 /* MessageModel */,
 				D92BF8501AE25B5C00031C63 /* MessageTransferManager.swift */,
 				D92BF8511AE25B5C00031C63 /* MessageProtocol.swift */,
@@ -859,6 +870,7 @@
 				D92BF8A71AE25B6B00031C63 /* UIBubbleTableViewCell.m in Sources */,
 				D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */,
 				D92BF86E1AE25B5C00031C63 /* BaseMessage.swift in Sources */,
+				D970978B1AEE68B900B9D3AF /* MetadataManager.swift in Sources */,
 				D9E6B9F11AE4FA5000C95767 /* UserDaoHelper.swift in Sources */,
 				D96393451AE79FB000725E4C /* ChatManagerAudio.swift in Sources */,
 				D907E2181AE75A3400B37D56 /* ChatManager.swift in Sources */,

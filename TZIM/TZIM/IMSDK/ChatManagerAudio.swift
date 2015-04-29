@@ -35,13 +35,17 @@ class ChatManagerAudio: NSObject, ChatManagerAudioProtocol, AudioManagerDelegate
     
     private var audioRecordDeviceManager: AudioRecordDeviceManager!
     private var audioPath : String = ""
+    private let chatterId: Int
+    private let chatType: IMChatType
     
     var timer: NSTimer!
     
     var timeCounter: Float = 0
 
-    override init() {
+    init(tChatterId: Int, tChatType: IMChatType) {
         audioRecordDeviceManager = AudioRecordDeviceManager.shareInstance()
+        chatType = tChatType
+        chatterId = tChatterId
         super.init()
     }
     
@@ -67,7 +71,7 @@ class ChatManagerAudio: NSObject, ChatManagerAudioProtocol, AudioManagerDelegate
     //MARK: ChatManagerAudioProtocol
     func beginRecordAudio() {
         audioRecordDeviceManager.audioManagerDelegate = self
-        audioPath = documentPath.stringByAppendingPathComponent("hello.wav")
+        audioPath = documentPath.stringByAppendingPathComponent("test.wav")
         var audioUrl = NSURL(string: audioPath)
         audioRecordDeviceManager.beginRecordAudio(audioUrl!)
         startTimer()
@@ -94,10 +98,16 @@ class ChatManagerAudio: NSObject, ChatManagerAudioProtocol, AudioManagerDelegate
     func audioRecordEnd() {
         timeCounter = 0
         stopTimer()
+        
+        var imClient = IMClientManager.shareInstance()
+        imClient.messageSendManager.sendAudioMessageWithWavFormat(chatterId, isChatGroup: false, wavAudioPath: audioPath) { (progressValue) -> () in
+            println("上传录音 进度为： \(progressValue)")
+        }
     }
     
     func audioRecordInterrupt() {
         stopTimer()
+        
     }
     
     func audioRecordResume() {

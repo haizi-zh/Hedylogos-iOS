@@ -75,22 +75,18 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     /**
     更新表的 serverId
     :param: tableName 需要更新的表
-    :param: serverId  需要更新的记录
+    :param: message 更新内容
     :returns: 是否更新成功
     */
     func updateMessageInDB(tableName: String, message:BaseMessage) -> Bool {
-        if dataBase.open() {
-            if !super.tableIsExit(tableName) {
-                self.createChatTable(tableName)
-            }
-            var sql = "update \(tableName) set ServerId = ?, Status = ?  where LocalId = ?"
-            if dataBase.executeUpdate(sql, withArgumentsInArray:[message.serverId, message.status.rawValue, message.localId]) {
-                dataBase.close()
-                println("执行 sql 语句：\(sql)")
-                return true
-            }
+        if !super.tableIsExit(tableName) {
+            self.createChatTable(tableName)
+        }
+        var sql = "update \(tableName) set ServerId = ?, Status = ?  where LocalId = ?"
+        if dataBase.executeUpdate(sql, withArgumentsInArray:[message.serverId, message.status.rawValue, message.localId]) {
             dataBase.close()
-            return false
+            println("执行 sql 语句：\(sql)")
+            return true
         }
         return false
     }
@@ -122,12 +118,19 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
             switch messageType {
             case .TextMessageType:
                 retMessage = TextMessage()
+                retMessage?.message = rs.stringForColumn("Message")
                 
             case .AudioMessageType:
                 retMessage = AudioMessage()
                 
             case .ImageMessageType:
                 retMessage = ImageMessage()
+                var contents = rs.stringForColumn("Message")
+                if let contentsData = contents.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
+                    if let contentJson = NSJSONSerialization.JSONObjectWithData(contentsData, options: NSJSONReadingOptions.AllowFragments, error: nil) as? NSDictionary {
+                        (retMessage as! ImageMessage).HDUrl = contentJson.objectForKey("url") as? String
+                    }
+                }
                 
             case .LocationMessageType:
                 retMessage = LocationMessage()
@@ -136,7 +139,6 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
                 break
             }
             
-            retMessage?.message = rs.stringForColumn("Message")
             retMessage?.sendType = IMMessageSendType(rawValue: Int(rs.intForColumn("SendType")))!
             retMessage?.createTime = Int(rs.intForColumn("CreateTime"))
             retMessage?.localId = Int(rs.intForColumn("LocalId"))

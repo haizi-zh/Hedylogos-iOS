@@ -9,7 +9,7 @@
 #import "ChatViewController.h"
 #import "TZIM-swift.h"
 
-@interface ChatViewController () <ChatConversationDelegate>
+@interface ChatViewController () <ChatConversationDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
     float currentKeyboardHeigh;
     BOOL keyboardIsShow;
@@ -137,7 +137,11 @@ static NSString *messageCellIdentifier = @"messageCell";
 
 - (void)didSendMessage:(BaseMessage * __nonnull)message
 {
-    NSLog(@"didSendMessage: %@", message);
+    if (message.status == IMMessageStatusIMMessageFailed) {
+        NSLog(@"didSendMessage: 发送失败");
+    } else {
+        NSLog(@"didSendMessage: 发送成功"); 
+    }
 }
 
 #pragma -UIBubbleTableViewDataSource
@@ -206,22 +210,11 @@ static NSString *messageCellIdentifier = @"messageCell";
     }
     
     NSLog(@"%lf", [[NSDate date] timeIntervalSince1970]);
-    BaseMessage *chatMsg = [[TextMessage alloc] init];
-    chatMsg.createTime = [[NSDate date] timeIntervalSince1970];
-    chatMsg.status = IMMessageStatusIMMessageSending;
-    chatMsg.message = _messageToSend.text;
-    chatMsg.chatterId = _conversation.chatterId;
-    chatMsg.sendType = IMMessageSendTypeMessageSendMine;
-    
+       
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-
-    [imClientManager.messageSendManager asyncSendMessage:chatMsg receiver: _conversation.chatterId isChatGroup:NO completionBlock:^(BOOL isSuccess, NSInteger errorCode) {
-        if (isSuccess) {
-            NSLog(@"send Message Success");
-        }
-    }];
+    BaseMessage *message = [imClientManager.messageSendManager sendTextMessage:_conversation.chatterId isChatGroup:NO message:_messageToSend.text];
     [_messageToSend setText:@""];
-    [self addMessageToDataSource:chatMsg];
+    [self addMessageToDataSource:message];
 }
 
 - (IBAction)startRecrodAudio:(UIButton *)sender {
@@ -230,9 +223,16 @@ static NSString *messageCellIdentifier = @"messageCell";
 
 - (IBAction)stopRecrodAudio:(UIButton *)sender {
     [_conversation.chatManager stopRecordAudio];
+    
+    
 }
 
 - (IBAction)selectImage:(id)sender {
+    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 #pragma mark - UITextViewDelegate
@@ -244,6 +244,20 @@ static NSString *messageCellIdentifier = @"messageCell";
         return NO;
     }
     return YES;
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    
+    UIImage *headerImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    ImageMessage *image = [imClientManager.messageSendManager sendImageMessage:_conversation.chatterId isChatGroup:NO image:headerImage progress:^(float progressValue) {
+        
+    }];
+    
+    NSLog(@"info: %@", info);
+    [self addMessageToDataSource:image];
 }
 
 @end
