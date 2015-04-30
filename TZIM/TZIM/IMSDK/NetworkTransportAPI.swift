@@ -45,4 +45,57 @@ class NetworkTransportAPI: NSObject {
                 completionBlock(isSuccess: false, errorCode: 0, retMessage: nil)
         }
     }
+    
+   
+    /**
+    fetch 消息
+    
+    :param: userId          fetch谁的消息
+    :param: completionBlock fetch 后的回掉
+    */
+    class func asyncFecthMessage(userId: Int, completionBlock: (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> ()) {
+        let manager = AFHTTPRequestOperationManager()
+        
+        println("开始执行 fetch 接口")
+        
+        let requestSerializer = AFJSONRequestSerializer()
+        
+        manager.requestSerializer = requestSerializer
+        
+        manager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
+        manager.requestSerializer.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        var params = ["userId": userId]
+        
+        println("fetch接口,收取用户\(userId) 的未读消息")
+        manager.POST("", parameters: params, success:
+        {
+        (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
+        if let reslutDic = responseObject.objectForKey("result") as? NSArray {
+        completionBlock(isSuccess: true, errorCode: 0, retMessage: reslutDic)
+        }
+            completionBlock(isSuccess: true, errorCode: 0, retMessage: testArray)
+
+        })
+        {
+        (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+        print(error)
+            completionBlock(isSuccess: true, errorCode: 0, retMessage: testArray)
+        }
+    }
 }
+
+let testArray = ["{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(18),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}",
+    
+     "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(19),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}",
+    
+    "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(20),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}",
+
+]
+
+
+
+
+
+
+

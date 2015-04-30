@@ -73,8 +73,8 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
         return chatMessageDaoHelper.selectChatMessageList(fromTable, untilLocalId: untilLocalId, messageCount: messageCount)
     }
     
-    func selectAllLastChatMessageInDB() -> NSArray {
-        return chatMessageDaoHelper.selectAllLastChatMessageInDB()
+    func selectAllLastServerChatMessageInDB() -> NSDictionary {
+        return chatMessageDaoHelper.selectAllLastServerChatMessageInDB()
     }
 
     

@@ -22,7 +22,11 @@ protocol ChatMessageDaoHelperProtocol{
     */
     func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray
     
-    func selectAllLastChatMessageInDB() -> NSArray
+    /**
+    找出所有聊天列表中的最后一条会话
+    :returns:
+    */
+    func selectAllLastServerChatMessageInDB() -> NSDictionary
 }
 
 class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
@@ -45,7 +49,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :returns: 创建是否成功
     */
     func createChatTable(tableName: String) -> Bool {
-        var sql = "create table '\(tableName)' (LocalId INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, ServerId INTEGER, Status int(4), Type int(4), Message TEXT, CreateTime INTEGER, SendType int)"
+        var sql = "create table '\(tableName)' (LocalId INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, ServerId INTEGER, Status int(4), Type int(4), Message TEXT, CreateTime INTEGER, SendType int, ChatterId int)"
         if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
             println("执行 sql 语句：\(sql)")
             return true
@@ -63,8 +67,8 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         if !super.tableIsExit(tableName) {
             self.createChatTable(tableName)
         }
-        var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType) values (?,?,?,?,?,?)"
-        var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue]
+        var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType, ChatterId) values (?,?,?,?,?,?,?)"
+        var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue, message.chatterId]
         if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
             println("执行 sql 语句：\(sql)")
             message.localId = Int(dataBase.lastInsertRowId())
@@ -131,18 +135,17 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     获取所有的聊天列表里的最后一条消息
     :returns:
     */
-    func selectAllLastChatMessageInDB() -> NSArray {
-        var retArray = NSMutableArray()
+    func selectAllLastServerChatMessageInDB() -> NSDictionary {
+        var retDic = NSMutableDictionary()
         var allTables = super.selectAllTableName(keyWord: "chat")
         for tableName in allTables {
             var message = selectLastServerMessage(tableName as! String)
             if let message = message {
-                retArray.addObject([message.chatterId: message.serverId])
+                retDic .setObject(message.serverId, forKey: message.chatterId)
             }
         }
-        return retArray
+        return retDic
     }
-    
     
 //MARK: class methods
     
@@ -177,7 +180,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
             default:
                 break
             }
-            
+            retMessage?.chatterId  = Int(rs.intForColumn("ChatterId"))
             retMessage?.sendType = IMMessageSendType(rawValue: Int(rs.intForColumn("SendType")))!
             retMessage?.createTime = Int(rs.intForColumn("CreateTime"))
             retMessage?.localId = Int(rs.intForColumn("LocalId"))
