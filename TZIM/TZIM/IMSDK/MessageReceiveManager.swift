@@ -13,20 +13,12 @@ private let messageReceiveManager = MessageReceiveManager()
 class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, MessageReceivePoolDelegate {
     let pushSDKManager = PushSDKManager.shareInstance()
     let messagePool = MessageReceivePool.shareInstance()
-    let allLastMessageList: NSMutableDictionary
 
     class func shareInstance() -> MessageReceiveManager {
         return messageReceiveManager
     }
     
     override init() {
-        var daoHelper = DaoHelper()
-        if daoHelper.openDB() {
-            allLastMessageList = daoHelper.selectAllLastServerChatMessageInDB().mutableCopy() as! NSMutableDictionary
-            daoHelper.closeDB()
-        } else {
-            allLastMessageList = NSMutableDictionary()
-        }
         super.init()
         pushSDKManager.pushMessageDelegate = self
         messagePool.delegate = self
@@ -43,6 +35,8 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         var messagePrepate2Distribute = NSMutableArray()
         var messagePrepare2Fetch = NSMutableArray()
         var needFetchMessage = false
+        
+        var allLastMessageList = MessageManager.shareInsatance().allLastMessageList
 
         for message in (messageList as! NSMutableArray) {
             if let message = message as? BaseMessage {
@@ -118,6 +112,8 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     private func dealwithFetchResult(receivedMessages: NSArray?, fetchMessages: NSArray) {
         var messagesPrepare2DistributeArray = NSMutableArray()
         
+        var allLastMessageList = MessageManager.shareInsatance().allLastMessageList
+
         if let receivedMessageArray = receivedMessages {
             messagesPrepare2DistributeArray = receivedMessageArray.mutableCopy() as! NSMutableArray
         } else {

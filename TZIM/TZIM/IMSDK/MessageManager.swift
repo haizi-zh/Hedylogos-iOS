@@ -8,7 +8,36 @@
 
 import UIKit
 
+private let messageManger = MessageManager()
+
 class MessageManager: NSObject {
+    
+    let allLastMessageList: NSMutableDictionary
+    
+    class func shareInsatance() -> MessageManager {
+        return messageManger
+    }
+    
+    override init() {
+        var daoHelper = DaoHelper()
+        if daoHelper.openDB() {
+            allLastMessageList = daoHelper.selectAllLastServerChatMessageInDB().mutableCopy() as! NSMutableDictionary
+            daoHelper.closeDB()
+        } else {
+            allLastMessageList = NSMutableDictionary()
+        }
+        super.init()
+    }
+    
+    func updateLastServerMessage(message: BaseMessage) {
+        if let lastMessage: AnyObject = allLastMessageList.objectForKey(message.chatterId) {
+            if (lastMessage as! Int) < message.serverId {
+                allLastMessageList.setObject(message.serverId, forKey: message.chatterId)
+            }
+        } else {
+            allLastMessageList.setObject(message.serverId, forKey: message.chatterId)
+        }
+    }
    
     /**
     将 MessageModel转化成发送的消息格式

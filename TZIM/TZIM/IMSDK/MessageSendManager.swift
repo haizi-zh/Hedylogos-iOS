@@ -31,6 +31,7 @@ class MessageSendManager: MessageTransferManager {
                 if let retMessage = retMessage {
                     if let serverId = retMessage.objectForKey("msgId") as? Int {
                         message.serverId = serverId
+                        MessageManager.shareInsatance().updateLastServerMessage(message)
                     }
                 }
             } else {

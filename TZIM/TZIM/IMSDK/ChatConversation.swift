@@ -89,7 +89,6 @@ class ChatConversation: NSObject {
     :param: message
     */
     func addSendingMessage(message: BaseMessage) {
-        chatMessageList .addObject(message)
         chatMessageList.addObject(message)
     }
     

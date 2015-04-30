@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 com.aizou.www. All rights reserved.
 //
 
-private let daoHelper = DaoHelper()
-
 import UIKit
 
 let documentPath: String = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as! String
@@ -19,18 +17,12 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
     private let userDaoHelper: UserDaoHelper
     private let conversationHelper: ConversationDaoHelper
     
-    class func shareInsatance () -> DaoHelper {
-        return daoHelper
-    }
-    
     override init() {
         
         var userId = AccountManager.shareInstance().userId
         
         var dbPath: String = documentPath.stringByAppendingPathComponent("\(userId)/user.sqlite")
-        
-        println("dbPaht: \(dbPath)")
-        
+                
         var fileManager = NSFileManager.defaultManager()
         
         if !fileManager.fileExistsAtPath(dbPath) {
