@@ -100,6 +100,8 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                 if let retMessageArray = retMessage {
                     self.dealwithFetchResult(receivedMessages, fetchMessages: retMessageArray)
                 }
+            } else {
+                self.dealwithFetchResult(receivedMessages, fetchMessages: nil)
             }
         })
     }
@@ -109,7 +111,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     :param: receivedMessages
     :param: fetchMessages
     */
-    private func dealwithFetchResult(receivedMessages: NSArray?, fetchMessages: NSArray) {
+    private func dealwithFetchResult(receivedMessages: NSArray?, fetchMessages: NSArray?) {
         var messagesPrepare2DistributeArray = NSMutableArray()
         
         var allLastMessageList = MessageManager.shareInsatance().allLastMessageList
@@ -120,53 +122,54 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
             messagesPrepare2DistributeArray = NSMutableArray()
         }
 
-        for messageDic in fetchMessages {
-            if let message = MessageManager.messageModelWithMessage(messageDic) {
-                message.sendType = IMMessageSendType.MessageSendSomeoneElse
-                
-                if let lastMessageServerId: AnyObject = allLastMessageList.objectForKey(message.chatterId) {
-                    if (message.serverId - (lastMessageServerId as! Int)) >= 1 {
-                        allLastMessageList.setObject(message.serverId, forKey: message.chatterId)
-                        println("消息合法: 带插入的 serverId: \(message.serverId)  最后一条的 serverId: \(lastMessageServerId)")
-                        
-                        var haveAdded = false
-                        for var i = messagesPrepare2DistributeArray.count-1; i>=0; i-- {
-                            var oldMessage = messagesPrepare2DistributeArray.objectAtIndex(i) as! BaseMessage
-                            if (message.serverId == oldMessage.serverId && message.chatterId == oldMessage.chatterId) {
-                                haveAdded = true
-                                println("equail....")
-                                break
-                                
-                            } else if (message.serverId < oldMessage.serverId && message.chatterId == oldMessage.chatterId) {
-                                println("continue....message ServerID:\(message.serverId)  oldMessage.serverId: \(oldMessage.serverId)")
-                                continue
-                                
-                            } else if (message.serverId > oldMessage.serverId && message.chatterId == oldMessage.chatterId) {
-                                messagesPrepare2DistributeArray.insertObject(message, atIndex: i+1)
-                                println("> and insert atIndex \(i+1)")
-                                haveAdded = true
-                                break
+        if let fetchMessages = fetchMessages {
+            for messageDic in fetchMessages {
+                if let message = MessageManager.messageModelWithMessage(messageDic) {
+                    message.sendType = IMMessageSendType.MessageSendSomeoneElse
+                    
+                    if let lastMessageServerId: AnyObject = allLastMessageList.objectForKey(message.chatterId) {
+                        if (message.serverId - (lastMessageServerId as! Int)) >= 1 {
+                            allLastMessageList.setObject(message.serverId, forKey: message.chatterId)
+                            println("消息合法: 带插入的 serverId: \(message.serverId)  最后一条的 serverId: \(lastMessageServerId)")
+                            
+                            var haveAdded = false
+                            for var i = messagesPrepare2DistributeArray.count-1; i>=0; i-- {
+                                var oldMessage = messagesPrepare2DistributeArray.objectAtIndex(i) as! BaseMessage
+                                if (message.serverId == oldMessage.serverId && message.chatterId == oldMessage.chatterId) {
+                                    haveAdded = true
+                                    println("equail....")
+                                    break
+                                    
+                                } else if (message.serverId < oldMessage.serverId && message.chatterId == oldMessage.chatterId) {
+                                    println("continue....message ServerID:\(message.serverId)  oldMessage.serverId: \(oldMessage.serverId)")
+                                    continue
+                                    
+                                } else if (message.serverId > oldMessage.serverId && message.chatterId == oldMessage.chatterId) {
+                                    messagesPrepare2DistributeArray.insertObject(message, atIndex: i+1)
+                                    println("> and insert atIndex \(i+1)")
+                                    haveAdded = true
+                                    break
+                                }
+                            }
+                            if !haveAdded {
+                                messagesPrepare2DistributeArray.insertObject(message, atIndex: 0)
+                                println("not find and insert atIndex \(0)")
+                            }
+                            
+                            
+                        } else {
+                            if oldMessageShould2Distribution(message) {
+                                messagesPrepare2DistributeArray.addObject(message)
                             }
                         }
-                        if !haveAdded {
-                            messagesPrepare2DistributeArray.insertObject(message, atIndex: 0)
-                            println("not find and insert atIndex \(0)")
-                        }
-                        
                         
                     } else {
-                        if oldMessageShould2Distribution(message) {
-                            messagesPrepare2DistributeArray.addObject(message)
-                        }
+                        messagesPrepare2DistributeArray.addObject(message)
+                        allLastMessageList.setObject(message.serverId, forKey: message.chatterId)
                     }
-                    
-                } else {
-                    messagesPrepare2DistributeArray.addObject(message)
-                    allLastMessageList.setObject(message.serverId, forKey: message.chatterId)
                 }
             }
         }
-        
         println("共有\(messagesPrepare2DistributeArray.count)条消息是从 fetch 接口过来的，并且是合法的")
         for message in messagesPrepare2DistributeArray {
             println("fetch后 合法的消息的 message id 为\((message as? BaseMessage)?.serverId)")

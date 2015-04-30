@@ -75,8 +75,10 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         var payloadMsg = NSString(bytes:bytes! , length: length!, encoding: NSUTF8StringEncoding)
         
         if let message = payloadMsg {
-            pushMessageDelegate?.receivePushMessage(message)
+//            pushMessageDelegate?.receivePushMessage(message)
         }
+        
+        testMessageReorder()
 
     }
     
@@ -94,7 +96,7 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
 
         for i in 0...0 {
             var serverId = 21+i
-            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(23),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(473),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
             allMessage.addObject(message)
         }
         

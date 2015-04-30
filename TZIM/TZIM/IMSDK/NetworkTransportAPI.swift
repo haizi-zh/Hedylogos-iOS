@@ -12,6 +12,9 @@ let loginUrl = "http://hedy.zephyre.me/users/login"
 
 let sendMessageURL = "http://hedy.zephyre.me/chats"
 
+let fetchUrl = "http://hedy.zephyre.me/chats/"
+
+
 class NetworkTransportAPI: NSObject {
     
     /**
@@ -67,19 +70,26 @@ class NetworkTransportAPI: NSObject {
         var params = ["userId": userId]
         
         println("fetch接口,收取用户\(userId) 的未读消息")
-        manager.POST("", parameters: params, success:
+        
+        var url = fetchUrl+"\(userId)"
+        
+        manager.GET(url, parameters: params, success:
         {
         (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
         if let reslutDic = responseObject.objectForKey("result") as? NSArray {
         completionBlock(isSuccess: true, errorCode: 0, retMessage: reslutDic)
         }
-            completionBlock(isSuccess: true, errorCode: 0, retMessage: testArray)
+            if let reslutDic = responseObject.objectForKey("result") as? NSArray {
+                completionBlock(isSuccess: true, errorCode: 0, retMessage: reslutDic)
+            } else {
+                completionBlock(isSuccess: false, errorCode: 0, retMessage: nil)
 
+            }
         })
         {
         (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
         print(error)
-            completionBlock(isSuccess: true, errorCode: 0, retMessage: testArray)
+            completionBlock(isSuccess: false, errorCode: 0, retMessage: nil)
         }
     }
 }
