@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 com.aizou.www. All rights reserved.
 //
 
+private let daoHelper = DaoHelper()
+
 import UIKit
 
 let documentPath: String = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as! String
@@ -17,11 +19,18 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
     private let userDaoHelper: UserDaoHelper
     private let conversationHelper: ConversationDaoHelper
     
+    class func shareInsatance () -> DaoHelper {
+        return daoHelper
+    }
+    
     override init() {
         
         var userId = AccountManager.shareInstance().userId
         
         var dbPath: String = documentPath.stringByAppendingPathComponent("\(userId)/user.sqlite")
+        
+        println("dbPaht: \(dbPath)")
+        
         var fileManager = NSFileManager.defaultManager()
         
         if !fileManager.fileExistsAtPath(dbPath) {
@@ -75,6 +84,18 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
     
     func selectAllLastServerChatMessageInDB() -> NSDictionary {
         return chatMessageDaoHelper.selectAllLastServerChatMessageInDB()
+    }
+
+    /**
+    消息在数据库里是否存在
+    
+    :param: tableName 消息所在的表
+    :param: message   消息内容
+    
+    :returns: true：存在     false：不存在
+    */
+    func messageIsExitInTable(tableName: String, message: BaseMessage) -> Bool {
+        return chatMessageDaoHelper.messageIsExitInTable(tableName, message: message)
     }
 
     

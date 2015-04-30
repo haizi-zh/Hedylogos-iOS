@@ -185,7 +185,19 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     :true: 应该
     */
     private func oldMessageShould2Distribution(message: BaseMessage) -> Bool {
-         return false
+        let daoHelper = DaoHelper()
+        if daoHelper.openDB() {
+            var chatTableName = "chat_\(message.chatterId)"
+            if daoHelper.messageIsExitInTable(chatTableName, message: message) {
+                daoHelper.closeDB()
+                return false
+            } else {
+                daoHelper.closeDB()
+                return true
+            }
+
+        }
+        return false
     }
     
     /**

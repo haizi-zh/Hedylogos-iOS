@@ -16,11 +16,6 @@ class BaseDaoHelper: NSObject {
         dataBase = db
         super.init()
     }
-    
-    init(db: FMDatabase, queue:FMDatabaseQueue) {
-        dataBase = db
-        super.init()
-    }
 
     func tableIsExit(tableName: String) -> Bool {
         var sql = "select count(*) as 'count' from sqlite_master where type ='table' and name = ?"

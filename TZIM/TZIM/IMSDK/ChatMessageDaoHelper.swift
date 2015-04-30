@@ -27,6 +27,16 @@ protocol ChatMessageDaoHelperProtocol{
     :returns:
     */
     func selectAllLastServerChatMessageInDB() -> NSDictionary
+    
+    /**
+    消息在数据库里是否存在
+    
+    :param: tableName 消息所在的表
+    :param: message   消息内容
+    
+    :returns: true：存在     false：不存在
+    */
+    func messageIsExitInTable(tableName: String, message: BaseMessage) -> Bool
 }
 
 class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
@@ -116,7 +126,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :param: fromTable
     :returns:
     */
-    func selectLastServerMessage(fromTable:String) -> BaseMessage? {
+    func selectLastServerMessage(fromTable: String) -> BaseMessage? {
         var retArray = NSMutableArray()
         var sql = "select * from \(fromTable) where serverId >= 0 order by LocalId desc limit 1"
         var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
@@ -130,6 +140,24 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         return nil
     }
 
+    /**
+    消息在数据库里是否存在
+    
+    :param: tableName 消息所在的表
+    :param: message   消息内容
+    
+    :returns: true：存在     false：不存在
+    */
+    func messageIsExitInTable(tableName: String, message: BaseMessage) -> Bool {
+        var sql = "select * from \(tableName) where serverId = ?"
+        var rs = dataBase.executeQuery(sql, withArgumentsInArray: [message.serverId])
+        if (rs != nil) {
+            while rs.next() {
+               return true
+            }
+        }
+        return false
+    }
     
     /**
     获取所有的聊天列表里的最后一条消息

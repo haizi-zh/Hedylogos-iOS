@@ -74,7 +74,10 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         var bytes = payload?.bytes
         var payloadMsg = NSString(bytes:bytes! , length: length!, encoding: NSUTF8StringEncoding)
         
-        testMessageReorder()
+        if let message = payloadMsg {
+            pushMessageDelegate?.receivePushMessage(message)
+        }
+
     }
     
     /**
@@ -85,16 +88,13 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         pushConnectionDelegate?.getuiDidConnection(clientId)
     }
     
-    
-    
-    
 //MARK : TEST
     func testMessageReorder() {
         println("新一轮 testMessageReorder")
 
         for i in 0...0 {
-            var serverId = i
-            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(19),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+            var serverId = 21+i
+            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(23),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
             allMessage.addObject(message)
         }
         
@@ -118,7 +118,7 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
 
         timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("receiveMessages"), userInfo: nil, repeats: true)
         
-        anotherTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("anotherReceiveMessages"), userInfo: nil, repeats: true)
+//        anotherTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("anotherReceiveMessages"), userInfo: nil, repeats: true)
 
     }
     
