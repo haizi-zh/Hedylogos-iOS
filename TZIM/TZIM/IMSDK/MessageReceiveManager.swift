@@ -10,28 +10,46 @@ import UIKit
 
 private let messageReceiveManager = MessageReceiveManager()
 
-class MessageReceiveManager: MessageTransferManager, PushMessageDelegate {
+class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, MessageReceivePoolDelegate {
     let pushSDKManager = PushSDKManager.shareInstance()
-    
+    let messagePool = MessageReceivePool.shareInstance()
+    let allLastMessageList: NSMutableArray
+
     class func shareInstance() -> MessageReceiveManager {
         return messageReceiveManager
     }
     
     override init() {
+        var daoHelper = DaoHelper()
+        if daoHelper.openDB() {
+            allLastMessageList = daoHelper.selectAllLastChatMessageInDB().mutableCopy() as! NSMutableArray
+            daoHelper.closeDB()
+        } else {
+            allLastMessageList = NSMutableArray()
+        }
         super.init()
         pushSDKManager.pushMessageDelegate = self
+        messagePool.delegate = self
     }
     
-    //MARK: PushMessageDelegate
-    func receivePushMessage(message: NSString) {
-        println("收到消息：\(message)")
-        var message = MessageManager.messageModelWithMessage(message)
-        message?.sendType = .MessageSendSomeoneElse
-        destributionMessage(message)
+//MARK: private method
+    
+    private func checkMessages(messageList: NSDictionary) {
+        for messageList in messageList.allValues {
+            for message in (messageList as! NSMutableArray) {
+                
+                
+                
+                
+            }
+        }
     }
     
-    //MARK: private method
-    func destributionMessage(message: BaseMessage?) {
+    /**
+    将合法的消息分发出去
+    :param: message
+    */
+    private func distributionMessage(message: BaseMessage?) {
         if let message = message {
             let daoHelper = DaoHelper()
             if daoHelper.openDB() {
@@ -50,4 +68,51 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate {
             }
         }
     }
+    
+    
+    
+//MARK: PushMessageDelegate
+    
+    func receivePushMessage(message: NSString) {
+        if let message = MessageManager.messageModelWithMessage(message) {
+            message.sendType = .MessageSendSomeoneElse
+            messagePool.addMessage4Reorder(message)
+        }
+    }
+    
+
+
+//MARK: MessageReceivePoolDelegate
+    
+    func messgeReorderOver(messageList: NSDictionary) {
+        for messageList in messageList.allValues {
+            for message in (messageList as! NSMutableArray) {
+                distributionMessage(message as? BaseMessage)
+            }
+        }
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

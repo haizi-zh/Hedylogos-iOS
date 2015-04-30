@@ -30,8 +30,6 @@ class ChatConversation: NSObject {
     var chatterName: String = ""
     var lastUpdateTime: Int = 0
     var unReadMsgCount: Int = 0
-    var lastLocalMessage: BaseMessage?
-    var lastServerMessage: BaseMessage?
     var chatMessageList: NSMutableArray
     var chatType: IMChatType
     
@@ -46,8 +44,6 @@ class ChatConversation: NSObject {
         chatManager = ChatManager(chatterId: chatterId, chatType: chatType)
         chatMessageList = chatManager.selectChatMessageList(chatterId, untilLocalId: Int.max, messageCount: 20).mutableCopy() as! NSMutableArray
         super.init()
-        updateLastLocalMessage()
-        updateLastServerMessage()
     }
     
 //MARK: private function
@@ -55,20 +51,25 @@ class ChatConversation: NSObject {
     /**
     更新最新一条本地消息
     */
-    private func updateLastLocalMessage() {
-        lastLocalMessage = chatMessageList.lastObject as? BaseMessage
+    var lastLocalMessage: BaseMessage? {
+        get {
+            return chatMessageList.lastObject as? BaseMessage
+        }
     }
+
     
     /**
     更新最后一条与服务器同步的 message, 默认的 serverid 为-1，如果大于0则为与服务器同步的 message
     */
-    private func updateLastServerMessage() {
-        for var i=chatMessageList.count-1; i>0; i-- {
-            var message = chatMessageList.objectAtIndex(i) as! BaseMessage
-            if message.serverId > 0 {
-                lastServerMessage = message
-                return
+    var lastServerMessage: BaseMessage? {
+        get {
+            for var i=chatMessageList.count-1; i>0; i-- {
+                var message = chatMessageList.objectAtIndex(i) as! BaseMessage
+                if message.serverId > 0 {
+                    return message
+                }
             }
+            return nil
         }
     }
     
@@ -80,8 +81,6 @@ class ChatConversation: NSObject {
     */
     func addReceiveMessage(message: BaseMessage) {
         chatMessageList.addObject(message)
-        updateLastLocalMessage()
-        updateLastServerMessage()
         delegate?.receiverMessage(message)
     }
     
@@ -92,7 +91,6 @@ class ChatConversation: NSObject {
     func addSendingMessage(message: BaseMessage) {
         chatMessageList .addObject(message)
         chatMessageList.addObject(message)
-        updateLastLocalMessage()
     }
     
     /**

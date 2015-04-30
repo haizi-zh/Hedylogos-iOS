@@ -57,6 +57,7 @@ class MessageManager: NSObject {
     private class func messageModelWithMessageDic(messageDic: NSDictionary) -> BaseMessage? {
         var messageModel: BaseMessage?
         let messageTypeInteger = messageDic.objectForKey("msgType")?.integerValue
+        
         if let messageType = IMMessageType(rawValue: messageTypeInteger!) {
             switch messageType {
             case .TextMessageType :
@@ -75,6 +76,10 @@ class MessageManager: NSObject {
             if let senderId = messageDic.objectForKey("senderId") as? Int {
                 messageModel!.chatterId = senderId
             }
+            if let senderId = messageDic.objectForKey("msgId") as? Int {
+                messageModel!.serverId = senderId
+            }
+            
         }
         return messageModel
     }

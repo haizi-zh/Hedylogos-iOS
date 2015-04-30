@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PushMessageDelegate {
-    func receivePushMessage(message: NSString)
+    func receivePushMessage(messageStr: NSString)
 }
 
 protocol PushConnectionDelegate {
@@ -23,8 +23,13 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
     private var gexinSdk: GexinSdk?
     
     var pushMessageDelegate: PushMessageDelegate?
-
     var pushConnectionDelegate: PushConnectionDelegate?
+    
+    var timer: NSTimer?
+    
+    var allMessage = NSMutableArray()
+
+    
     
     class func shareInstance() -> PushSDKManager {
         return pushSDKManager
@@ -66,7 +71,12 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         var length = payload?.length
         var bytes = payload?.bytes
         var payloadMsg = NSString(bytes:bytes! , length: length!, encoding: NSUTF8StringEncoding)
-        pushMessageDelegate?.receivePushMessage(payloadMsg!)
+        
+        testMessageReorder()
+       
+        
+        
+        
     }
     
     /**
@@ -76,7 +86,54 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
     func GexinSdkDidRegisterClient(clientId: String!) {
         pushConnectionDelegate?.getuiDidConnection(clientId)
     }
+    
+    
+    
+    
+//MARK : TEST
+    func testMessageReorder() {
+        println("新一轮 testMessageReorder")
+
+        for i in 0...10 {
+            var serverId = 10-i
+            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+            allMessage.addObject(message)
+        }
+        
+//        for i in 0...15 {
+//            var serverId = 15-i
+//            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+//            allMessage.addObject(message)
+//        }
+        
+        for i in 10...20 {
+            var serverId = 25-i
+            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(10),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+            allMessage.addObject(message)
+        }
+        
+        for i in 1...10 {
+            var serverId = 100%i
+            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(11),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+            allMessage.addObject(message)
+        }
+
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("sendMessage"), userInfo: nil, repeats: true)
+
+    }
+    
+    func sendMessage() {
+        if allMessage.count == 0 {
+            timer?.invalidate()
+            timer = nil
+            return
+        }
+        var messageStr = allMessage.firstObject as! String
+        pushMessageDelegate?.receivePushMessage(messageStr)
+        allMessage.removeObject(messageStr)
+    }
 }
+
 
 class GetuiPush: GexinSdk {
     

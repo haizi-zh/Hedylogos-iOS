@@ -10,23 +10,27 @@ import UIKit
 
 private let iMClientManager = IMClientManager()
 
-class IMClientManager: NSObject {
+protocol IMClientDelegate {
     
-    let connectionManager: ConnectionManager
-    let messageReceiveManager: MessageReceiveManager
-    let messageSendManager: MessageSendManager
-    let conversationManager: ChatConversationManager
-    let pushSDKManager: PushSDKManager
+    func userDidLogin(isSuccess: Bool, errorCode: Int)
+    
+}
+
+class IMClientManager: NSObject, ConnectionManagerDelegate {
+    
+    var connectionManager: ConnectionManager
+    var messageReceiveManager: MessageReceiveManager!
+    var messageSendManager: MessageSendManager!
+    var conversationManager: ChatConversationManager!
+    
+    var delegate: IMClientDelegate?
     
     override init() {
         connectionManager = ConnectionManager()
-        messageReceiveManager = MessageReceiveManager.shareInstance()
-        messageSendManager = MessageSendManager.shareInstance()
-        pushSDKManager = PushSDKManager()
-        conversationManager = ChatConversationManager()
         super.init()
-        self.addMessageDelegate(conversationManager)
+        connectionManager.connectionManagerDelegate = self
     }
+    
     
     deinit {
         println("IMClientManager deinit")
@@ -40,4 +44,17 @@ class IMClientManager: NSObject {
         messageReceiveManager.addMessageDelegate(messageDelegate)
         messageSendManager.addMessageDelegate(messageDelegate)
     }
+    
+//MARK: ConnectionManager
+    func connectionSetup(isSuccess: Bool, errorCode: Int) {
+        if isSuccess {
+            self.messageReceiveManager = MessageReceiveManager.shareInstance()
+            self.messageSendManager = MessageSendManager.shareInstance()
+            self.conversationManager = ChatConversationManager()
+            self.addMessageDelegate(conversationManager)
+        }
+        delegate?.userDidLogin(isSuccess, errorCode: errorCode)
+    }
+
+
 }

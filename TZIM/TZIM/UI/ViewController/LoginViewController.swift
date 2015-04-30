@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, ConnectionManagerDelegate {
+class LoginViewController: UIViewController, IMClientDelegate {
 
     @IBOutlet weak var userIdTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -25,7 +25,7 @@ class LoginViewController: UIViewController, ConnectionManagerDelegate {
         
         if let userId = userIdTextField.text.toInt() {
             manager.connectionManager.login(userId, password: "")
-            manager.connectionManager.connectionManagerDelegate = self
+            manager.delegate = self
             SVProgressHUD.show()
             self.view.endEditing(true)
         }

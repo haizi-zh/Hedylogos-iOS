@@ -20,7 +20,9 @@ protocol ChatMessageDaoHelperProtocol{
     :param: messageCount 需要获取的数量
     :returns: 获取到的聊天信息
     */
-    func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray 
+    func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray
+    
+    func selectAllLastChatMessageInDB() -> NSArray
 }
 
 class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
@@ -104,6 +106,43 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         }
         return retArray
     }
+    
+    /**
+    取到最后一条与服务器同步的消息
+    :param: fromTable
+    :returns:
+    */
+    func selectLastServerMessage(fromTable:String) -> BaseMessage? {
+        var retArray = NSMutableArray()
+        var sql = "select * from \(fromTable) where serverId >= 0 order by LocalId desc limit 1"
+        var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
+        if (rs != nil) {
+            while rs.next() {
+                if let message = ChatMessageDaoHelper.messageModelWithFMResultSet(rs) {
+                    return message
+                }
+            }
+        }
+        return nil
+    }
+
+    
+    /**
+    获取所有的聊天列表里的最后一条消息
+    :returns:
+    */
+    func selectAllLastChatMessageInDB() -> NSArray {
+        var retArray = NSMutableArray()
+        var allTables = super.selectAllTableName(keyWord: "chat")
+        for tableName in allTables {
+            var message = selectLastServerMessage(tableName as! String)
+            if let message = message {
+                retArray.addObject([message.chatterId: message.serverId])
+            }
+        }
+        return retArray
+    }
+    
     
 //MARK: class methods
     

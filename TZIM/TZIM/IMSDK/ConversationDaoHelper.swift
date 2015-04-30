@@ -65,7 +65,7 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
                 if let type = IMChatType(rawValue: Int(typeValue)) {
                     conversation.chatType = type
                 }
-                self.fillConversationWithMessage(conversation)
+//                self.fillConversationWithMessage(conversation)
                 retArray .addObject(conversation)
             }
         }
@@ -76,24 +76,24 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     补全 conversation 的具体内容
     :param: conversation 需要补全的 conversation,具体是补全 conversation 的最后一条本地消息，和最后一条和服务器同步的消息
     */
-    private func fillConversationWithMessage(conversation: ChatConversation) {
-        var localSql = "select * from chat_\(conversation.chatterId) order by LocalId DESC LIMIT 1"
-        var localRS = dataBase.executeQuery(localSql, withArgumentsInArray: nil)
-        if localRS != nil {
-            while localRS.next() {
-                conversation.lastLocalMessage = ChatMessageDaoHelper.messageModelWithFMResultSet(localRS)
-            }
-        }
-
-        var serverSql = "select * from chat_\(conversation.chatterId) where status = ? order by LocalId DESC LIMIT 1"
-        var serverRS = dataBase.executeQuery(serverSql, withArgumentsInArray: [IMMessageStatus.IMMessageSuccessful.rawValue])
-        
-        if serverRS != nil {
-            while serverRS.next() {
-                conversation.lastServerMessage = ChatMessageDaoHelper.messageModelWithFMResultSet(serverRS)
-            }
-        }
-    }
+//    private func fillConversationWithMessage(conversation: ChatConversation) {
+//        var localSql = "select * from chat_\(conversation.chatterId) order by LocalId DESC LIMIT 1"
+//        var localRS = dataBase.executeQuery(localSql, withArgumentsInArray: nil)
+//        if localRS != nil {
+//            while localRS.next() {
+//                conversation.lastLocalMessage = ChatMessageDaoHelper.messageModelWithFMResultSet(localRS)
+//            }
+//        }
+//
+//        var serverSql = "select * from chat_\(conversation.chatterId) where status = ? order by LocalId DESC LIMIT 1"
+//        var serverRS = dataBase.executeQuery(serverSql, withArgumentsInArray: [IMMessageStatus.IMMessageSuccessful.rawValue])
+//        
+//        if serverRS != nil {
+//            while serverRS.next() {
+//                conversation.lastServerMessage = ChatMessageDaoHelper.messageModelWithFMResultSet(serverRS)
+//            }
+//        }
+//    }
     
 //MARK: *******  ConversationDaoProtocol  ******
     /**

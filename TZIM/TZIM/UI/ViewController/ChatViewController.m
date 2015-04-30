@@ -52,13 +52,16 @@ static NSString *messageCellIdentifier = @"messageCell";
 
     _messageToSend.layer.cornerRadius = 3.0f;
     _messageToSend.delegate = self;
+    
 
     for (BaseMessage *message in chatlogArray) {
         NSBubbleData *bubbleData;
+        NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld", message.message, message.localId, message.serverId];
+
         if (message.sendType == 1) {
-            bubbleData = [[NSBubbleData alloc] initWithText:message.message date:[NSDate dateWithTimeIntervalSince1970:1429684002] type:BubbleTypeSomeoneElse];
+            bubbleData = [[NSBubbleData alloc] initWithText:content date:[NSDate dateWithTimeIntervalSince1970:1429684002] type:BubbleTypeSomeoneElse];
         } else {
-            bubbleData = [[NSBubbleData alloc] initWithText:message.message date:[NSDate dateWithTimeIntervalSince1970:1429684002] type:BubbleTypeMine];
+            bubbleData = [[NSBubbleData alloc] initWithText:content date:[NSDate dateWithTimeIntervalSince1970:1429684002] type:BubbleTypeMine];
         }
         bubbleData.avatar = _otherImage;
         [_chatDataSource addObject:bubbleData];
@@ -115,10 +118,14 @@ static NSString *messageCellIdentifier = @"messageCell";
 - (void)addMessageToDataSource:(BaseMessage *)message
 {
     NSBubbleData *bubbleData;
+    
+    NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld", message.message, message.localId, message.serverId];
+    
     if (message.sendType == IMMessageSendTypeMessageSendMine) {
-        bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        
+        bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
     } else {
-        bubbleData = [NSBubbleData dataWithText:message.message date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
     }
     bubbleData.avatar = _myImage;
     [_chatDataSource addObject:bubbleData];

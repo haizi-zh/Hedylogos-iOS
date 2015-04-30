@@ -38,4 +38,21 @@ class BaseDaoHelper: NSObject {
         }
         return false;
     }
+    
+    func selectAllTableName(#keyWord: String) -> NSArray {
+        var retArray = NSMutableArray()
+        
+        var sql = "select * from sqlite_master where type ='table' and name like '\(keyWord)%'"
+        var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
+        if (rs != nil) {
+            while (rs.next())
+            {
+                if let tableName = rs.stringForColumn("name") {
+                    retArray.addObject(tableName)
+                }
+
+            }
+        }
+        return retArray
+    }
 }

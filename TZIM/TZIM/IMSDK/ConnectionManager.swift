@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ConnectionManagerDelegate {
-    func userDidLogin(isSuccess: Bool, errorCode: Int);
+    func connectionSetup(isSuccess: Bool, errorCode: Int);
 }
 
 class ConnectionManager: NSObject, PushConnectionDelegate {
@@ -38,7 +38,7 @@ class ConnectionManager: NSObject, PushConnectionDelegate {
         println("GexinSdkDidRegisterClient： \(clientId)")
         var accountManager = AccountManager.shareInstance()
         NetworkUserAPI.asyncLogin(userId: accountManager.userId, registionId: clientId) { (isSuccess: Bool, errorCode: Int) -> () in
-            self.connectionManagerDelegate?.userDidLogin(isSuccess, errorCode: 0)
+            self.connectionManagerDelegate?.connectionSetup(isSuccess, errorCode: 0)
         }
     }
 }

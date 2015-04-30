@@ -73,6 +73,11 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
         return chatMessageDaoHelper.selectChatMessageList(fromTable, untilLocalId: untilLocalId, messageCount: messageCount)
     }
     
+    func selectAllLastChatMessageInDB() -> NSArray {
+        return chatMessageDaoHelper.selectAllLastChatMessageInDB()
+    }
+
+    
     //MARK:UserDaoProtocol
     func createFrendTable() -> Bool {
         return userDaoHelper.createFrendTable()
