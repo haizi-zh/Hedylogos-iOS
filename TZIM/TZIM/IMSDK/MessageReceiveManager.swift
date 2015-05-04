@@ -41,6 +41,8 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         var messagePrepare2Fetch = NSMutableArray()
         var needFetchMessage = false
         
+        println("checkMessages queue: \(NSThread.currentThread())")
+        
         var allLastMessageList = MessageManager.shareInsatance().allLastMessageList
 
         for message in (messageList as! NSMutableArray) {
@@ -103,6 +105,9 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         var messagesNeed2Deal = NSMutableArray()
 
         NetworkTransportAPI.asyncFecthMessage(accountManager.userId, completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> () in
+            
+            println("fetch Result queue: \(NSThread.currentThread())")
+
             if (isSuccess) {
                 if let retMessageArray = retMessage {
                     dispatch_async(self.messageReceiveQueue, { () -> Void in
@@ -242,8 +247,6 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         }
     }
     
-    
-    
 //MARK: PushMessageDelegate
     
     func receivePushMessage(message: NSString) {
@@ -253,8 +256,6 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         }
     }
     
-
-
 //MARK: MessageReceivePoolDelegate
     
     func messgeReorderOver(messageList: NSDictionary) {
