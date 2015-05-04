@@ -76,11 +76,9 @@ class NetworkTransportAPI: NSObject {
         manager.GET(url, parameters: params, success:
         {
         (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
-        if let reslutDic = responseObject.objectForKey("result") as? NSArray {
-        completionBlock(isSuccess: true, errorCode: 0, retMessage: reslutDic)
-        }
             if let reslutDic = responseObject.objectForKey("result") as? NSArray {
                 completionBlock(isSuccess: true, errorCode: 0, retMessage: reslutDic)
+                
             } else {
                 completionBlock(isSuccess: false, errorCode: 0, retMessage: nil)
 

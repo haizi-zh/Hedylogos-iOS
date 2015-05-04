@@ -11,8 +11,13 @@ import UIKit
 private let messageReceiveManager = MessageReceiveManager()
 
 class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, MessageReceivePoolDelegate {
+    
+    private let messageReceiveQueue = dispatch_queue_create("messageReceiveQueue", nil)
+    
     let pushSDKManager = PushSDKManager.shareInstance()
     let messagePool = MessageReceivePool.shareInstance()
+    
+    private var receiveMessageList: NSDictionary?
 
     class func shareInstance() -> MessageReceiveManager {
         return messageReceiveManager
@@ -92,16 +97,23 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     func fetchOmitMessageWithReceivedMessages(receivedMessages: NSArray) {
         var accountManager = AccountManager.shareInstance()
         
+        println("fetchOmitMessageWithReceivedMessages queue: \(NSThread.currentThread())")
+        
         //储存需要额外处理的消息
         var messagesNeed2Deal = NSMutableArray()
 
         NetworkTransportAPI.asyncFecthMessage(accountManager.userId, completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> () in
             if (isSuccess) {
                 if let retMessageArray = retMessage {
-                    self.dealwithFetchResult(receivedMessages, fetchMessages: retMessageArray)
+                    dispatch_async(self.messageReceiveQueue, { () -> Void in
+                        self.dealwithFetchResult(receivedMessages, fetchMessages: retMessageArray)
+
+                    })
                 }
             } else {
-                self.dealwithFetchResult(receivedMessages, fetchMessages: nil)
+                dispatch_async(self.messageReceiveQueue, { () -> Void in
+                    self.dealwithFetchResult(receivedMessages, fetchMessages: nil)
+                })
             }
         })
     }
@@ -112,6 +124,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     :param: fetchMessages
     */
     private func dealwithFetchResult(receivedMessages: NSArray?, fetchMessages: NSArray?) {
+        
         var messagesPrepare2DistributeArray = NSMutableArray()
         
         var allLastMessageList = MessageManager.shareInsatance().allLastMessageList
@@ -204,6 +217,8 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     :param: message
     */
     private func distributionMessage(message: BaseMessage?) {
+        println("distributionMessage queue: \(NSThread.currentThread())")
+
         println("distributionMessage: chatterId: \(message?.chatterId)   serverId: \(message?.serverId)")
         if let message = message {
             let daoHelper = DaoHelper()
@@ -212,15 +227,18 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                 daoHelper.insertChatMessage(tableName, message: message)
                 daoHelper.closeDB()
             }
-            switch message {
-            case let textMsg as TextMessage:
-                for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                    (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+
+                switch message {
+                case let textMsg as TextMessage:
+                    for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+                        (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
+                    }
+                    
+                default:
+                    break
                 }
-                
-            default:
-                break
-            }
+            })
         }
     }
     
@@ -240,10 +258,15 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
 //MARK: MessageReceivePoolDelegate
     
     func messgeReorderOver(messageList: NSDictionary) {
-        for messageList in messageList.allValues {
-           checkMessages(messageList as! NSArray)
-        }
-
+        receiveMessageList = messageList.copy() as? NSDictionary
+        
+        dispatch_async(messageReceiveQueue, { () -> Void in
+            println("messgeReorderOver queue: \(NSThread.currentThread())")
+            for messageList in self.receiveMessageList!.allValues {
+                self.checkMessages(messageList as! NSArray)
+            }
+        })
+    
     }
 }
 
