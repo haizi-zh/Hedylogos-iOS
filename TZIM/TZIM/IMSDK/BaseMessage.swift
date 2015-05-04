@@ -17,6 +17,7 @@ class BaseMessage: NSObject {
     var createTime: Int
     var sendType: IMMessageSendType
     var chatterId: Int
+    var metaDataId: String?
     
     override init() {
         localId = -1
@@ -31,7 +32,7 @@ class BaseMessage: NSObject {
     }
     
     func jsonObjcWithString(messageStr: String) -> NSDictionary {
-        var mseesageData = messageStr.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
+        var mseesageData = messageStr.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
         var messageJson: AnyObject? = NSJSONSerialization.JSONObjectWithData(mseesageData!, options:.AllowFragments, error: nil)
         if messageJson is NSDictionary {
             return messageJson as! NSDictionary
@@ -40,11 +41,25 @@ class BaseMessage: NSObject {
        }
     }
     
+    func contentsStrWithJsonObjc(messageDic: NSDictionary) -> NSString? {
+        var jsonData = NSJSONSerialization.dataWithJSONObject(messageDic, options: NSJSONWritingOptions.PrettyPrinted, error: nil)
+        var retStr = NSString(data:jsonData!, encoding: NSUTF8StringEncoding)
+        return retStr
+    }
+    
     /**
     初始化通过 contents 将具体消息的其他内容补充全
     :param: contents
     */
     func fillContentWithContent(contents: String) {
+        
+    }
+    
+    /**
+    初始化通过 contents 将具体消息的其他内容补充全
+    :param: contents
+    */
+    func fillContentWithContentDic(contentsDic: NSDictionary) {
         
     }
 

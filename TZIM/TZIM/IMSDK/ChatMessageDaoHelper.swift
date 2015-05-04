@@ -37,6 +37,8 @@ protocol ChatMessageDaoHelperProtocol{
     :returns: true：存在     false：不存在
     */
     func messageIsExitInTable(tableName: String, message: BaseMessage) -> Bool
+    
+    func updateMessageContents(tableName: String, message: BaseMessage) -> Bool
 }
 
 class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
@@ -77,6 +79,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         if !super.tableIsExit(tableName) {
             self.createChatTable(tableName)
         }
+        
         var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType, ChatterId) values (?,?,?,?,?,?,?)"
         var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue, message.chatterId]
         if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
@@ -102,6 +105,26 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         if dataBase.executeUpdate(sql, withArgumentsInArray:[message.serverId, message.status.rawValue, message.localId]) {
             dataBase.close()
             println("执行 sql 语句：\(sql)")
+            return true
+        }
+        return false
+    }
+    
+
+    /**
+    更新消息的 contents 字段
+    
+    :param: tableName 需要更新的表
+    :param: contents 新的内容
+    
+    :returns: 更新是否成功
+    */
+    func updateMessageContents(tableName: String, message: BaseMessage) -> Bool {
+        
+        var sql = "update \(tableName) set Message = ? where LocalId = ?"
+        if dataBase.executeUpdate(sql, withArgumentsInArray:[message.message, message.localId]) {
+            dataBase.close()
+            println("执行更新消息内容的 sql 语句：\(sql)")
             return true
         }
         return false
@@ -196,11 +219,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
             case .ImageMessageType:
                 retMessage = ImageMessage()
                 var contents = rs.stringForColumn("Message")
-                if let contentsData = contents.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
-                    if let contentJson = NSJSONSerialization.JSONObjectWithData(contentsData, options: NSJSONReadingOptions.AllowFragments, error: nil) as? NSDictionary {
-//                        (retMessage as! ImageMessage).HDUrl = contentJson.objectForKey("url") as? String
-                    }
-                }
+                retMessage?.fillContentWithContent(contents)
                 
             case .LocationMessageType:
                 retMessage = LocationMessage()

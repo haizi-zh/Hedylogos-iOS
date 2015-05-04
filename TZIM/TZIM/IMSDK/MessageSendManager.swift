@@ -91,11 +91,13 @@ class MessageSendManager: MessageTransferManager {
 
         var imageData = UIImageJPEGRepresentation(image, 1)
         
-        var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("test.jpg")
+        var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(NSUUID().UUIDString).jpeg")
         MetadataUploadManager.moveMetadata2Path(imageData, toPath: imagePath)
+        imageMessage.localPath = imagePath
         
-        var imageContentDic = ["localPath": imagePath]
-        imageMessage.message = "\(imageContentDic)"
+        var imageContentDic = NSMutableDictionary()
+        imageContentDic.setObject(imagePath, forKey: "localPath")
+        imageMessage.message = imageMessage.contentsStrWithJsonObjc(imageContentDic) as! String
         
         var daoHelper = DaoHelper()
         if daoHelper.openDB() {
@@ -104,17 +106,35 @@ class MessageSendManager: MessageTransferManager {
         }
         NSLog("开始上传  图像为\(image)")
         
+        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+            (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(imageMessage)
+        }
+        
         MetadataUploadManager.asyncRequestUploadToken2SendMessage(1, completionBlock: { (isSuccess, key, token) -> () in
             if isSuccess {
                 MetadataUploadManager.uploadMetadata2Qiniu(imageMessage, token: token!, key: key!, metadata: imageData, progress: { (progressValue) -> () in
                     println("上传了: \(progressValue)")
                     })
-                    { (isSuccess) -> () in
+                    { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
                         if isSuccess {
-                            NSLog("上传成功")
+                            imageMessage.status = IMMessageStatus.IMMessageSuccessful
+                            if let retMessage = retMessage {
+                                if let serverId = retMessage.objectForKey("msgId") as? Int {
+                                    imageMessage.serverId = serverId
+                                    MessageManager.shareInsatance().updateLastServerMessage(imageMessage)
+                                }
+                            }
                         } else {
-                            NSLog("上传失败")
+                            imageMessage.status = IMMessageStatus.IMMessageFailed
                         }
+                        if daoHelper.openDB() {
+                            daoHelper.updateMessageInDB("chat_\(imageMessage.chatterId)", message: imageMessage)
+                            daoHelper.closeDB()
+                        }
+                        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+                            (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(imageMessage)
+                        }
+
                 }
             }
         })
@@ -160,12 +180,26 @@ class MessageSendManager: MessageTransferManager {
                     MetadataUploadManager.uploadMetadata2Qiniu(audioMessage, token: token!, key: key!, metadata: audioData, progress: { (progressValue) -> () in
                         println("上传了: \(progressValue)")
                         })
-                        { (isSuccess) -> () in
+                        { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
                             if isSuccess {
-                                NSLog("上传成功")
+                                audioMessage.status = IMMessageStatus.IMMessageSuccessful
+                                if let retMessage = retMessage {
+                                    if let serverId = retMessage.objectForKey("msgId") as? Int {
+                                        audioMessage.serverId = serverId
+                                        MessageManager.shareInsatance().updateLastServerMessage(audioMessage)
+                                    }
+                                }
                             } else {
-                                NSLog("上传失败")
+                                audioMessage.status = IMMessageStatus.IMMessageFailed
                             }
+                            if daoHelper.openDB() {
+                                daoHelper.updateMessageInDB("chat_\(audioMessage.chatterId)", message: audioMessage)
+                                daoHelper.closeDB()
+                            }
+                            for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+                                (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(audioMessage)
+                            }
+                            
                     }
                 }
             })

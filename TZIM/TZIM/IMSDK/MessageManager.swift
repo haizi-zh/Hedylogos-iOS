@@ -85,37 +85,43 @@ class MessageManager: NSObject {
 //MARK: private methods
     private class func messageModelWithMessageDic(messageDic: NSDictionary) -> BaseMessage? {
         var messageModel: BaseMessage?
-        let messageTypeInteger = messageDic.objectForKey("msgType")?.integerValue
+        if let messageTypeInteger = messageDic.objectForKey("msgType")?.integerValue {
         
-        if let messageType = IMMessageType(rawValue: messageTypeInteger!) {
-            switch messageType {
-            case .TextMessageType :
-                messageModel = TextMessage()
-            case .ImageMessageType :
-                messageModel = ImageMessage()
-            case .AudioMessageType:
-                messageModel = AudioMessage()
-            default :
-                break
+            if let messageType = IMMessageType(rawValue: messageTypeInteger) {
+                switch messageType {
+                case .TextMessageType :
+                    messageModel = TextMessage()
+                case .ImageMessageType :
+                    messageModel = ImageMessage()
+                    messageModel?.metaDataId = NSUUID().UUIDString
+                case .AudioMessageType:
+                    messageModel = AudioMessage()
+                    messageModel?.metaDataId = NSUUID().UUIDString
+
+                default :
+                    break
+                }
+                
+                if messageModel == nil {
+                    return nil
+                }
+                
+                if let contents = messageDic.objectForKey("contents") as? String {
+                    messageModel!.message = contents
+                    messageModel?.fillContentWithContent(contents)
+                }
+                
+                messageModel!.createTime = messageDic.objectForKey("timestamp") as! Int
+                
+                if let senderId = messageDic.objectForKey("senderId") as? Int {
+                    messageModel!.chatterId = senderId
+                }
+                if let senderId = messageDic.objectForKey("msgId") as? Int {
+                    messageModel!.serverId = senderId
+                }
             }
-            
-            if messageModel == nil {
-                return nil
-            }
-            
-            if let contents = messageDic.objectForKey("contents") as? String {
-                messageModel!.message = contents
-                messageModel?.fillContentWithContent(contents)
-            }
-            
-            messageModel!.createTime = messageDic.objectForKey("timestamp") as! Int
-            
-            if let senderId = messageDic.objectForKey("senderId") as? Int {
-                messageModel!.chatterId = senderId
-            }
-            if let senderId = messageDic.objectForKey("msgId") as? Int {
-                messageModel!.serverId = senderId
-            }
+        } else {
+            println(" ****解析消息出错******")
         }
         return messageModel
     }

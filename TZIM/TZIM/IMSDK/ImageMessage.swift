@@ -23,12 +23,30 @@ class ImageMessage: BaseMessage {
     }
 
     override func fillContentWithContent(contents: String) {
-        var imageDic = super.jsonObjcWithString(message)
-        imageHeight = imageDic.objectForKey("height") as? Int
-        imageWidth = imageDic.objectForKey("width") as? Int
-        originUrl = imageDic.objectForKey("origin") as? String
-        thumbUrl = imageDic.objectForKey("thumb") as? String
-        fullUrl = imageDic.objectForKey("full") as? String
+        var imageDic = super.jsonObjcWithString(contents)
+        self.fillContentWithContentDic(imageDic)
+    }
+    
+    override func fillContentWithContentDic(contentsDic: NSDictionary) {
+        imageHeight = contentsDic.objectForKey("height") as? Int
+        imageWidth = contentsDic.objectForKey("width") as? Int
+        originUrl = contentsDic.objectForKey("origin") as? String
+        thumbUrl = contentsDic.objectForKey("thumb") as? String
+        fullUrl = contentsDic.objectForKey("full") as? String
+        localPath = contentsDic.objectForKey("localPath") as? String
+    }
+    
+    /**
+    更新消息的主体内容，一般是下载附件完成后填入新的 localpath
+    */
+    func updateMessageContent() {
+        var imageDic: NSMutableDictionary = super.jsonObjcWithString(message).mutableCopy() as! NSMutableDictionary
+        if let localPath = localPath {
+            imageDic.setObject(localPath, forKey: "localPath")
+            if let content = super.contentsStrWithJsonObjc(imageDic) {
+                message = content as String
+            }
+        }
     }
 
 }

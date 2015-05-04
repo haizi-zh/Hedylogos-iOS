@@ -89,6 +89,10 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
     func messageIsExitInTable(tableName: String, message: BaseMessage) -> Bool {
         return chatMessageDaoHelper.messageIsExitInTable(tableName, message: message)
     }
+    
+    func updateMessageContents(tableName: String, message: BaseMessage) -> Bool {
+        return chatMessageDaoHelper.updateMessageContents(tableName, message: message)
+    }
 
     
     //MARK:UserDaoProtocol

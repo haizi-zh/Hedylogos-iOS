@@ -65,7 +65,7 @@ class MetadataUploadManager: NSObject {
     :param: progress        上传进度回调
     :param: completion      完成回调
     */
-    class func uploadMetadata2Qiniu(metadataMessage: BaseMessage, token: String, key: String, metadata: NSData, progress: (progressValue: Float) -> (), completion:(isSuccess:Bool) -> ()) {
+    class func uploadMetadata2Qiniu(metadataMessage: BaseMessage, token: String, key: String, metadata: NSData, progress: (progressValue: Float) -> (), completion:(isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> ()) {
         var uploadManager = QNUploadManager()
         
         var params = NSMutableDictionary()
@@ -81,9 +81,9 @@ class MetadataUploadManager: NSObject {
             println("resp: \(resp)")
             if let error = info.error {
                 println("上传二进制文件出错： \(error)")
-                completion(isSuccess: false)
+                completion(isSuccess: false, errorCode:0, retMessage: nil)
             } else {
-                completion(isSuccess: true)
+                completion(isSuccess: true, errorCode:0, retMessage: resp["result"] as? NSDictionary)
             }
             }, option: opt)
     }
@@ -94,20 +94,48 @@ class MetadataUploadManager: NSObject {
 
 class MetadataDownloadManager:NSObject{
 
-    class func asyncDownloadMetadataFrom(fromUrl url: NSURL, completion:(isSuccess:Bool, filePath:NSURL?) -> ()) {
+    /**
+    异步下载图片的预览图片信息
+    
+    :param: url        图片的 url
+    :param: completion 下载的回掉
+    */
+    class func asyncDownloadThumbImage(imageMessage: ImageMessage, completion:(isSuccess:Bool, retMessage:ImageMessage) -> ()) {
         var currentSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        var request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 10)
-        
-        currentSession.downloadTaskWithRequest(request, completionHandler: { (url: NSURL!, response: NSURLResponse!, error: NSError!) -> Void in
-            if error == nil {
-                completion(isSuccess: false, filePath: nil)
-            } else {
-                completion(isSuccess: true, filePath: response.URL)
-
-            }
-        })
-        
+        if let url = NSURL(string: imageMessage.thumbUrl!) {
+            var request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 10)
+            
+            var downloadTask = currentSession.downloadTaskWithRequest(request, completionHandler: { (url: NSURL!, response: NSURLResponse!, error: NSError!) -> Void in
+                if error != nil {
+                    NSLog("下载图片预览图失败 失败原因是: \(error)")
+                    completion(isSuccess: false, retMessage: imageMessage)
+                } else {
+                    var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageMessage.metaDataId!).jpeg")
+                    
+                    if let imageData = NSData(contentsOfURL: url) {
+                        var fileManager = NSFileManager.defaultManager()
+                        fileManager.createFileAtPath(imagePath, contents: imageData, attributes: nil)
+                        NSLog("下载图片预览图成功 保存后的地址为: \(imagePath)")
+                        imageMessage.localPath = imagePath
+                        imageMessage.updateMessageContent()
+                        var daoHelper = DaoHelper()
+                        daoHelper.openDB()
+                        daoHelper.updateMessageContents("chat_\(imageMessage.chatterId)", message: imageMessage)
+                        daoHelper.closeDB()
+                    }
+                    completion(isSuccess: true, retMessage: imageMessage)
+                }
+            })
+            
+            downloadTask.resume()
+            
+            
+        } else {
+            completion(isSuccess: false, retMessage: imageMessage)
+        }
     }
+    
+    
 }
 
 

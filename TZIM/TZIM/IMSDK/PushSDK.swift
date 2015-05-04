@@ -77,6 +77,9 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         if let message = payloadMsg {
             pushMessageDelegate?.receivePushMessage(message)
         }
+        
+//        testMessageReorder()
+
     }
     
     /**
@@ -88,15 +91,15 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
     }
     
 //MARK : TEST
-//    func testMessageReorder() {
-//        println("新一轮 testMessageReorder")
+    func testMessageReorder() {
+        println("新一轮 testMessageReorder")
+
+        for i in 0...10 {
+            var serverId = 21+i
+            var message = "{\"id\":\"55476288f4428a03c1c19622\",\"msgId\":\(629),\"msgType\":\(2),\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"{\"width\":640,\"height\":640,\"origin\":\"http://7xirnn.com1.z0.glb.clouddn.com/33dd5526-5362-4091-b17d-e0cbe688d85e?e=1431346440&token=jU6KkDZdGYODmrPVh5sbBIkJX65y-Cea991uWpWZ:JTrGaf2oFMw2Q-uSHuEJ6iQEpKM=\",\"thumb\":\"http://7xirnn.com1.z0.glb.clouddn.com/33dd5526-5362-4091-b17d-e0cbe688d85e!thumb?e=1431346440&token=jU6KkDZdGYODmrPVh5sbBIkJX65y-Cea991uWpWZ:ayExSDbszJ_p8siyiJF8D7RZuHE=\",\"full\":\"http://7xirnn.com1.z0.glb.clouddn.com/33dd5526-5362-4091-b17d-e0cbe688d85e!full?e=1431346440&token=jU6KkDZdGYODmrPVh5sbBIkJX65y-Cea991uWpWZ:njWNJj_lJNRDeyEjMqj1-zssdm4=\"}\",\"senderId\":9,\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":(1430741640656)}"
+            allMessage.addObject(message)
+        }
 //
-//        for i in 0...0 {
-//            var serverId = 21+i
-//            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(561),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
-//            allMessage.addObject(message)
-//        }
-//        
 ////        for i in 0...10 {
 ////            var serverId = i
 ////            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(10),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
@@ -115,11 +118,11 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
 ////            allMessage.addObject(message)
 ////        }
 //
-//        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("receiveMessages"), userInfo: nil, repeats: true)
-//        
-////        anotherTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("anotherReceiveMessages"), userInfo: nil, repeats: true)
-//
-//    }
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("receiveMessages"), userInfo: nil, repeats: true)
+        
+//        anotherTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("anotherReceiveMessages"), userInfo: nil, repeats: true)
+
+    }
     
     func receiveMessages() {
         if allMessage.count == 0 {
