@@ -198,7 +198,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
                 var contents = rs.stringForColumn("Message")
                 if let contentsData = contents.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
                     if let contentJson = NSJSONSerialization.JSONObjectWithData(contentsData, options: NSJSONReadingOptions.AllowFragments, error: nil) as? NSDictionary {
-                        (retMessage as! ImageMessage).HDUrl = contentJson.objectForKey("url") as? String
+//                        (retMessage as! ImageMessage).HDUrl = contentJson.objectForKey("url") as? String
                     }
                 }
                 

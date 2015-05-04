@@ -84,7 +84,11 @@ class MessageSendManager: MessageTransferManager {
     */
     func sendImageMessage(chatterId: Int, isChatGroup: Bool, image: UIImage, progress:(progressValue: Float) -> ()) -> ImageMessage {
         var imageMessage = ImageMessage()
-        
+        imageMessage.chatterId = chatterId
+        imageMessage.sendType = IMMessageSendType.MessageSendMine
+        imageMessage.createTime = Int(NSDate().timeIntervalSince1970)
+        imageMessage.status = IMMessageStatus.IMMessageSending
+
         var imageData = UIImageJPEGRepresentation(image, 1)
         
         var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("test.jpg")
@@ -98,18 +102,23 @@ class MessageSendManager: MessageTransferManager {
             daoHelper.insertChatMessage("chat_\(chatterId)", message: imageMessage)
             daoHelper.closeDB()
         }
-        
         NSLog("开始上传  图像为\(image)")
-        MetadataUploadManager.uploadMetadata2Qiniu(imageMessage, metadata: imageData, progress: { (progressValue) -> () in
-            println("上传了: \(progressValue)")
-        }) { (isSuccess) -> () in
-            NSLog("上传成功")
-            var contentDic = ["url":"http://7xistf.com1.z0.glb.clouddn.com/test.jpg", "h":image.size.height, "w":image.size.width]
-            var contentStr = "\(contentDic)"
-            imageMessage.message = contentStr
-            
-            self.sendMessage(imageMessage, receiver: chatterId, isChatGroup: isChatGroup)
-        }
+        
+        MetadataUploadManager.asyncRequestUploadToken2SendMessage(1, completionBlock: { (isSuccess, key, token) -> () in
+            if isSuccess {
+                MetadataUploadManager.uploadMetadata2Qiniu(imageMessage, token: token!, key: key!, metadata: imageData, progress: { (progressValue) -> () in
+                    println("上传了: \(progressValue)")
+                    })
+                    { (isSuccess) -> () in
+                        if isSuccess {
+                            NSLog("上传成功")
+                        } else {
+                            NSLog("上传失败")
+                        }
+                }
+            }
+        })
+        
         return imageMessage
     }
     
@@ -123,6 +132,10 @@ class MessageSendManager: MessageTransferManager {
     */
     func sendAudioMessageWithWavFormat(chatterId: Int, isChatGroup: Bool, wavAudioPath: String, progress:(progressValue: Float) -> ()) -> AudioMessage {
         var audioMessage = AudioMessage()
+        audioMessage.chatterId = chatterId
+        audioMessage.sendType = IMMessageSendType.MessageSendMine
+        audioMessage.createTime = Int(NSDate().timeIntervalSince1970)
+        audioMessage.status = IMMessageStatus.IMMessageSending
         
         var audioPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("test.wav")
 
@@ -141,15 +154,21 @@ class MessageSendManager: MessageTransferManager {
         var audioData = NSData(contentsOfFile: audioPath)
         
         if let audioData = audioData {
-            MetadataUploadManager.moveMetadata2Path(audioData, toPath: audioPath)
-            MetadataUploadManager.uploadMetadata2Qiniu(audioMessage, metadata: audioData, progress: { (progressValue) -> () in
-                
-                }) { (isSuccess) -> () in
-                    if isSuccess {
-                        println("上传成功")
+        
+            MetadataUploadManager.asyncRequestUploadToken2SendMessage(1, completionBlock: { (isSuccess, key, token) -> () in
+                if isSuccess {
+                    MetadataUploadManager.uploadMetadata2Qiniu(audioMessage, token: token!, key: key!, metadata: audioData, progress: { (progressValue) -> () in
+                        println("上传了: \(progressValue)")
+                        })
+                        { (isSuccess) -> () in
+                            if isSuccess {
+                                NSLog("上传成功")
+                            } else {
+                                NSLog("上传失败")
+                            }
                     }
-                    self.sendMessage(audioMessage, receiver: chatterId, isChatGroup: isChatGroup)
-            }
+                }
+            })
         }
         return audioMessage
     }

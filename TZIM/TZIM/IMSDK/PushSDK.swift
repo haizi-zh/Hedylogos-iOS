@@ -75,10 +75,8 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         var payloadMsg = NSString(bytes:bytes! , length: length!, encoding: NSUTF8StringEncoding)
         
         if let message = payloadMsg {
-//            pushMessageDelegate?.receivePushMessage(message)
+            pushMessageDelegate?.receivePushMessage(message)
         }
-        
-        testMessageReorder()
     }
     
     /**
@@ -90,47 +88,38 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
     }
     
 //MARK : TEST
-    func testMessageReorder() {
-        println("新一轮 testMessageReorder")
-
-        for i in 0...0 {
-            var serverId = 21+i
-            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(561),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
-            allMessage.addObject(message)
-        }
-        
-//        for i in 0...10 {
-//            var serverId = i
-//            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(10),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+//    func testMessageReorder() {
+//        println("新一轮 testMessageReorder")
+//
+//        for i in 0...0 {
+//            var serverId = 21+i
+//            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(561),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
 //            allMessage.addObject(message)
 //        }
 //        
-//        for i in 0...10 {
-//            var serverId = i
-//            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(11),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
-//            allMessage.addObject(message)
-//        }
-        
-//        for i in 1...10 {
-//            var serverId = 100%i
-//            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(11),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
-//            allMessage.addObject(message)
-//        }
-
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("receiveMessages"), userInfo: nil, repeats: true)
-        
-//        anotherTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("anotherReceiveMessages"), userInfo: nil, repeats: true)
-
-    }
-    
-    func anotherReceiveMessages() {
-        anotherTimer?.invalidate()
-        anotherTimer = nil
-        var messageStr = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(22),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
-        pushMessageDelegate?.receivePushMessage(messageStr)
-        allMessage.removeObject(messageStr)
-    }
-
+////        for i in 0...10 {
+////            var serverId = i
+////            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(10),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+////            allMessage.addObject(message)
+////        }
+////        
+////        for i in 0...10 {
+////            var serverId = i
+////            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(11),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+////            allMessage.addObject(message)
+////        }
+//        
+////        for i in 1...10 {
+////            var serverId = 100%i
+////            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(11),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
+////            allMessage.addObject(message)
+////        }
+//
+//        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("receiveMessages"), userInfo: nil, repeats: true)
+//        
+////        anotherTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("anotherReceiveMessages"), userInfo: nil, repeats: true)
+//
+//    }
     
     func receiveMessages() {
         if allMessage.count == 0 {

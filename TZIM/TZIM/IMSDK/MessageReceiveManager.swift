@@ -222,7 +222,6 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     :param: message
     */
     private func distributionMessage(message: BaseMessage?) {
-        println("distributionMessage queue: \(NSThread.currentThread())")
 
         println("distributionMessage: chatterId: \(message?.chatterId)   serverId: \(message?.serverId)")
         if let message = message {
@@ -233,15 +232,8 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                 daoHelper.closeDB()
             }
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-
-                switch message {
-                case let textMsg as TextMessage:
-                    for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                        (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
-                    }
-                    
-                default:
-                    break
+                for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+                    (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
                 }
             })
         }
@@ -250,6 +242,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
 //MARK: PushMessageDelegate
     
     func receivePushMessage(message: NSString) {
+        NSLog("收到消息： 消息为：\(message)")
         if let message = MessageManager.messageModelWithMessage(message) {
             message.sendType = .MessageSendSomeoneElse
             messagePool.addMessage4Reorder(message)
@@ -260,7 +253,6 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     
     func messgeReorderOver(messageList: NSDictionary) {
         receiveMessageList = messageList.copy() as? NSDictionary
-        
         dispatch_async(messageReceiveQueue, { () -> Void in
             println("messgeReorderOver queue: \(NSThread.currentThread())")
             for messageList in self.receiveMessageList!.allValues {

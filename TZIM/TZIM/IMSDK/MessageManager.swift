@@ -96,19 +96,26 @@ class MessageManager: NSObject {
             case .AudioMessageType:
                 messageModel = AudioMessage()
             default :
-                messageModel = BaseMessage()
+                break
             }
-            if let message = messageDic.objectForKey("contents") as? String {
-                messageModel!.message = message
+            
+            if messageModel == nil {
+                return nil
             }
-            messageModel!.createTime = Int(NSDate().timeIntervalSince1970)
+            
+            if let contents = messageDic.objectForKey("contents") as? String {
+                messageModel!.message = contents
+                messageModel?.fillContentWithContent(contents)
+            }
+            
+            messageModel!.createTime = messageDic.objectForKey("timestamp") as! Int
+            
             if let senderId = messageDic.objectForKey("senderId") as? Int {
                 messageModel!.chatterId = senderId
             }
             if let senderId = messageDic.objectForKey("msgId") as? Int {
                 messageModel!.serverId = senderId
             }
-            
         }
         return messageModel
     }

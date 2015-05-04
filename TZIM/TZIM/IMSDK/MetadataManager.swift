@@ -8,8 +8,6 @@
 
 import UIKit
 
-private let QiniuToken = "pUj-ZwQ5-s6m8aZ8RbFwnFNxUQccPHjwJP_SR1LX:NkFPbzZR8MOUtXG0DoPFUSLe3cA=:eyJzY29wZSI6ImhlaGVjZW8iLCJkZWFkbGluZSI6MTQzMDIxMDc4OH0="
-
 class MetadataUploadManager: NSObject {
     
     /**
@@ -23,6 +21,41 @@ class MetadataUploadManager: NSObject {
         fileManager.createFileAtPath(toPath, contents: metadata, attributes: nil)
     }
     
+    /**
+    异步获取上传的 token 和 key
+    
+    :param: completionBlock 获取完后的回调
+    */
+    class func asyncRequestUploadToken2SendMessage(actionCode: Int, completionBlock: (isSuccess: Bool, key: String?, token: String?) -> ()) {
+        let manager = AFHTTPRequestOperationManager()
+        
+        let requestSerializer = AFJSONRequestSerializer()
+        
+        manager.requestSerializer = requestSerializer
+        
+        manager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
+        manager.requestSerializer.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        manager.POST(requestQiniuTokenToUploadMetadata, parameters: ["action": actionCode], success:
+            {
+                (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
+                if let reslutDic = responseObject.objectForKey("result") as? NSDictionary {
+                    var key: String? = (reslutDic.objectForKey("key") as! String)
+                    var token: String? = (reslutDic.objectForKey("token") as! String)
+                    completionBlock(isSuccess: true, key: key, token: token)
+                    
+                } else {
+                    completionBlock(isSuccess: false, key: nil, token: nil)
+                }
+            })
+            {
+                (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                
+                completionBlock(isSuccess: false, key: nil, token: nil)
+                print(error)
+        }
+    
+    }
    
     /**
     上传二进制文件到七牛服务器
@@ -32,16 +65,19 @@ class MetadataUploadManager: NSObject {
     :param: progress        上传进度回调
     :param: completion      完成回调
     */
-    class func uploadMetadata2Qiniu(metadataMessage: BaseMessage, metadata: NSData, progress: (progressValue: Float) -> (), completion:(isSuccess:Bool) -> ()) {
+    class func uploadMetadata2Qiniu(metadataMessage: BaseMessage, token: String, key: String, metadata: NSData, progress: (progressValue: Float) -> (), completion:(isSuccess:Bool) -> ()) {
         var uploadManager = QNUploadManager()
+        
+        var params = NSMutableDictionary()
+        params.setObject("\(metadataMessage.chatterId)", forKey: "x:receiver")
+        params.setObject("\(AccountManager.shareInstance().userId)", forKey: "x:sender")
+        params.setObject("\(metadataMessage.messageType.rawValue)", forKey: "x:msgType")
         
         var opt = QNUploadOption(mime: "text/plain", progressHandler: { (key: String!, progressValue: Float) -> Void in
             progress(progressValue: progressValue)
-            }, params: ["st" : "st"], checkCrc: true, cancellationSignal: nil)
-        
-        var token: String?
-        
-        uploadManager.putData(metadata, key: metadataMessage.metaDataId, token: QiniuToken, complete: { (info: QNResponseInfo!, key: String!, resp:Dictionary!) -> Void in
+            }, params: params as [NSObject : AnyObject], checkCrc: true, cancellationSignal: nil)
+    
+        uploadManager.putData(metadata, key: key, token: token, complete: { (info: QNResponseInfo!, key: String!, resp:Dictionary!) -> Void in
             println("resp: \(resp)")
             if let error = info.error {
                 println("上传二进制文件出错： \(error)")

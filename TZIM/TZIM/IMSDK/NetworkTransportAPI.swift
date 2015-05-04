@@ -14,6 +14,8 @@ let sendMessageURL = "http://hedy.zephyre.me/chats"
 
 let fetchUrl = "http://hedy.zephyre.me/chats/"
 
+let requestQiniuTokenToUploadMetadata = "http://hedy.zephyre.me/upload/token-generator"
+
 
 class NetworkTransportAPI: NSObject {
     
@@ -91,14 +93,6 @@ class NetworkTransportAPI: NSObject {
         }
     }
 }
-
-let testArray = ["{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(18),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}",
-    
-     "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(19),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(9),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}",
-    
-    "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(11),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(10),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}",
-
-]
 
 
 
