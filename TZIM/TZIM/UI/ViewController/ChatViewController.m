@@ -8,8 +8,9 @@
 
 #import "ChatViewController.h"
 #import "TZIM-swift.h"
+#import <AVFoundation/AVFoundation.h>
 
-@interface ChatViewController () <ChatConversationDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ChatManagerAudioDelegate>
+@interface ChatViewController () <ChatConversationDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ChatManagerAudioDelegate, AVAudioPlayerDelegate>
 {
     float currentKeyboardHeigh;
     BOOL keyboardIsShow;
@@ -18,6 +19,8 @@
 @property (strong, nonatomic) NSMutableArray *chatDataSource;
 
 @property (nonatomic) CGSize keyboardSize;
+
+@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
 
 
 @end
@@ -71,8 +74,15 @@ static NSString *messageCellIdentifier = @"messageCell";
                 bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
             } else if (message.messageType == IMMessageTypeAudioMessageType) {
                 NSString *content = [NSString stringWithFormat:@"声音文件： %@ 时长: %f, localId:%ld,  serverId:%ld", message.message, ((AudioMessage *)message).audioLength, (long)message.localId, (long)message.serverId];
-                bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-
+                
+                UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
+                playBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
+                playBtn.backgroundColor = [UIColor blueColor];
+                [playBtn setTitle:[NSString stringWithFormat:@"时长：%f", ((AudioMessage *)message).audioLength] forState:UIControlStateNormal];
+                [playBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                bubbleData  = [NSBubbleData dataWithView:playBtn date:[NSDate date] type:BubbleTypeMine insets:UIEdgeInsetsZero];
+                playBtn.tag = _chatDataSource.count;
+                [playBtn addTarget:self action:@selector(playAudio:) forControlEvents:UIControlEventTouchUpInside];
             }
             
         } else {
@@ -88,8 +98,16 @@ static NSString *messageCellIdentifier = @"messageCell";
                 
             } else if (message.messageType == IMMessageTypeAudioMessageType) {
                 NSString *content = [NSString stringWithFormat:@"声音文件： %@ 时长: %f, localId:%ld,  serverId:%ld", message.message, ((AudioMessage *)message).audioLength, (long)message.localId, (long)message.serverId];
-                bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
                 
+                UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
+                playBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
+
+                playBtn.backgroundColor = [UIColor blueColor];
+                [playBtn setTitle:[NSString stringWithFormat:@"时长：%f", ((AudioMessage *)message).audioLength] forState:UIControlStateNormal];
+                [playBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                bubbleData  = [NSBubbleData dataWithView:playBtn date:[NSDate date] type:BubbleTypeSomeoneElse insets:UIEdgeInsetsZero];
+                playBtn.tag = _chatDataSource.count;
+                [playBtn addTarget:self action:@selector(playAudio:) forControlEvents:UIControlEventTouchUpInside];
             }
         }
 
@@ -162,8 +180,17 @@ static NSString *messageCellIdentifier = @"messageCell";
             
         } else if (message.messageType == IMMessageTypeAudioMessageType) {
             NSString *content = [NSString stringWithFormat:@"声音文件： %@ 时长: %f, localId:%ld,  serverId:%ld", message.message, ((AudioMessage *)message).audioLength, (long)message.localId, (long)message.serverId];
-            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
             
+            UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
+            playBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
+
+            playBtn.backgroundColor = [UIColor blueColor];
+            [playBtn setTitle:[NSString stringWithFormat:@"时长：%f", ((AudioMessage *)message).audioLength] forState:UIControlStateNormal];
+            [playBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            bubbleData  = [NSBubbleData dataWithView:playBtn date:[NSDate date] type:BubbleTypeMine insets:UIEdgeInsetsZero];
+            
+            playBtn.tag = _chatDataSource.count;
+            [playBtn addTarget:self action:@selector(playAudio:) forControlEvents:UIControlEventTouchUpInside];
         }
         
     } else {
@@ -179,8 +206,16 @@ static NSString *messageCellIdentifier = @"messageCell";
             
         } else if (message.messageType == IMMessageTypeAudioMessageType) {
             NSString *content = [NSString stringWithFormat:@"声音文件： %@ 时长: %f, localId:%ld,  serverId:%ld", message.message, ((AudioMessage *)message).audioLength, (long)message.localId, (long)message.serverId];
-            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
             
+            UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 150, 40)];
+            playBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
+
+            playBtn.backgroundColor = [UIColor blueColor];
+            [playBtn setTitle:[NSString stringWithFormat:@"时长：%f", ((AudioMessage *)message).audioLength] forState:UIControlStateNormal];
+            [playBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            bubbleData  = [NSBubbleData dataWithView:playBtn date:[NSDate date] type:BubbleTypeSomeoneElse insets:UIEdgeInsetsZero];
+            playBtn.tag = _chatDataSource.count;
+            [playBtn addTarget:self action:@selector(playAudio:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
 
@@ -190,7 +225,33 @@ static NSString *messageCellIdentifier = @"messageCell";
     if (_bubbleTable.contentSize.height > self.view.bounds.size.height) {
         [self.bubbleTable scrollBubbleViewToBottomAnimated:YES];
     }
+}
 
+- (IBAction)playAudio:(UIButton *)sender {
+    if (_audioPlayer) {
+        [_audioPlayer stop];
+        _audioPlayer = nil;
+        
+    } else {
+        AudioMessage *message = [_conversation.chatMessageList objectAtIndex:sender.tag];
+
+        NSError *error;
+
+        NSData *audioData = [NSData dataWithContentsOfFile:message.localPath];
+        _audioPlayer = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+        _audioPlayer.volume = 0.8;
+        _audioPlayer.currentTime = 0;
+        [_audioPlayer prepareToPlay];
+
+        if (error) {
+            NSLog(@"%@", error);
+            return;
+        }
+        _audioPlayer.delegate = self;
+        [_audioPlayer play];
+        NSLog(@"开始播放语音");
+
+    }
 }
 
 #pragma mark - MessageManagerDelegate
@@ -331,6 +392,18 @@ static NSString *messageCellIdentifier = @"messageCell";
     
     NSLog(@"info: %@", info);
     [self addMessageToDataSource:image];
+}
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    NSLog(@"播放完毕");
+    _audioPlayer = nil;
+}
+
+
+- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
+{
+    NSLog(@"播放被打断,error: %@", error);
 }
 
 @end

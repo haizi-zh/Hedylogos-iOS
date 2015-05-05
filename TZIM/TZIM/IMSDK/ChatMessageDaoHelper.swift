@@ -217,11 +217,13 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
                 retMessage = AudioMessage()
                 var contents = rs.stringForColumn("Message")
                 retMessage?.fillContentWithContent(contents)
+                retMessage?.message = contents
                 
             case .ImageMessageType:
                 retMessage = ImageMessage()
                 var contents = rs.stringForColumn("Message")
                 retMessage?.fillContentWithContent(contents)
+                retMessage?.message = contents
                 
             case .LocationMessageType:
                 retMessage = LocationMessage()

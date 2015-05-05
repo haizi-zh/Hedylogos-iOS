@@ -9,6 +9,8 @@
 import UIKit
 
 let documentPath: String = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as! String
+let tempDirectory: String = NSTemporaryDirectory()
+
 
 public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationDaoProtocol {
     private let db: FMDatabase

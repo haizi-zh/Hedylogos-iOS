@@ -43,6 +43,19 @@ class AccountManager: NSObject {
             return audioPath
         }
     }
+    
+    //文件的临时目录
+    var userTempPath: String {
+        get {
+            var fileManager = NSFileManager.defaultManager()
+            var tempPath = tempDirectory.stringByAppendingPathComponent("\(userId)/tempFile/")
+            if !fileManager.fileExistsAtPath(tempPath) {
+                fileManager.createDirectoryAtPath(tempPath, withIntermediateDirectories: true, attributes: nil, error: nil)
+            }
+            return tempPath
+        }
+    }
+
 }
 
 

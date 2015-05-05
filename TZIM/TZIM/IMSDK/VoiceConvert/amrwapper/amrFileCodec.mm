@@ -307,8 +307,6 @@ int ReadAMRFrame(FILE* fpamr, unsigned char frameBuffer[], int stdFrameSize, uns
 // 将AMR文件解码成WAVE文件
 int DecodeAMRFileToWAVEFile(const char* pchAMRFileName, const char* pchWAVEFilename)
 {
-
-    
 	FILE* fpamr = NULL;
 	FILE* fpwave = NULL;
 	char magic[8];
@@ -320,8 +318,6 @@ int DecodeAMRFileToWAVEFile(const char* pchAMRFileName, const char* pchWAVEFilen
 	unsigned char amrFrame[MAX_AMR_FRAME_SIZE];
 	short pcmFrame[PCM_FRAME_SIZE];
 	
-//	NSString * path = [[NSBundle mainBundle] pathForResource:  @"test" ofType: @"amr"]; 
-//	fpamr = fopen([path cStringUsingEncoding:NSASCIIStringEncoding], "rb");
     fpamr = fopen(pchAMRFileName, "rb");
     
 	if ( fpamr==NULL ) return 0;

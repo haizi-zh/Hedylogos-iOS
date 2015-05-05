@@ -94,7 +94,7 @@ class MessageSendManager: MessageTransferManager {
         
         var metadataId = NSUUID().UUIDString
         var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(metadataId).jpeg")
-        MetadataUploadManager.moveMetadata2Path(imageData, toPath: imagePath)
+        MetaDataManager.moveMetadata2Path(imageData, toPath: imagePath)
         
         imageMessage.localPath = imagePath
         
@@ -161,20 +161,23 @@ class MessageSendManager: MessageTransferManager {
         audioMessage.status = IMMessageStatus.IMMessageSending
         
         var metadataId = NSUUID().UUIDString
-
-        var audioPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(metadataId).amr")
         
-        VoiceConverter.wavToAmr(wavAudioPath, amrSavePath: audioPath)
+        var tempAmrPath = AccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(metadataId).amr")
+
+        var audioWavPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(metadataId).wav")
+        MetaDataManager.moveMetadataFromOnePath2AnotherPath(wavAudioPath, toPath: audioWavPath)
+        
+        VoiceConverter.wavToAmr(wavAudioPath, amrSavePath: tempAmrPath)
         
         var audioContentDic = NSMutableDictionary()
         audioContentDic.setObject(metadataId, forKey: "metadataId")
 
-        if let url = NSURL(string: audioPath) {
+        if let url = NSURL(string: tempAmrPath) {
             var play = AVAudioPlayer(contentsOfURL: url, error: nil)
             audioContentDic.setObject(play.duration, forKey: "length")
         }
         
-        audioMessage.localPath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(metadataId).amr")
+        audioMessage.localPath = audioWavPath
 
         audioMessage.message = audioMessage.contentsStrWithJsonObjc(audioContentDic) as! String
         
@@ -189,7 +192,7 @@ class MessageSendManager: MessageTransferManager {
             (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(audioMessage)
         }
         
-        var audioData = NSData(contentsOfFile: audioPath)
+        var audioData = NSData(contentsOfFile: tempAmrPath)
         
         if let audioData = audioData {
         
@@ -199,6 +202,9 @@ class MessageSendManager: MessageTransferManager {
                         println("上传了: \(progressValue)")
                         })
                         { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
+                            var fileManager = NSFileManager.defaultManager()
+                            fileManager.removeItemAtPath(tempAmrPath, error: nil)
+
                             if isSuccess {
                                 audioMessage.status = IMMessageStatus.IMMessageSuccessful
                                 if let retMessage = retMessage {

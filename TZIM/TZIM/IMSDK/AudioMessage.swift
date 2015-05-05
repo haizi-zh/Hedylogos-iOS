@@ -12,6 +12,7 @@ class AudioMessage: BaseMessage {
     var audioLength: Float = 0.0
     var audioStatus: Int = 0
     var localPath: String?
+    var remoteUrl: String?
     
     override init() {
         super.init()
@@ -28,9 +29,24 @@ class AudioMessage: BaseMessage {
             audioLength = length
         }
         
-        var audioId = contentsDic.objectForKey("metadataId") as? String
-        localPath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(audioId).amr")
+        if let audioId = contentsDic.objectForKey("metadataId") as? String {
+            localPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(audioId).wav")
+        }
 
+        remoteUrl = contentsDic.objectForKey("url") as? String
+    }
+    
+    /**
+    更新消息的主体内容，一般是下载附件完成后填入新的 metadataId
+    */
+    func updateMessageContent() {
+        var imageDic: NSMutableDictionary = super.jsonObjcWithString(message).mutableCopy() as! NSMutableDictionary
+        if let metadataId = metadataId {
+            imageDic.setObject(metadataId, forKey: "metadataId")
+            if let content = super.contentsStrWithJsonObjc(imageDic) {
+                message = content as String
+            }
+        }
     }
 
    

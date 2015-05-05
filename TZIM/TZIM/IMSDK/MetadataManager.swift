@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MetadataUploadManager: NSObject {
+class MetaDataManager: NSObject {
     
     /**
     将二进制文件移动到某个路径下
@@ -20,6 +20,22 @@ class MetadataUploadManager: NSObject {
         var fileManager = NSFileManager.defaultManager()
         fileManager.createFileAtPath(toPath, contents: metadata, attributes: nil)
     }
+    
+    /**
+    将某个路径下的二进制文件移动到某个路径下
+    
+    :param: fileData 需要移动的数据
+    :param: toPath   将要移动到的路径
+    */
+
+    class func moveMetadataFromOnePath2AnotherPath(fromPath: String, toPath: String) {
+        if let metadata = NSData(contentsOfFile: fromPath) {
+            MetaDataManager.moveMetadata2Path(metadata, toPath: toPath)
+        }
+    }
+}
+
+class MetadataUploadManager: NSObject {
     
     /**
     异步获取上传的 token 和 key
@@ -87,16 +103,12 @@ class MetadataUploadManager: NSObject {
             }
             }, option: opt)
     }
-    
-    
 }
 
-
 class MetadataDownloadManager:NSObject{
-
+    
     /**
     异步下载图片的预览图片信息
-    
     :param: url        图片的 url
     :param: completion 下载的回掉
     */
@@ -129,11 +141,56 @@ class MetadataDownloadManager:NSObject{
             
             downloadTask.resume()
             
-            
         } else {
             completion(isSuccess: false, retMessage: imageMessage)
         }
     }
+    
+    /**
+    异步下载语音消息信息
+    :param: url        图片的 url
+    :param: completion 下载的回掉
+    */
+    class func asyncDownloadAudioData(audioMessage: AudioMessage, completion:(isSuccess:Bool, retMessage:AudioMessage) -> ()) {
+        var currentSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        if let url = NSURL(string: audioMessage.remoteUrl!) {
+            var request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 10)
+            
+            var downloadTask = currentSession.downloadTaskWithRequest(request, completionHandler: { (url: NSURL!, response: NSURLResponse!, error: NSError!) -> Void in
+                if error != nil {
+                    NSLog("下载语音失败 失败原因是: \(error)")
+                    completion(isSuccess: false, retMessage: audioMessage)
+                } else {
+                    var audioWavPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).wav")
+                    
+                    var tempAmrPath = AccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).amr")
+                    
+                    if let imageData = NSData(contentsOfURL: url) {
+                        var fileManager = NSFileManager.defaultManager()
+                        fileManager.createFileAtPath(tempAmrPath, contents: imageData, attributes: nil)
+
+                        VoiceConverter.amrToWav(tempAmrPath, wavSavePath: audioWavPath)
+                        NSLog("下载语音成功 保存后的地址为: \(audioWavPath)")
+                        fileManager.removeItemAtPath(tempAmrPath, error: nil)
+
+                        audioMessage.localPath = audioWavPath
+                        audioMessage.updateMessageContent()
+                        var daoHelper = DaoHelper()
+                        daoHelper.openDB()
+                        daoHelper.updateMessageContents("chat_\(audioMessage.chatterId)", message: audioMessage)
+                        daoHelper.closeDB()
+                    }
+                    completion(isSuccess: true, retMessage: audioMessage)
+                }
+            })
+            
+            downloadTask.resume()
+            
+        } else {
+            completion(isSuccess: false, retMessage: audioMessage)
+        }
+    }
+
     
     
 }

@@ -212,7 +212,6 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                 daoHelper.closeDB()
                 return true
             }
-
         }
         return false
     }
@@ -240,6 +239,8 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                         (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
                     }
                 })
+            } else if message.messageType == .AudioMessageType {
+                downloadAudioDataAndDistribution(message as! AudioMessage)
             }
         }
     }
@@ -250,6 +251,20 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     */
     private func downloadPreviewImageAndDistribution(message: ImageMessage) {
         MetadataDownloadManager.asyncDownloadThumbImage(message, completion: { (isSuccess: Bool, retMessage: ImageMessage) -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+                    (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
+                }
+            })
+        })
+    }
+    
+    /**
+    在通知用户之前先将图片的二进制文件下载下来
+    :param: message
+    */
+    private func downloadAudioDataAndDistribution(message: AudioMessage) {
+        MetadataDownloadManager.asyncDownloadAudioData(message, completion: { (isSuccess: Bool, retMessage: AudioMessage) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                     (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
