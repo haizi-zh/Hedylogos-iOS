@@ -203,7 +203,11 @@ class MessageSendManager: MessageTransferManager {
                         })
                         { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
                             var fileManager = NSFileManager.defaultManager()
-                            fileManager.removeItemAtPath(tempAmrPath, error: nil)
+                            var error: NSError?
+                            fileManager.removeItemAtPath(tempAmrPath, error: &error)
+                            if error != nil {
+                                println("移除发送完成后的临时文件出错 error\(error)")
+                            }
 
                             if isSuccess {
                                 audioMessage.status = IMMessageStatus.IMMessageSuccessful
