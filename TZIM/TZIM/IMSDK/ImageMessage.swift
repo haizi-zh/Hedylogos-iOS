@@ -33,16 +33,18 @@ class ImageMessage: BaseMessage {
         originUrl = contentsDic.objectForKey("origin") as? String
         thumbUrl = contentsDic.objectForKey("thumb") as? String
         fullUrl = contentsDic.objectForKey("full") as? String
-        localPath = contentsDic.objectForKey("localPath") as? String
+        if let imageId = contentsDic.objectForKey("metadataId") as? String {
+            localPath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageId).jpeg")
+        }
     }
     
     /**
-    更新消息的主体内容，一般是下载附件完成后填入新的 localpath
+    更新消息的主体内容，一般是下载附件完成后填入新的 metadataId
     */
     func updateMessageContent() {
         var imageDic: NSMutableDictionary = super.jsonObjcWithString(message).mutableCopy() as! NSMutableDictionary
-        if let localPath = localPath {
-            imageDic.setObject(localPath, forKey: "localPath")
+        if let metadataId = metadataId {
+            imageDic.setObject(metadataId, forKey: "metadataId")
             if let content = super.contentsStrWithJsonObjc(imageDic) {
                 message = content as String
             }

@@ -9,7 +9,7 @@
 #import "ChatViewController.h"
 #import "TZIM-swift.h"
 
-@interface ChatViewController () <ChatConversationDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface ChatViewController () <ChatConversationDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ChatManagerAudioDelegate>
 {
     float currentKeyboardHeigh;
     BOOL keyboardIsShow;
@@ -59,25 +59,37 @@ static NSString *messageCellIdentifier = @"messageCell";
 
         if (message.sendType == IMMessageSendTypeMessageSendMine) {
             if (message.messageType == IMMessageTypeImageMessageType) {
-                NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld, localPath:%@", message.message, message.localId, message.serverId, ((ImageMessage*)message).localPath];
+                NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld, localPath:%@", message.message, (long)message.localId, (long)message.serverId, ((ImageMessage*)message).localPath];
+                
+                UIImage *image = [UIImage imageWithContentsOfFile:((ImageMessage*)message).localPath];
 
-                bubbleData = [NSBubbleData dataWithImage:[UIImage imageWithContentsOfFile:((ImageMessage*)message).localPath] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+                bubbleData = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
                 
             } else if (message.messageType == IMMessageTypeTextMessageType) {
-                NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld", message.message, message.localId, message.serverId];
+                NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld", message.message, (long)message.localId, (long)message.serverId];
 
                 bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+            } else if (message.messageType == IMMessageTypeAudioMessageType) {
+                NSString *content = [NSString stringWithFormat:@"声音文件： %@ 时长: %f, localId:%ld,  serverId:%ld", message.message, ((AudioMessage *)message).audioLength, (long)message.localId, (long)message.serverId];
+                bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+
             }
+            
         } else {
             if (message.messageType == IMMessageTypeImageMessageType) {
-                NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld, localPath:%@", message.message, message.localId, message.serverId, ((ImageMessage*)message).localPath];
+                NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld, localPath:%@", message.message, (long)message.localId, (long)message.serverId, ((ImageMessage*)message).localPath];
 
                 bubbleData = [NSBubbleData dataWithImage:[UIImage imageWithContentsOfFile:((ImageMessage*)message).localPath] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
                 
             } else if (message.messageType == IMMessageTypeTextMessageType) {
-                NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld", message.message, message.localId, message.serverId];
+                NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld", message.message, (long)message.localId, (long)message.serverId];
 
                 bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+                
+            } else if (message.messageType == IMMessageTypeAudioMessageType) {
+                NSString *content = [NSString stringWithFormat:@"声音文件： %@ 时长: %f, localId:%ld,  serverId:%ld", message.message, ((AudioMessage *)message).audioLength, (long)message.localId, (long)message.serverId];
+                bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+                
             }
         }
 
@@ -136,27 +148,42 @@ static NSString *messageCellIdentifier = @"messageCell";
 - (void)addMessageToDataSource:(BaseMessage *)message
 {
     NSBubbleData *bubbleData;
-    
-    NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld", message.message, message.localId, message.serverId];
-    
+
     if (message.sendType == IMMessageSendTypeMessageSendMine) {
         if (message.messageType == IMMessageTypeImageMessageType) {
+            NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld, localPath:%@", message.message, (long)message.localId, (long)message.serverId, ((ImageMessage*)message).localPath];
+            
             bubbleData = [NSBubbleData dataWithImage:[UIImage imageWithContentsOfFile:((ImageMessage*)message).localPath] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
             
         } else if (message.messageType == IMMessageTypeTextMessageType) {
-        
+            NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld", message.message, (long)message.localId, (long)message.serverId];
+            
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+            
+        } else if (message.messageType == IMMessageTypeAudioMessageType) {
+            NSString *content = [NSString stringWithFormat:@"声音文件： %@ 时长: %f, localId:%ld,  serverId:%ld", message.message, ((AudioMessage *)message).audioLength, (long)message.localId, (long)message.serverId];
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+            
         }
+        
     } else {
         if (message.messageType == IMMessageTypeImageMessageType) {
+            NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld, localPath:%@", message.message, (long)message.localId, (long)message.serverId, ((ImageMessage*)message).localPath];
             
             bubbleData = [NSBubbleData dataWithImage:[UIImage imageWithContentsOfFile:((ImageMessage*)message).localPath] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
-
+            
         } else if (message.messageType == IMMessageTypeTextMessageType) {
+            NSString *content = [NSString stringWithFormat:@"%@, localId:%ld,  serverId:%ld", message.message, (long)message.localId, (long)message.serverId];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+            
+        } else if (message.messageType == IMMessageTypeAudioMessageType) {
+            NSString *content = [NSString stringWithFormat:@"声音文件： %@ 时长: %f, localId:%ld,  serverId:%ld", message.message, ((AudioMessage *)message).audioLength, (long)message.localId, (long)message.serverId];
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+            
         }
     }
+
     bubbleData.avatar = _myImage;
     [_chatDataSource addObject:bubbleData];
     [_bubbleTable reloadData];
@@ -255,13 +282,12 @@ static NSString *messageCellIdentifier = @"messageCell";
 }
 
 - (IBAction)startRecrodAudio:(UIButton *)sender {
+    _conversation.chatManager.chatManagerAudio.delegate = self;
     [_conversation.chatManager beginRecordAudio];
 }
 
 - (IBAction)stopRecrodAudio:(UIButton *)sender {
     [_conversation.chatManager stopRecordAudio];
-    
-    
 }
 
 - (IBAction)selectImage:(id)sender {
@@ -270,6 +296,16 @@ static NSString *messageCellIdentifier = @"messageCell";
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
     [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)audioRecordEnd:(NSString * __nonnull)audioPath
+{
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    AudioMessage *audioMessage = [imClientManager.messageSendManager sendAudioMessageWithWavFormat:_conversation.chatterId isChatGroup:NO wavAudioPath:audioPath progress:^(float progress) {
+        
+    }];
+    
+    [self addMessageToDataSource:audioMessage];
 }
 
 #pragma mark - UITextViewDelegate

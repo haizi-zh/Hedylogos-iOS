@@ -17,7 +17,7 @@ class BaseMessage: NSObject {
     var createTime: Int
     var sendType: IMMessageSendType
     var chatterId: Int
-    var metaDataId: String?
+    var metadataId: String?
     
     override init() {
         localId = -1

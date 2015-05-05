@@ -110,7 +110,7 @@ class MetadataDownloadManager:NSObject{
                     NSLog("下载图片预览图失败 失败原因是: \(error)")
                     completion(isSuccess: false, retMessage: imageMessage)
                 } else {
-                    var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageMessage.metaDataId!).jpeg")
+                    var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageMessage.metadataId!).jpeg")
                     
                     if let imageData = NSData(contentsOfURL: url) {
                         var fileManager = NSFileManager.defaultManager()

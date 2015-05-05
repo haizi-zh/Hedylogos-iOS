@@ -215,6 +215,8 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
                 
             case .AudioMessageType:
                 retMessage = AudioMessage()
+                var contents = rs.stringForColumn("Message")
+                retMessage?.fillContentWithContent(contents)
                 
             case .ImageMessageType:
                 retMessage = ImageMessage()

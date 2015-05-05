@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 private let messageSendManager = MessageSendManager()
 
@@ -91,12 +92,14 @@ class MessageSendManager: MessageTransferManager {
 
         var imageData = UIImageJPEGRepresentation(image, 1)
         
-        var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(NSUUID().UUIDString).jpeg")
+        var metadataId = NSUUID().UUIDString
+        var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(metadataId).jpeg")
         MetadataUploadManager.moveMetadata2Path(imageData, toPath: imagePath)
+        
         imageMessage.localPath = imagePath
         
         var imageContentDic = NSMutableDictionary()
-        imageContentDic.setObject(imagePath, forKey: "localPath")
+        imageContentDic.setObject(metadataId, forKey: "metadataId")
         imageMessage.message = imageMessage.contentsStrWithJsonObjc(imageContentDic) as! String
         
         var daoHelper = DaoHelper()
@@ -157,18 +160,33 @@ class MessageSendManager: MessageTransferManager {
         audioMessage.createTime = Int(NSDate().timeIntervalSince1970)
         audioMessage.status = IMMessageStatus.IMMessageSending
         
-        var audioPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("test.wav")
+        var metadataId = NSUUID().UUIDString
 
+        var audioPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(metadataId).amr")
+        
         VoiceConverter.wavToAmr(wavAudioPath, amrSavePath: audioPath)
         
-        var audioContentDic = ["localPath": audioPath]
-        audioMessage.message = "\(audioContentDic)"
+        var audioContentDic = NSMutableDictionary()
+        audioContentDic.setObject(metadataId, forKey: "metadataId")
+
+        if let url = NSURL(string: audioPath) {
+            var play = AVAudioPlayer(contentsOfURL: url, error: nil)
+            audioContentDic.setObject(play.duration, forKey: "length")
+        }
+        
+        audioMessage.localPath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(metadataId).amr")
+
+        audioMessage.message = audioMessage.contentsStrWithJsonObjc(audioContentDic) as! String
         
         println("开始发送语音消息： 消息内容为： \(audioMessage.message)")
         var daoHelper = DaoHelper()
         if daoHelper.openDB() {
             daoHelper.insertChatMessage("chat_\(chatterId)", message: audioMessage)
             daoHelper.closeDB()
+        }
+        
+        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+            (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(audioMessage)
         }
         
         var audioData = NSData(contentsOfFile: audioPath)
@@ -199,7 +217,6 @@ class MessageSendManager: MessageTransferManager {
                             for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                                 (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(audioMessage)
                             }
-                            
                     }
                 }
             })

@@ -11,7 +11,7 @@ import UIKit
 class ChatManager: NSObject, ChatManagerMessageProtocol, ChatManagerAudioProtocol {
     
     private let chatManagerMessage: ChatManagerMessage!
-    private let chatManagerAudio: ChatManagerAudio!
+    let chatManagerAudio: ChatManagerAudio!
     
     init(chatterId: Int, chatType: IMChatType) {
         chatManagerMessage = ChatManagerMessage()

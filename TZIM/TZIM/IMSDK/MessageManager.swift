@@ -93,10 +93,10 @@ class MessageManager: NSObject {
                     messageModel = TextMessage()
                 case .ImageMessageType :
                     messageModel = ImageMessage()
-                    messageModel?.metaDataId = NSUUID().UUIDString
+                    messageModel?.metadataId = NSUUID().UUIDString
                 case .AudioMessageType:
                     messageModel = AudioMessage()
-                    messageModel?.metaDataId = NSUUID().UUIDString
+                    messageModel?.metadataId = NSUUID().UUIDString
 
                 default :
                     break
