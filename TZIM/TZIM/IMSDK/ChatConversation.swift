@@ -56,7 +56,6 @@ class ChatConversation: NSObject {
             return chatMessageList.lastObject as? BaseMessage
         }
     }
-
     
     /**
     更新最后一条与服务器同步的 message, 默认的 serverid 为-1，如果大于0则为与服务器同步的 message

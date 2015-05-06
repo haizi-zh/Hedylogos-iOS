@@ -18,6 +18,7 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
     private let metaDataDaoHelper: MetaDataDaoHelper
     private let userDaoHelper: UserDaoHelper
     private let conversationHelper: ConversationDaoHelper
+    private let dbQueue: FMDatabaseQueue
     
     override init() {
         
@@ -33,10 +34,12 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
         }
         
         db = FMDatabase(path: dbPath)
-        chatMessageDaoHelper = ChatMessageDaoHelper(db: db)
+        dbQueue = FMDatabaseQueue(path: dbPath)
+
+        chatMessageDaoHelper = ChatMessageDaoHelper(db: db, dbQueue: dbQueue)
         metaDataDaoHelper = MetaDataDaoHelper(db: db)
-        userDaoHelper = UserDaoHelper(db: db)
-        conversationHelper = ConversationDaoHelper(db: db)
+        userDaoHelper = UserDaoHelper(db: db, dbQueue: dbQueue)
+        conversationHelper = ConversationDaoHelper(db: db, dbQueue: dbQueue)
         super.init()
     }
     

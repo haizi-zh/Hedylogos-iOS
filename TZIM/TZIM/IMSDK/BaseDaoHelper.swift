@@ -11,9 +11,11 @@ import UIKit
 class BaseDaoHelper: NSObject {
     
     let dataBase: FMDatabase
+    let databaseQueue: FMDatabaseQueue
     
-    init(db: FMDatabase) {
+    init(db: FMDatabase, dbQueue: FMDatabaseQueue) {
         dataBase = db
+        databaseQueue = dbQueue
         super.init()
     }
 

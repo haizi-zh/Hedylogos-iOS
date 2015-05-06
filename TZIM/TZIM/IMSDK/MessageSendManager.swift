@@ -137,7 +137,6 @@ class MessageSendManager: MessageTransferManager {
                         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                             (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(imageMessage)
                         }
-
                 }
             }
         })
@@ -174,7 +173,7 @@ class MessageSendManager: MessageTransferManager {
 
         if let url = NSURL(string: tempAmrPath) {
             var play = AVAudioPlayer(contentsOfURL: url, error: nil)
-            audioContentDic.setObject(play.duration, forKey: "length")
+            audioContentDic.setObject(play.duration, forKey: "duration")
         }
         
         audioMessage.localPath = audioWavPath

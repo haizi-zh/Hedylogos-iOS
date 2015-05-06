@@ -114,6 +114,9 @@ class MetadataDownloadManager:NSObject{
     */
     class func asyncDownloadThumbImage(imageMessage: ImageMessage, completion:(isSuccess:Bool, retMessage:ImageMessage) -> ()) {
         var currentSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        if imageMessage.thumbUrl == nil {
+            return
+        }
         if let url = NSURL(string: imageMessage.thumbUrl!) {
             var request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 10)
             
@@ -153,6 +156,9 @@ class MetadataDownloadManager:NSObject{
     */
     class func asyncDownloadAudioData(audioMessage: AudioMessage, completion:(isSuccess:Bool, retMessage:AudioMessage) -> ()) {
         var currentSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        if audioMessage.remoteUrl == nil {
+            return
+        }
         if let url = NSURL(string: audioMessage.remoteUrl!) {
             var request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 10)
             

@@ -25,7 +25,7 @@ class AudioMessage: BaseMessage {
     }
     
     override func fillContentWithContentDic(contentsDic: NSDictionary) {
-        if let length = contentsDic.objectForKey("length") as? Float {
+        if let length = contentsDic.objectForKey("duration") as? Float {
             audioLength = length
         }
         
