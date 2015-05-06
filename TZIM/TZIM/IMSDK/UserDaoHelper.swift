@@ -16,7 +16,7 @@ protocol UserDaoProtocol {
     创建好友表
     :returns:
     */
-    func createFrendTable() -> Bool
+    func createFrendTable()
     
     /**
     删除好友表
@@ -29,7 +29,7 @@ protocol UserDaoProtocol {
     :param: frend
     :returns:
     */
-    func addFrend2DB(frend: FrendModel) -> Bool
+    func addFrend2DB(frend: FrendModel)
     
     /**
     获取所有的是我的好友的列表
@@ -55,13 +55,14 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
         return false
     }
     
-    func createFrendTable() -> Bool {
+    func createFrendTable() {
         var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER)"
         if (super.dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
-            println("执行 sql 语句：\(sql)")
-            return true
+            println("success 执行 sql 语句：\(sql)")
+            
+        } else {
+            println("error 执行 sql 语句：\(sql)")
         }
-        return false
     }
     
     func deleteFrendTable() {
@@ -69,7 +70,7 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
         dataBase.executeUpdate(sql, withArgumentsInArray: nil)
     }
     
-    func addFrend2DB(frend: FrendModel) -> Bool {
+    func addFrend2DB(frend: FrendModel) {
         if !super.tableIsExit(frendTableName) {
             createFrendTable()
         }
@@ -77,7 +78,6 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
         println("执行 sql 语句：\(sql)")
         var array = [frend.userId, frend.nickName, frend.avatar, frend.avatarSmall, frend.shortPY, frend.fullPY, frend.signature, frend.memo, frend.sex, frend.type]
         dataBase.executeUpdate(sql, withArgumentsInArray: array as [AnyObject])
-        return true
     }
     
     /**
@@ -105,10 +105,4 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
         
         return retArray
     }
-    
-    
-    
-    
-    
-    
 }

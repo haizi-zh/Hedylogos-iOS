@@ -38,10 +38,7 @@ class MessageSendManager: MessageTransferManager {
             } else {
                 message.status = IMMessageStatus.IMMessageFailed
             }
-            if daoHelper.openDB() {
-                daoHelper.updateMessageInDB("chat_\(receiver)", message: message)
-                daoHelper.closeDB()
-            }
+            daoHelper.updateMessageInDB("chat_\(receiver)", message: message)
             for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                 (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(message)
             }
@@ -66,10 +63,7 @@ class MessageSendManager: MessageTransferManager {
         textMessage.sendType = IMMessageSendType.MessageSendMine
         
         var daoHelper = DaoHelper()
-        if daoHelper.openDB() {
-            daoHelper.insertChatMessage("chat_\(chatterId)", message: textMessage)
-            daoHelper.closeDB()
-        }
+        daoHelper.insertChatMessage("chat_\(chatterId)", message: textMessage)
         
         sendMessage(textMessage, receiver: chatterId, isChatGroup: isChatGroup)
         return textMessage
@@ -103,10 +97,7 @@ class MessageSendManager: MessageTransferManager {
         imageMessage.message = imageMessage.contentsStrWithJsonObjc(imageContentDic) as! String
         
         var daoHelper = DaoHelper()
-        if daoHelper.openDB() {
-            daoHelper.insertChatMessage("chat_\(chatterId)", message: imageMessage)
-            daoHelper.closeDB()
-        }
+        daoHelper.insertChatMessage("chat_\(chatterId)", message: imageMessage)
         NSLog("开始上传  图像为\(image)")
         
         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
@@ -130,10 +121,7 @@ class MessageSendManager: MessageTransferManager {
                         } else {
                             imageMessage.status = IMMessageStatus.IMMessageFailed
                         }
-                        if daoHelper.openDB() {
-                            daoHelper.updateMessageInDB("chat_\(imageMessage.chatterId)", message: imageMessage)
-                            daoHelper.closeDB()
-                        }
+                        daoHelper.updateMessageInDB("chat_\(imageMessage.chatterId)", message: imageMessage)
                         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                             (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(imageMessage)
                         }
@@ -182,10 +170,8 @@ class MessageSendManager: MessageTransferManager {
         
         println("开始发送语音消息： 消息内容为： \(audioMessage.message)")
         var daoHelper = DaoHelper()
-        if daoHelper.openDB() {
-            daoHelper.insertChatMessage("chat_\(chatterId)", message: audioMessage)
-            daoHelper.closeDB()
-        }
+
+        daoHelper.insertChatMessage("chat_\(chatterId)", message: audioMessage)
         
         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
             (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(audioMessage)
@@ -201,7 +187,7 @@ class MessageSendManager: MessageTransferManager {
                         println("上传了: \(progressValue)")
                         })
                         { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
-                            var fileManager = NSFileManager.defaultManager()
+                            var fileManager =  NSFileManager()
                             var error: NSError?
                             fileManager.removeItemAtPath(tempAmrPath, error: &error)
                             if error != nil {
@@ -219,10 +205,7 @@ class MessageSendManager: MessageTransferManager {
                             } else {
                                 audioMessage.status = IMMessageStatus.IMMessageFailed
                             }
-                            if daoHelper.openDB() {
-                                daoHelper.updateMessageInDB("chat_\(audioMessage.chatterId)", message: audioMessage)
-                                daoHelper.closeDB()
-                            }
+                            daoHelper.updateMessageInDB("chat_\(audioMessage.chatterId)", message: audioMessage)
                             for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                                 (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(audioMessage)
                             }

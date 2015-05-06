@@ -83,20 +83,17 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
             println("存在不合法的消息, 需要 fetch")
             fetchOmitMessageWithReceivedMessages(messagePrepare2Fetch)
         }
-        
-        for message in messagePrepate2Distribute {
-            println("合法的消息的 message id 为\((message as? BaseMessage)?.serverId)")
-            distributionMessage(message as? BaseMessage)
-        }
+        var array = messagePrepate2Distribute as AnyObject as! [BaseMessage]
+        distributionMessage(array)
     }
     
     
     /**
-    fetch 遗漏的消息
+    fetch 消息
     
     :param: receivedMessages 已经收到的消息
     */
-    func fetchOmitMessageWithReceivedMessages(receivedMessages: NSArray) {
+    func fetchOmitMessageWithReceivedMessages(receivedMessages: NSArray?) {
         var accountManager = AccountManager.shareInstance()
         
         println("fetchOmitMessageWithReceivedMessages queue: \(NSThread.currentThread())")
@@ -106,7 +103,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
 
         NetworkTransportAPI.asyncFecthMessage(accountManager.userId, completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> () in
             
-            println("fetch Result queue: \(NSThread.currentThread())")
+            println("fetch Result 一共是：\(retMessage?.count): \(retMessage)")
 
             if (isSuccess) {
                 if let retMessageArray = retMessage {
@@ -189,10 +186,12 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
             }
         }
         println("共有\(messagesPrepare2DistributeArray.count)条消息是从 fetch 接口过来的，并且是合法的")
-        for message in messagesPrepare2DistributeArray {
-            println("fetch后 合法的消息的 message id 为\((message as? BaseMessage)?.serverId)")
-            distributionMessage(message as? BaseMessage)
-        }
+        var array = messagesPrepare2DistributeArray as AnyObject as! [BaseMessage]
+        distributionMessage(array)
+//        for message in messagesPrepare2DistributeArray {
+//            println("fetch后 合法的消息的 message id 为\((message as? BaseMessage)?.serverId)")
+//            distributionMessage(message as BaseMessage)
+//        }
     }
     
     /**
@@ -203,34 +202,28 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     */
     private func oldMessageShould2Distribution(message: BaseMessage) -> Bool {
         let daoHelper = DaoHelper()
-        if daoHelper.openDB() {
-            var chatTableName = "chat_\(message.chatterId)"
-            if daoHelper.messageIsExitInTable(chatTableName, message: message) {
-                daoHelper.closeDB()
-                return false
-            } else {
-                daoHelper.closeDB()
-                return true
-            }
+        var chatTableName = "chat_\(message.chatterId)"
+        if daoHelper.messageIsExitInTable(chatTableName, message: message) {
+            return false
+        } else {
+            return true
         }
-        return false
     }
     
     /**
     将合法的消息分发出去
     :param: message
     */
-    private func distributionMessage(message: BaseMessage?) {
+    private func distributionMessage(messageList: Array<BaseMessage>) {
 
-        println("distributionMessage: chatterId: \(message?.chatterId)   serverId: \(message?.serverId)")
-        if let message = message {
-            let daoHelper = DaoHelper()
-            if daoHelper.openDB() {
-                var tableName = "chat_\(message.chatterId)"
-                daoHelper.insertChatMessage(tableName, message: message)
-                daoHelper.closeDB()
-            }
-            if message.messageType == .ImageMessageType {                
+        let daoHelper = DaoHelper()
+        daoHelper.insertChatMessageList(messageList)
+        
+        for message in messageList {
+            
+            println("distributionMessage: chatterId: \(message.chatterId)   serverId: \(message.serverId)")
+
+            if message.messageType == .ImageMessageType {
                 downloadPreviewImageAndDistribution(message as! ImageMessage)
 
             } else if message.messageType == .TextMessageType {

@@ -28,11 +28,8 @@ class FrendManager: NSObject {
     */
     func addFrend(frend: FrendModel) {
         var daoHelper = DaoHelper()
-        if daoHelper.openDB() {
-            daoHelper.addFrend2DB(frend)
-            frendList.addObject(frend)
-            daoHelper.closeDB()
-        }
+        daoHelper.addFrend2DB(frend)
+        frendList.addObject(frend)
     }
     
     /**
@@ -42,10 +39,7 @@ class FrendManager: NSObject {
     private class func getAllMyContacts() -> NSArray {
         var retArray = NSArray()
         var daoHelper = DaoHelper()
-        if daoHelper.openDB() {
-            retArray = daoHelper.selectAllContacts()
-            daoHelper.closeDB()
-        }
+        retArray = daoHelper.selectAllContacts()
         return retArray
     }
     

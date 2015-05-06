@@ -49,10 +49,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     private func updateConversationList() {
         var daoHelper = DaoHelper()
         NSLog("****开始获取会话列表*****")
-        if daoHelper.openDB() {
-            conversationList = daoHelper.getAllConversationList() as! NSMutableArray
-            daoHelper.closeDB()
-        }
+        conversationList = daoHelper.getAllConversationList() as! NSMutableArray
         NSLog("****结束获取会话列表*****")
     }
 
@@ -88,11 +85,8 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         }
 
         var daoHelper = DaoHelper()
-        if daoHelper.openDB() {
-            daoHelper.addConversation(conversation)
-            daoHelper.closeDB()
-            self.addConversation2ConversationList(conversation)
-        }
+        daoHelper.addConversation(conversation)
+        self.addConversation2ConversationList(conversation)
         delegate?.conversationsHaveAdded(conversationList)
     }
     
@@ -103,20 +97,17 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     */
     func removeConversation(chatterId: Int) -> Bool {
         var daoHelper = DaoHelper()
-        if daoHelper.openDB() {
-            if daoHelper.removeConversationfromDB(chatterId) {
-                daoHelper.closeDB()
-                for conversation in conversationList {
-                    if let conversation = conversation as? ChatConversation {
-                        if conversation.chatterId == chatterId {
-                            conversationList.removeObject(conversation)
-                            delegate?.conversationsHaveRemoved([conversation])
-                            return true
-                        }
-                    }
+        daoHelper.removeConversationfromDB(chatterId) 
+        for conversation in conversationList {
+            if let conversation = conversation as? ChatConversation {
+                if conversation.chatterId == chatterId {
+                    conversationList.removeObject(conversation)
+                    delegate?.conversationsHaveRemoved([conversation])
+                    return true
                 }
             }
         }
+    
         return false
     }
     

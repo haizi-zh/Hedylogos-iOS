@@ -8,10 +8,15 @@
 
 import UIKit
 
+var count = 0
+
 protocol ChatMessageDaoHelperProtocol{
-    func createChatTable(tableName: String) -> Bool
-    func insertChatMessage(tableName: String, message:BaseMessage) -> Bool
-    func updateMessageInDB(tableName: String, message:BaseMessage) -> Bool 
+    func createChatTable(tableName: String)
+    func insertChatMessage(tableName: String, message:BaseMessage)
+    
+    func insertChatMessageList(messageList: Array<BaseMessage>)
+    
+    func updateMessageInDB(tableName: String, message:BaseMessage)
     
     /**
     按条件获取聊天列表
@@ -38,7 +43,7 @@ protocol ChatMessageDaoHelperProtocol{
     */
     func messageIsExitInTable(tableName: String, message: BaseMessage) -> Bool
     
-    func updateMessageContents(tableName: String, message: BaseMessage) -> Bool
+    func updateMessageContents(tableName: String, message: BaseMessage) 
 }
 
 class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
@@ -48,11 +53,15 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :param: tableName 表名
     :returns: 创建是否成功
     */
-    func createChatTableWithoutOpen(tableName: String) -> Bool {
+    func createChatTableWithoutOpen(tableName: String) {
         if dataBase.open() {
-           return self.createChatTable(tableName)
+            self.createChatTable(tableName)
+            println("success createChatTableWithoutOpen")
+            dataBase.close()
+
+        } else {
+            println("error createChatTableWithoutOpen")
         }
-        return false
     }
     
     /**
@@ -60,34 +69,49 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :param: tableName 表明
     :returns: 创建是否成功
     */
-    func createChatTable(tableName: String) -> Bool {
+    func createChatTable(tableName: String) {
         var sql = "create table '\(tableName)' (LocalId INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, ServerId INTEGER, Status int(4), Type int(4), Message TEXT, CreateTime INTEGER, SendType int, ChatterId int)"
         if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
-            println("执行 sql 语句：\(sql)")
-            return true
+            println("success 执行 sql 语句：\(sql)")
         } else {
-            return false
+            println("error 执行 sql 语句：\(sql)")
         }
     }
     
     /**
-    更新聊天表数据
+    插入一条聊天表数据
     :param: table 表明
     :returns: 更新是否成功
     */
-    func insertChatMessage(tableName: String, message:BaseMessage) -> Bool {
+    func insertChatMessage(tableName: String, message:BaseMessage) {
+
         if !super.tableIsExit(tableName) {
             self.createChatTable(tableName)
         }
-        
         var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType, ChatterId) values (?,?,?,?,?,?,?)"
         var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue, message.chatterId]
         if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
-            println("执行 sql 语句：\(sql)")
             message.localId = Int(dataBase.lastInsertRowId())
-            return true
+            println("success 执行 sql 语句：\(sql) message:\(message.message)  serverId:\(message.serverId)")
+            
+            count++
+            
+            println("一共插入数据库里的聊天数量为 \(count)")
         } else {
-            return false
+            println("error 执行 sql 语句：\(sql), message:\(message.message)  serverId:\(message.serverId)")
+        }
+    }
+    
+    /**
+    插入一组聊天记录
+    
+    :param: tableName
+    :param: messageList
+    */
+    func insertChatMessageList(messageList: Array<BaseMessage>) {
+        for message in messageList {
+            var tableName = "chat_\(message.chatterId)"
+            self.insertChatMessage(tableName, message:message)
         }
     }
     
@@ -95,19 +119,17 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     更新表的 serverId
     :param: tableName 需要更新的表
     :param: message 更新内容
-    :returns: 是否更新成功
     */
-    func updateMessageInDB(tableName: String, message:BaseMessage) -> Bool {
+    func updateMessageInDB(tableName: String, message:BaseMessage) {
         if !super.tableIsExit(tableName) {
             self.createChatTable(tableName)
         }
         var sql = "update \(tableName) set ServerId = ?, Status = ?  where LocalId = ?"
         if dataBase.executeUpdate(sql, withArgumentsInArray:[message.serverId, message.status.rawValue, message.localId]) {
-            dataBase.close()
-            println("执行 sql 语句：\(sql)")
-            return true
+            println("success 执行 sql 语句：\(sql)")
+        } else {
+            println("error 执行 sql 语句：\(sql)")
         }
-        return false
     }
     
 
@@ -116,23 +138,21 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     
     :param: tableName 需要更新的表
     :param: contents 新的内容
-    
-    :returns: 更新是否成功
     */
-    func updateMessageContents(tableName: String, message: BaseMessage) -> Bool {
+    func updateMessageContents(tableName: String, message: BaseMessage) {
         
         var sql = "update \(tableName) set Message = ? where LocalId = ?"
         if dataBase.executeUpdate(sql, withArgumentsInArray:[message.message, message.localId]) {
-            dataBase.close()
-            println("执行更新消息内容的 sql 语句：\(sql)")
-            return true
+            println("success 执行更新消息内容的 sql 语句：\(sql)")
+        } else {
+            println("error 执行更新消息内容的 sql 语句：\(sql) message: \(message.message) serverId:\(message.serverId), localId:\(message.localId)")
         }
-        return false
     }
     
     func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray {
         var retArray = NSMutableArray()
         var sql = "select * from (select * from \(fromTable) where LocalId < ? order by LocalId desc limit \(messageCount)) order by LocalId"
+        println("执行 sql 语句 : \(sql)")
         var rs = dataBase.executeQuery(sql, withArgumentsInArray: [untilLocalId, messageCount])
         if (rs != nil) {
             while rs.next() {

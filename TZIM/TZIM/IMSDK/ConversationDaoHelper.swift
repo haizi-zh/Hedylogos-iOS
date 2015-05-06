@@ -14,7 +14,7 @@ protocol ConversationDaoProtocol {
     创建FrendMeta表，用于存放聊天列表信息
     :returns:
     */
-    func createConversationsTable() -> Bool;
+    func createConversationsTable();
     
     /**
     添加一条记录会话列表记录
@@ -34,7 +34,7 @@ protocol ConversationDaoProtocol {
     :param: chatterId 需要移除的 ID
     :returns: 移除是否成功
     */
-    func removeConversationfromDB(chatterId: Int) -> Bool
+    func removeConversationfromDB(chatterId: Int)
 }
 
 class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
@@ -100,15 +100,14 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     创建一个会话表
     :returns:
     */
-    func createConversationsTable() -> Bool {
+    func createConversationsTable() {
         var sql = "create table '\(conversationTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, LastUpdateTime INTEGER)"
+        
         if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
-            println("执行 sql 语句：\(sql)")
-            dataBase.close()
-            return true
+            println("success 执行 sql 语句：\(sql)")
         } else {
-            dataBase.close()
-            return false
+            println("error 执行 sql 语句：\(sql)")
+
         }
     }
     
@@ -122,9 +121,15 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
             self.createConversationsTable()
         }
         var sql = "insert into \(conversationTableName) (UserId, LastUpdateTime) values (?,?)"
+        
+        println("执行 addConversation userId: \(conversation.chatterId)")
+
         var array = [conversation.chatterId, conversation.lastUpdateTime]
         if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
-            println("执行 sql 语句：\(sql)")
+            println("success 执行 sql 语句：\(sql)")
+            
+        } else {
+            println("error 执行 sql 语句：\(sql)")
         }
     }
     
@@ -137,14 +142,10 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         return retArray
     }
    
-    func removeConversationfromDB(chatterId: Int) -> Bool {
+    func removeConversationfromDB(chatterId: Int) {
         var sql = "delete from \(conversationTableName) where userId = ?"
-        return dataBase.executeUpdate(sql, withArgumentsInArray: [chatterId])
+        dataBase.executeUpdate(sql, withArgumentsInArray: [chatterId])
     }
-    
-    
-    
-    
     
     
 }

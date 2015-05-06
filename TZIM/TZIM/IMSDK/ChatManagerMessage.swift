@@ -19,10 +19,7 @@ class ChatManagerMessage: NSObject, ChatManagerMessageProtocol {
         var daoHelper = DaoHelper()
         var tableName = "chat_\(chatterId)"
         var retArray = NSArray()
-        if daoHelper.openDB() {
-            retArray = daoHelper.selectChatMessageList(tableName, untilLocalId: localId, messageCount: messageCount)
-            daoHelper.closeDB()
-        }
+        retArray = daoHelper.selectChatMessageList(tableName, untilLocalId: localId, messageCount: messageCount)
         return retArray
     }
 }

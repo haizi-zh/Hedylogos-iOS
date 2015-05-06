@@ -17,7 +17,7 @@ class MetaDataManager: NSObject {
     :param: toPath   将要移动到的路径
     */
     class func moveMetadata2Path(metadata: NSData, toPath: String) {
-        var fileManager = NSFileManager.defaultManager()
+        var fileManager =  NSFileManager()
         fileManager.createFileAtPath(toPath, contents: metadata, attributes: nil)
     }
     
@@ -105,6 +105,9 @@ class MetadataUploadManager: NSObject {
     }
 }
 
+
+private let metadataDownloadQueue = dispatch_queue_create("MetadataDownloadQueue", nil)
+
 class MetadataDownloadManager:NSObject{
     
     /**
@@ -125,20 +128,24 @@ class MetadataDownloadManager:NSObject{
                     NSLog("下载图片预览图失败 失败原因是: \(error)")
                     completion(isSuccess: false, retMessage: imageMessage)
                 } else {
-                    var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageMessage.metadataId!).jpeg")
                     
-                    if let imageData = NSData(contentsOfURL: url) {
-                        var fileManager = NSFileManager.defaultManager()
-                        fileManager.createFileAtPath(imagePath, contents: imageData, attributes: nil)
-                        NSLog("下载图片预览图成功 保存后的地址为: \(imagePath)")
-                        imageMessage.localPath = imagePath
-                        imageMessage.updateMessageContent()
-                        var daoHelper = DaoHelper()
-                        daoHelper.openDB()
-                        daoHelper.updateMessageContents("chat_\(imageMessage.chatterId)", message: imageMessage)
-                        daoHelper.closeDB()
-                    }
-                    completion(isSuccess: true, retMessage: imageMessage)
+                    dispatch_async(metadataDownloadQueue, { () -> Void in
+
+                        var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageMessage.metadataId!).jpeg")
+                        
+                        if let imageData = NSData(contentsOfURL: url) {
+                            var fileManager =  NSFileManager()
+                            fileManager.createFileAtPath(imagePath, contents: imageData, attributes: nil)
+                            NSLog("下载图片预览图成功 保存后的地址为: \(imagePath)")
+                            imageMessage.localPath = imagePath
+                            imageMessage.updateMessageContent()
+                            var daoHelper = DaoHelper()
+                            daoHelper.updateMessageContents("chat_\(imageMessage.chatterId)", message: imageMessage)
+                        }
+                        completion(isSuccess: true, retMessage: imageMessage)
+
+                    })
+                    
                 }
             })
             
@@ -167,26 +174,28 @@ class MetadataDownloadManager:NSObject{
                     NSLog("下载语音失败 失败原因是: \(error)")
                     completion(isSuccess: false, retMessage: audioMessage)
                 } else {
-                    var audioWavPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).wav")
                     
-                    var tempAmrPath = AccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).amr")
+                    dispatch_async(metadataDownloadQueue, { () -> Void in
+                        var audioWavPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).wav")
+                        
+                        var tempAmrPath = AccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).amr")
+                        
+                        if let imageData = NSData(contentsOfURL: url) {
+                            var fileManager =  NSFileManager()
+                            fileManager.createFileAtPath(tempAmrPath, contents: imageData, attributes: nil)
+                            
+                            VoiceConverter.amrToWav(tempAmrPath, wavSavePath: audioWavPath)
+                            NSLog("下载语音成功 保存后的地址为: \(audioWavPath)")
+                            fileManager.removeItemAtPath(tempAmrPath, error: nil)
+                            
+                            audioMessage.localPath = audioWavPath
+                            audioMessage.updateMessageContent()
+                            var daoHelper = DaoHelper()
+                            daoHelper.updateMessageContents("chat_\(audioMessage.chatterId)", message: audioMessage)
+                        }
+                        completion(isSuccess: true, retMessage: audioMessage)
+                    })
                     
-                    if let imageData = NSData(contentsOfURL: url) {
-                        var fileManager = NSFileManager.defaultManager()
-                        fileManager.createFileAtPath(tempAmrPath, contents: imageData, attributes: nil)
-
-                        VoiceConverter.amrToWav(tempAmrPath, wavSavePath: audioWavPath)
-                        NSLog("下载语音成功 保存后的地址为: \(audioWavPath)")
-                        fileManager.removeItemAtPath(tempAmrPath, error: nil)
-
-                        audioMessage.localPath = audioWavPath
-                        audioMessage.updateMessageContent()
-                        var daoHelper = DaoHelper()
-                        daoHelper.openDB()
-                        daoHelper.updateMessageContents("chat_\(audioMessage.chatterId)", message: audioMessage)
-                        daoHelper.closeDB()
-                    }
-                    completion(isSuccess: true, retMessage: audioMessage)
                 }
             })
             
