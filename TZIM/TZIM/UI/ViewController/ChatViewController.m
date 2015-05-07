@@ -44,6 +44,7 @@ static NSString *messageCellIdentifier = @"messageCell";
      keyboardIsShow = NO;
     _bubbleTable.bubbleDataSource = self;
     _bubbleTable.showAvatars = YES;
+    [_conversation initChatMessageInConversation:20];
     
     if (!_chatDataSource) {
         _chatDataSource = [[NSMutableArray alloc] init];

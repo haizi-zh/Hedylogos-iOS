@@ -21,7 +21,7 @@ class MessageSendManager: MessageTransferManager {
 //MARK: private methods
     
     private func sendMessage(message: BaseMessage, receiver: Int, isChatGroup: Bool) {
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
             (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(message)
         }
@@ -62,7 +62,7 @@ class MessageSendManager: MessageTransferManager {
         textMessage.chatterId = chatterId
         textMessage.sendType = IMMessageSendType.MessageSendMine
         
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
         daoHelper.insertChatMessage("chat_\(chatterId)", message: textMessage)
         
         sendMessage(textMessage, receiver: chatterId, isChatGroup: isChatGroup)
@@ -96,7 +96,7 @@ class MessageSendManager: MessageTransferManager {
         imageContentDic.setObject(metadataId, forKey: "metadataId")
         imageMessage.message = imageMessage.contentsStrWithJsonObjc(imageContentDic) as! String
         
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
         daoHelper.insertChatMessage("chat_\(chatterId)", message: imageMessage)
         NSLog("开始上传  图像为\(image)")
         
@@ -169,7 +169,7 @@ class MessageSendManager: MessageTransferManager {
         audioMessage.message = audioMessage.contentsStrWithJsonObjc(audioContentDic) as! String
         
         println("开始发送语音消息： 消息内容为： \(audioMessage.message)")
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
 
         daoHelper.insertChatMessage("chat_\(chatterId)", message: audioMessage)
         

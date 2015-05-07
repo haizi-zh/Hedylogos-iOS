@@ -8,6 +8,8 @@
 
 import UIKit
 
+private let metadataOperationQueue = dispatch_queue_create("MetadataDownloadQueue", nil)
+
 class MetaDataManager: NSObject {
     
     /**
@@ -105,9 +107,6 @@ class MetadataUploadManager: NSObject {
     }
 }
 
-
-private let metadataDownloadQueue = dispatch_queue_create("MetadataDownloadQueue", nil)
-
 class MetadataDownloadManager:NSObject{
     
     /**
@@ -129,23 +128,22 @@ class MetadataDownloadManager:NSObject{
                     completion(isSuccess: false, retMessage: imageMessage)
                 } else {
                     
-                    dispatch_async(metadataDownloadQueue, { () -> Void in
+                    dispatch_async(metadataOperationQueue, { () -> Void in
 
                         var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageMessage.metadataId!).jpeg")
                         
                         if let imageData = NSData(contentsOfURL: url) {
+
                             var fileManager =  NSFileManager()
                             fileManager.createFileAtPath(imagePath, contents: imageData, attributes: nil)
                             NSLog("下载图片预览图成功 保存后的地址为: \(imagePath)")
                             imageMessage.localPath = imagePath
                             imageMessage.updateMessageContent()
-                            var daoHelper = DaoHelper()
+                            var daoHelper = DaoHelper.shareInstance()
                             daoHelper.updateMessageContents("chat_\(imageMessage.chatterId)", message: imageMessage)
                         }
                         completion(isSuccess: true, retMessage: imageMessage)
-
                     })
-                    
                 }
             })
             
@@ -175,7 +173,7 @@ class MetadataDownloadManager:NSObject{
                     completion(isSuccess: false, retMessage: audioMessage)
                 } else {
                     
-                    dispatch_async(metadataDownloadQueue, { () -> Void in
+                    dispatch_async(metadataOperationQueue, { () -> Void in
                         var audioWavPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).wav")
                         
                         var tempAmrPath = AccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).amr")
@@ -190,7 +188,7 @@ class MetadataDownloadManager:NSObject{
                             
                             audioMessage.localPath = audioWavPath
                             audioMessage.updateMessageContent()
-                            var daoHelper = DaoHelper()
+                            var daoHelper = DaoHelper.shareInstance()
                             daoHelper.updateMessageContents("chat_\(audioMessage.chatterId)", message: audioMessage)
                         }
                         completion(isSuccess: true, retMessage: audioMessage)

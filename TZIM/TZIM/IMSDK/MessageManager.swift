@@ -19,7 +19,7 @@ class MessageManager: NSObject {
     }
     
     override init() {
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
         allLastMessageList = daoHelper.selectAllLastServerChatMessageInDB().mutableCopy() as! NSMutableDictionary
       
         super.init()

@@ -201,7 +201,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     :true: 应该
     */
     private func oldMessageShould2Distribution(message: BaseMessage) -> Bool {
-        let daoHelper = DaoHelper()
+        let daoHelper = DaoHelper.shareInstance()
         var chatTableName = "chat_\(message.chatterId)"
         if daoHelper.messageIsExitInTable(chatTableName, message: message) {
             return false
@@ -216,26 +216,24 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     */
     private func distributionMessage(messageList: Array<BaseMessage>) {
 
-        let daoHelper = DaoHelper()
-        daoHelper.insertChatMessageList(messageList)
-        
-        for message in messageList {
-            
-            println("distributionMessage: chatterId: \(message.chatterId)   serverId: \(message.serverId)")
-
-            if message.messageType == .ImageMessageType {
-                downloadPreviewImageAndDistribution(message as! ImageMessage)
-
-            } else if message.messageType == .TextMessageType {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        let daoHelper = DaoHelper.shareInstance()
+        daoHelper.insertChatMessageList(messageList, completionBlock: { () -> () in
+            for message in messageList {
+                
+                println("distributionMessage: chatterId: \(message.chatterId)   serverId: \(message.serverId)")
+                
+                if message.messageType == .ImageMessageType {
+                    self.downloadPreviewImageAndDistribution(message as! ImageMessage)
+                    
+                } else if message.messageType == .TextMessageType {
                     for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                         (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
                     }
-                })
-            } else if message.messageType == .AudioMessageType {
-                downloadAudioDataAndDistribution(message as! AudioMessage)
+                } else if message.messageType == .AudioMessageType {
+                    self.downloadAudioDataAndDistribution(message as! AudioMessage)
+                }
             }
-        }
+        })
     }
     
     /**
@@ -246,7 +244,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         MetadataDownloadManager.asyncDownloadThumbImage(message, completion: { (isSuccess: Bool, retMessage: ImageMessage) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                    (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
+                    (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(retMessage)
                 }
             })
         })
@@ -260,7 +258,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         MetadataDownloadManager.asyncDownloadAudioData(message, completion: { (isSuccess: Bool, retMessage: AudioMessage) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                    (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
+                    (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(retMessage)
                 }
             })
         })

@@ -34,6 +34,22 @@ protocol ChatMessageDaoHelperProtocol{
     func selectAllLastServerChatMessageInDB() -> NSDictionary
     
     /**
+    某个聊天中最后一条服务器的聊天记录
+    :param: fromTable
+    :returns:
+    */
+    func selectLastServerMessage(fromTable: String) -> BaseMessage?
+
+    /**
+    获取指定的聊天列表的最有一条
+    
+    :param: tableName 获取数据的表明
+    
+    :returns:
+    */
+    func selectLastLocalMessageInChatTable(tableName: NSString) -> BaseMessage?
+    
+    /**
     消息在数据库里是否存在
     
     :param: tableName 消息所在的表
@@ -70,11 +86,14 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :returns: 创建是否成功
     */
     func createChatTable(tableName: String) {
-        var sql = "create table '\(tableName)' (LocalId INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, ServerId INTEGER, Status int(4), Type int(4), Message TEXT, CreateTime INTEGER, SendType int, ChatterId int)"
-        if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
-            println("success 执行 sql 语句：\(sql)")
-        } else {
-            println("error 执行 sql 语句：\(sql)")
+        
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "create table '\(tableName)' (LocalId INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, ServerId INTEGER, Status int(4), Type int(4), Message TEXT, CreateTime INTEGER, SendType int, ChatterId int)"
+            if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
+                println("success 执行 sql 语句：\(sql)")
+            } else {
+                println("error 执行 sql 语句：\(sql)")
+            }
         }
     }
     
@@ -84,21 +103,24 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :returns: 更新是否成功
     */
     func insertChatMessage(tableName: String, message:BaseMessage) {
-
         if !super.tableIsExit(tableName) {
             self.createChatTable(tableName)
         }
-        var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType, ChatterId) values (?,?,?,?,?,?,?)"
-        var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue, message.chatterId]
-        if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
-            message.localId = Int(dataBase.lastInsertRowId())
-            println("success 执行 sql 语句：\(sql) message:\(message.message)  serverId:\(message.serverId)")
-            
-            count++
-            
-            println("一共插入数据库里的聊天数量为 \(count)")
-        } else {
-            println("error 执行 sql 语句：\(sql), message:\(message.message)  serverId:\(message.serverId)")
+        
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+           
+            var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType, ChatterId) values (?,?,?,?,?,?,?)"
+            var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue, message.chatterId]
+            if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
+                message.localId = Int(dataBase.lastInsertRowId())
+                println("success 执行 sql 语句：\(sql) message:\(message.message)  serverId:\(message.serverId)")
+                
+                count++
+                
+                println("一共插入数据库里的聊天数量为 \(count)")
+            } else {
+                println("error 执行 sql 语句：\(sql), message:\(message.message)  serverId:\(message.serverId)")
+            }
         }
     }
     
@@ -124,11 +146,14 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         if !super.tableIsExit(tableName) {
             self.createChatTable(tableName)
         }
-        var sql = "update \(tableName) set ServerId = ?, Status = ?  where LocalId = ?"
-        if dataBase.executeUpdate(sql, withArgumentsInArray:[message.serverId, message.status.rawValue, message.localId]) {
-            println("success 执行 sql 语句：\(sql)")
-        } else {
-            println("error 执行 sql 语句：\(sql)")
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+           
+            var sql = "update \(tableName) set ServerId = ?, Status = ?  where LocalId = ?"
+            if dataBase.executeUpdate(sql, withArgumentsInArray:[message.serverId, message.status.rawValue, message.localId]) {
+                println("success 执行 sql 语句：\(sql)")
+            } else {
+                println("error 执行 sql 语句：\(sql)")
+            }
         }
     }
     
@@ -140,49 +165,34 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :param: contents 新的内容
     */
     func updateMessageContents(tableName: String, message: BaseMessage) {
-        
-        var sql = "update \(tableName) set Message = ? where LocalId = ?"
-        if dataBase.executeUpdate(sql, withArgumentsInArray:[message.message, message.localId]) {
-            println("success 执行更新消息内容的 sql 语句：\(sql)")
-        } else {
-            println("error 执行更新消息内容的 sql 语句：\(sql) message: \(message.message) serverId:\(message.serverId), localId:\(message.localId)")
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "update \(tableName) set Message = ? where LocalId = ?"
+            if dataBase.executeUpdate(sql, withArgumentsInArray:[message.message, message.localId]) {
+                println("success 执行更新消息内容的 sql 语句：\(sql)")
+            } else {
+                println("error 执行更新消息内容的 sql 语句：\(sql) message: \(message.message) serverId:\(message.serverId), localId:\(message.localId)")
+            }
         }
     }
     
     func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray {
         var retArray = NSMutableArray()
-        var sql = "select * from (select * from \(fromTable) where LocalId < ? order by LocalId desc limit \(messageCount)) order by LocalId"
-        println("执行 sql 语句 : \(sql)")
-        var rs = dataBase.executeQuery(sql, withArgumentsInArray: [untilLocalId, messageCount])
-        if (rs != nil) {
-            while rs.next() {
-                if let message = ChatMessageDaoHelper.messageModelWithFMResultSet(rs) {
-                    retArray.addObject(message)
+        
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "select * from (select * from \(fromTable) where LocalId < ? order by LocalId desc limit \(messageCount)) order by LocalId"
+            println("执行 sql 语句 : \(sql)")
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: [untilLocalId, messageCount])
+            if (rs != nil) {
+                while rs.next() {
+                    if let message = ChatMessageDaoHelper.messageModelWithFMResultSet(rs) {
+                        retArray.addObject(message)
+                    }
                 }
             }
         }
         return retArray
     }
     
-    /**
-    取到最后一条与服务器同步的消息
-    :param: fromTable
-    :returns:
-    */
-    func selectLastServerMessage(fromTable: String) -> BaseMessage? {
-        var retArray = NSMutableArray()
-        var sql = "select * from \(fromTable) where serverId >= 0 order by LocalId desc limit 1"
-        var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
-        if (rs != nil) {
-            while rs.next() {
-                if let message = ChatMessageDaoHelper.messageModelWithFMResultSet(rs) {
-                    return message
-                }
-            }
-        }
-        return nil
-    }
-
     /**
     消息在数据库里是否存在
     
@@ -192,14 +202,38 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     :returns: true：存在     false：不存在
     */
     func messageIsExitInTable(tableName: String, message: BaseMessage) -> Bool {
-        var sql = "select * from \(tableName) where serverId = ?"
-        var rs = dataBase.executeQuery(sql, withArgumentsInArray: [message.serverId])
-        if (rs != nil) {
-            while rs.next() {
-               return true
+        
+        var retResult: Bool = false
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "select * from \(tableName) where serverId = ?"
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: [message.serverId])
+            if (rs != nil) {
+                while rs.next() {
+                    retResult = true
+                }
             }
         }
-        return false
+        return retResult
+    }
+    
+    /**
+    取到最后一条与服务器同步的消息
+    :param: fromTable
+    :returns:
+    */
+    func selectLastServerMessage(fromTable: String) -> BaseMessage? {
+        var retMessage: BaseMessage?
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+
+            var sql = "select * from \(fromTable) where serverId > 0 order by LocalId desc limit 1"
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
+            if (rs != nil) {
+                while rs.next() {
+                    retMessage = ChatMessageDaoHelper.messageModelWithFMResultSet(rs)
+                }
+            }
+        }
+        return retMessage
     }
     
     /**
@@ -210,12 +244,32 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         var retDic = NSMutableDictionary()
         var allTables = super.selectAllTableName(keyWord: "chat")
         for tableName in allTables {
-            var message = selectLastServerMessage(tableName as! String)
+            var message = self.selectLastServerMessage(tableName as! String)
             if let message = message {
                 retDic .setObject(message.serverId, forKey: message.chatterId)
             }
         }
         return retDic
+    }
+    
+    
+    /**
+    获取指定的聊天列表里的最后一条消息
+    :returns:
+    */
+    func selectLastLocalMessageInChatTable(tableName: NSString) -> BaseMessage? {
+        var retMessage: BaseMessage?
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            
+            var sql = "select * from \(tableName) order by LocalId desc limit 1"
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
+            if (rs != nil) {
+                while rs.next() {
+                    retMessage = ChatMessageDaoHelper.messageModelWithFMResultSet(rs)
+                }
+            }
+        }
+        return retMessage
     }
     
 //MARK: class methods

@@ -42,7 +42,6 @@ class ChatConversation: NSObject {
         chatMessageList = NSMutableArray()
         chatType = IMChatType.IMChatSingleType
         chatManager = ChatManager(chatterId: chatterId, chatType: chatType)
-        chatMessageList = chatManager.selectChatMessageList(chatterId, untilLocalId: Int.max, messageCount: 20).mutableCopy() as! NSMutableArray
         super.init()
     }
     
@@ -53,7 +52,15 @@ class ChatConversation: NSObject {
     */
     var lastLocalMessage: BaseMessage? {
         get {
-            return chatMessageList.lastObject as? BaseMessage
+            var retMessage = chatMessageList.lastObject as? BaseMessage
+            if retMessage != nil {
+                return retMessage
+                
+            } else {
+                var daoHelper = DaoHelper.shareInstance()
+                var tableName = "chat_\(chatterId)"
+                return daoHelper.selectLastLocalMessageInChatTable(tableName)
+            }
         }
     }
     
@@ -64,11 +71,15 @@ class ChatConversation: NSObject {
         get {
             for var i=chatMessageList.count-1; i>0; i-- {
                 var message = chatMessageList.objectAtIndex(i) as! BaseMessage
-                if message.serverId > 0 {
+                if message.serverId >= 0 {
                     return message
                 }
             }
-            return nil
+            
+            var daoHelper = DaoHelper.shareInstance()
+            var tableName = "chat_\(chatterId)"
+            return daoHelper.selectLastServerMessage(tableName)
+        
         }
     }
     
@@ -80,7 +91,16 @@ class ChatConversation: NSObject {
     */
     func addReceiveMessage(message: BaseMessage) {
         chatMessageList.addObject(message)
-        delegate?.receiverMessage(message)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            delegate?.receiverMessage(message)
+        })
+    }
+    
+    /**
+    初始化会话中的聊天记录
+    */
+    func initChatMessageInConversation(messageCount: Int) {
+        chatMessageList = chatManager.selectChatMessageList(chatterId, untilLocalId: Int.max, messageCount: messageCount).mutableCopy() as! NSMutableArray
     }
     
     /**

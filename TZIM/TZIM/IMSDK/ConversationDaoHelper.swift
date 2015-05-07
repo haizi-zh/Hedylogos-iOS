@@ -45,28 +45,32 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     :returns: 包含所有会话列表
     */
     private func getAllCoversation() -> NSArray {
+        var retArray = NSMutableArray()
+        
         if !super.tableIsExit(conversationTableName) {
-            createConversationsTable()
+            self.createConversationsTable()
         }
         if !super.tableIsExit(frendTableName) {
             UserDaoHelper.createFrendTable(dataBase)
         }
-        var retArray = NSMutableArray()
-        var sql = "select * from \(conversationTableName) left join \(frendTableName) on \(conversationTableName).UserId = \(frendTableName).UserId order by LastUpdateTime DESC"
-        var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
-        if rs != nil {
-            while rs.next() {
-                var conversation = ChatConversation(chatterId: Int(rs.intForColumn("UserId")))
-                conversation.lastUpdateTime = Int(rs.intForColumn("LastUpdateTime"))
-                if let chatterName = rs.stringForColumn("NickName") {
-                    conversation.chatterName = chatterName
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+          
+            var sql = "select * from \(conversationTableName) left join \(frendTableName) on \(conversationTableName).UserId = \(frendTableName).UserId order by LastUpdateTime DESC"
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
+            if rs != nil {
+                while rs.next() {
+                    var conversation = ChatConversation(chatterId: Int(rs.intForColumn("UserId")))
+                    conversation.lastUpdateTime = Int(rs.intForColumn("LastUpdateTime"))
+                    if let chatterName = rs.stringForColumn("NickName") {
+                        conversation.chatterName = chatterName
+                    }
+                    var typeValue  = rs.intForColumn("Type")
+                    if let type = IMChatType(rawValue: Int(typeValue)) {
+                        conversation.chatType = type
+                    }
+    //                self.fillConversationWithMessage(conversation)
+                    retArray .addObject(conversation)
                 }
-                var typeValue  = rs.intForColumn("Type")
-                if let type = IMChatType(rawValue: Int(typeValue)) {
-                    conversation.chatType = type
-                }
-//                self.fillConversationWithMessage(conversation)
-                retArray .addObject(conversation)
             }
         }
         return retArray
@@ -101,13 +105,16 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     :returns:
     */
     func createConversationsTable() {
-        var sql = "create table '\(conversationTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, LastUpdateTime INTEGER)"
-        
-        if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
-            println("success 执行 sql 语句：\(sql)")
-        } else {
-            println("error 执行 sql 语句：\(sql)")
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
+            var sql = "create table '\(conversationTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, LastUpdateTime INTEGER)"
+            
+            if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
+                println("success 执行 sql 语句：\(sql)")
+            } else {
+                println("error 执行 sql 语句：\(sql)")
+
+            }
         }
     }
     
@@ -117,19 +124,22 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     :param: lastUpdateTime 最后一次更新的时间
     */
     func addConversation(conversation :ChatConversation) {
-        if !tableIsExit(conversationTableName) {
+        if !self.tableIsExit(conversationTableName) {
             self.createConversationsTable()
         }
-        var sql = "insert into \(conversationTableName) (UserId, LastUpdateTime) values (?,?)"
-        
-        println("执行 addConversation userId: \(conversation.chatterId)")
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
-        var array = [conversation.chatterId, conversation.lastUpdateTime]
-        if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
-            println("success 执行 sql 语句：\(sql)")
+            var sql = "insert or replace into \(conversationTableName) (UserId, LastUpdateTime) values (?,?)"
             
-        } else {
-            println("error 执行 sql 语句：\(sql)")
+            println("执行 addConversation userId: \(conversation.chatterId)")
+
+            var array = [conversation.chatterId, conversation.lastUpdateTime]
+            if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
+                println("success 执行 sql 语句：\(sql)")
+                
+            } else {
+                println("error 执行 sql 语句：\(sql)")
+            }
         }
     }
     
@@ -143,8 +153,11 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     }
    
     func removeConversationfromDB(chatterId: Int) {
-        var sql = "delete from \(conversationTableName) where userId = ?"
-        dataBase.executeUpdate(sql, withArgumentsInArray: [chatterId])
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+
+            var sql = "delete from \(conversationTableName) where userId = ?"
+            dataBase.executeUpdate(sql, withArgumentsInArray: [chatterId])
+        }
     }
     
     

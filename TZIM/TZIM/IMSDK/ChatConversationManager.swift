@@ -47,7 +47,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     }
     
     private func updateConversationList() {
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
         NSLog("****开始获取会话列表*****")
         conversationList = daoHelper.getAllConversationList() as! NSMutableArray
         NSLog("****结束获取会话列表*****")
@@ -84,10 +84,12 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
             frendManager.addFrend(frendModel)
         }
 
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
         daoHelper.addConversation(conversation)
-        self.addConversation2ConversationList(conversation)
-        delegate?.conversationsHaveAdded(conversationList)
+        self.conversationList.addObject(conversation)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            delegate?.conversationsHaveAdded(conversationList)
+        })
     }
     
     /**
@@ -96,7 +98,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     :Bool: 是否成功
     */
     func removeConversation(chatterId: Int) -> Bool {
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
         daoHelper.removeConversationfromDB(chatterId) 
         for conversation in conversationList {
             if let conversation = conversation as? ChatConversation {
@@ -113,13 +115,6 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     
     
 //MARK: private methods
-    /**
-    添加一个会话到会话列表里
-    :param: conversation         会话
-    */
-    private func addConversation2ConversationList(conversation: ChatConversation) {
-        conversationList.addObject(conversation)
-    }
     
     /**
     处理收到的消息，将收到的消息对应的插入 conversation 里，更新最后一条本地消息，和最后一条服务器消息
@@ -130,7 +125,9 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
             if let conversation = conversation as? ChatConversation {
                 if conversation.chatterId == message.chatterId {
                     conversation.addReceiveMessage(message)
-                    delegate?.conversationStatusHasChanged(conversation)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        delegate?.conversationStatusHasChanged(conversation)
+                    })
                     return
                 }
             }
@@ -151,7 +148,9 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
             if let conversation = conversation as? ChatConversation {
                 if conversation.chatterId == message.chatterId {
                     conversation.addSendingMessage(message)
-                    delegate?.conversationStatusHasChanged(conversation)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        delegate?.conversationStatusHasChanged(conversation)
+                    })
                     return
                 }
             }
@@ -167,7 +166,9 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
             if let conversation = conversation as? ChatConversation {
                 if conversation.chatterId == message.chatterId {
                     conversation.messageHaveSended(message)
-                    delegate?.conversationStatusHasChanged(conversation)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        delegate?.conversationStatusHasChanged(conversation)
+                    })
                     return
                 }
             }

@@ -27,7 +27,7 @@ class FrendManager: NSObject {
     :param: frend
     */
     func addFrend(frend: FrendModel) {
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
         daoHelper.addFrend2DB(frend)
         frendList.addObject(frend)
     }
@@ -38,7 +38,7 @@ class FrendManager: NSObject {
     */
     private class func getAllMyContacts() -> NSArray {
         var retArray = NSArray()
-        var daoHelper = DaoHelper()
+        var daoHelper = DaoHelper.shareInstance()
         retArray = daoHelper.selectAllContacts()
         return retArray
     }

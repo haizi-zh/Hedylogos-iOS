@@ -8,12 +8,14 @@
 
 import UIKit
 
+private let daoHelper = DaoHelper()
+
 let documentPath: String = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as! String
 let tempDirectory: String = NSTemporaryDirectory()
 
 let databaseWriteQueue = dispatch_queue_create("com.database.write", nil)
 
-public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationDaoProtocol {
+public class DaoHelper:NSObject {
     private let db: FMDatabase
     private let chatMessageDaoHelper: ChatMessageDaoHelper
     private let metaDataDaoHelper: MetaDataDaoHelper
@@ -21,11 +23,17 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
     private let conversationHelper: ConversationDaoHelper
     private let dbQueue: FMDatabaseQueue
     
+    class func shareInstance() -> DaoHelper {
+        return daoHelper
+    }
+    
     override init() {
         
         var userId = AccountManager.shareInstance().userId
         
         var dbPath: String = documentPath.stringByAppendingPathComponent("\(userId)/user.sqlite")
+        
+        println("dbPath: \(dbPath)")
                 
         var fileManager =  NSFileManager()
         
@@ -67,7 +75,6 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
             self.chatMessageDaoHelper.createChatTable(tableName)
             self.closeDB()
         })
-
     }
     
     func createAudioMessageTable(tableName: String) {
@@ -86,11 +93,12 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
         })
     }
     
-    func insertChatMessageList(messageList: Array<BaseMessage>) {
+    func insertChatMessageList(messageList: Array<BaseMessage>, completionBlock:()->()) {
         dispatch_async(databaseWriteQueue, { () -> Void in
             self.openDB()
             self.chatMessageDaoHelper.insertChatMessageList(messageList)
             self.closeDB()
+            completionBlock()
         })
     }
     
@@ -111,6 +119,24 @@ public class DaoHelper:NSObject, ChatDaoProtocol, UserDaoProtocol, ConversationD
         } else {
             return NSArray()
         }
+    }
+    
+    func selectLastServerMessage(fromTable: String) -> BaseMessage? {
+        if self.openDB() {
+            var result = chatMessageDaoHelper.selectLastServerMessage(fromTable)
+            self.closeDB()
+            return result
+        }
+        return nil
+    }
+    
+    func selectLastLocalMessageInChatTable(tableName: NSString) -> BaseMessage? {
+        if self.openDB() {
+            var result = chatMessageDaoHelper.selectLastLocalMessageInChatTable(tableName)
+            self.closeDB()
+            return result
+        }
+        return nil
     }
     
     func selectAllLastServerChatMessageInDB() -> NSDictionary {
