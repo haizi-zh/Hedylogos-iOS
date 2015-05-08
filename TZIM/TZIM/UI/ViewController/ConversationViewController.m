@@ -26,6 +26,10 @@
     [self.tableView reloadData];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [self.tableView reloadData];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -56,7 +60,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"conversationCell"];
     }
     ChatConversation *conversation = [_dataSource objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ 用户 ID:%ld", conversation.chatterName, (long)conversation.chatterId];
+    cell.textLabel.text = [NSString stringWithFormat:@"未读数量:%ld %@ 用户 ID:%ld", (long)conversation.unReadMessageCount, conversation.chatterName, (long)conversation.chatterId];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", conversation.lastLocalMessage.message];
     return cell;
 }

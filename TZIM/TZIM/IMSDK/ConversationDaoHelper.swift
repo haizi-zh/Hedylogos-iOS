@@ -27,7 +27,7 @@ protocol ConversationDaoProtocol {
     获取所有的聊天会话列表
     :returns:
     */
-    func getAllConversationList() -> NSArray
+    func getAllConversationList() -> NSMutableArray
     
     /**
     移除一个 conversation
@@ -35,6 +35,13 @@ protocol ConversationDaoProtocol {
     :returns: 移除是否成功
     */
     func removeConversationfromDB(chatterId: Int)
+    
+    /**
+    更新某个会话的未读消息的数量
+    
+    :param: conversation
+    */
+    func updateUnreadMessageCountInConversation(unReadMessageCount: Int, userId: Int)
 }
 
 class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
@@ -44,7 +51,7 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     从会话列表数据库里获取所有的会话列表,按照时间逆序排列
     :returns: 包含所有会话列表
     */
-    private func getAllCoversation() -> NSArray {
+    private func getAllCoversation() -> NSMutableArray {
         var retArray = NSMutableArray()
         
         if !super.tableIsExit(conversationTableName) {
@@ -68,38 +75,17 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
                     if let type = IMChatType(rawValue: Int(typeValue)) {
                         conversation.chatType = type
                     }
-    //                self.fillConversationWithMessage(conversation)
-                    retArray .addObject(conversation)
+                    conversation.unReadMessageCount = Int(rs.intForColumn("UnreadMessageCount"))
+                    conversation.conversationId = Int(rs.intForColumn("ConversationId"))
+
+                    retArray.addObject(conversation)
                 }
             }
         }
         return retArray
     }
     
-    /**
-    补全 conversation 的具体内容
-    :param: conversation 需要补全的 conversation,具体是补全 conversation 的最后一条本地消息，和最后一条和服务器同步的消息
-    */
-//    private func fillConversationWithMessage(conversation: ChatConversation) {
-//        var localSql = "select * from chat_\(conversation.chatterId) order by LocalId DESC LIMIT 1"
-//        var localRS = dataBase.executeQuery(localSql, withArgumentsInArray: nil)
-//        if localRS != nil {
-//            while localRS.next() {
-//                conversation.lastLocalMessage = ChatMessageDaoHelper.messageModelWithFMResultSet(localRS)
-//            }
-//        }
-//
-//        var serverSql = "select * from chat_\(conversation.chatterId) where status = ? order by LocalId DESC LIMIT 1"
-//        var serverRS = dataBase.executeQuery(serverSql, withArgumentsInArray: [IMMessageStatus.IMMessageSuccessful.rawValue])
-//        
-//        if serverRS != nil {
-//            while serverRS.next() {
-//                conversation.lastServerMessage = ChatMessageDaoHelper.messageModelWithFMResultSet(serverRS)
-//            }
-//        }
-//    }
-    
-//MARK: *******  ConversationDaoProtocol  ******
+   //MARK: *******  ConversationDaoProtocol  ******
     /**
     创建一个会话表
     :returns:
@@ -107,7 +93,7 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     func createConversationsTable() {
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
-            var sql = "create table '\(conversationTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, LastUpdateTime INTEGER)"
+            var sql = "create table '\(conversationTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, LastUpdateTime INTEGER, ConversationId INTEGER, UnreadMessageCount INTEGER)"
             
             if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
                 println("success 执行 sql 语句：\(sql)")
@@ -143,11 +129,29 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         }
     }
     
+    
+    func updateUnreadMessageCountInConversation(unReadMessageCount: Int, userId: Int) {
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            
+            var sql = "update \(conversationTableName) set UnreadMessageCount = ? where UserId = ?"
+            
+            println("执行 updateUnreadMessageCountInConversation userId: \(userId)")
+            
+            var array = [unReadMessageCount, userId]
+            if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
+                println("success 执行 sql 语句：\(sql)")
+                
+            } else {
+                println("error 执行 sql 语句：\(sql)")
+            }
+        }
+    }
+    
     /**
     获取所有的会话列表
     :returns:
     */
-    func getAllConversationList() -> NSArray {
+    func getAllConversationList() -> NSMutableArray {
         var retArray = self.getAllCoversation()
         return retArray
     }

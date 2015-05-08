@@ -8,11 +8,11 @@
 
 import UIKit
 
-protocol PushMessageDelegate {
+@objc protocol PushMessageDelegate {
     func receivePushMessage(messageStr: NSString)
 }
 
-protocol PushConnectionDelegate {
+@objc protocol PushConnectionDelegate {
     func getuiDidConnection(clientId: String)
 }
 
@@ -22,8 +22,8 @@ private let pushSDKManager = PushSDKManager()
 class PushSDKManager: NSObject, GexinSdkDelegate {
     private var gexinSdk: GexinSdk?
     
-    var pushMessageDelegate: PushMessageDelegate?
-    var pushConnectionDelegate: PushConnectionDelegate?
+    weak var pushMessageDelegate: PushMessageDelegate?
+    weak var pushConnectionDelegate: PushConnectionDelegate?
     
     var timer: NSTimer?
     var anotherTimer: NSTimer?

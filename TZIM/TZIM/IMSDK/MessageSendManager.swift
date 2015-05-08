@@ -12,7 +12,7 @@ import AVFoundation
 private let messageSendManager = MessageSendManager()
 
 class MessageSendManager: MessageTransferManager {
-    var messageManagerDelegate: MessageTransferManagerDelegate?
+    weak var messageManagerDelegate: MessageTransferManagerDelegate?
     
     class func shareInstance() -> MessageSendManager {
         return messageSendManager

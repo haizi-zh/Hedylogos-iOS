@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol ConnectionManagerDelegate {
+@objc protocol ConnectionManagerDelegate {
     func connectionSetup(isSuccess: Bool, errorCode: Int);
 }
 
 class ConnectionManager: NSObject, PushConnectionDelegate {
     
     let pushSDKManager = PushSDKManager.shareInstance()
-    var connectionManagerDelegate: ConnectionManagerDelegate?
+    weak var connectionManagerDelegate: ConnectionManagerDelegate?
     
     override init() {
         super.init()

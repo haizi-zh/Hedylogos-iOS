@@ -235,14 +235,14 @@ public class DaoHelper:NSObject {
 
     }
     
-    func getAllConversationList() -> NSArray {
+    func getAllConversationList() -> NSMutableArray {
         if self.openDB() {
             var retArray = conversationHelper.getAllConversationList()
             self.closeDB()
             return retArray
             
         } else {
-            return NSArray()
+            return NSMutableArray()
         }
     }
     
@@ -250,6 +250,14 @@ public class DaoHelper:NSObject {
         dispatch_async(databaseWriteQueue, { () -> Void in
             self.openDB()
             self.conversationHelper.removeConversationfromDB(chatterId)
+            self.closeDB()
+        })
+    }
+    
+    func updateUnreadMessageCountInConversation(unReadMessageCount: Int, userId: Int) {
+        dispatch_async(databaseWriteQueue, { () -> Void in
+            self.openDB()
+            self.conversationHelper.updateUnreadMessageCountInConversation(unReadMessageCount, userId: userId)
             self.closeDB()
         })
     }

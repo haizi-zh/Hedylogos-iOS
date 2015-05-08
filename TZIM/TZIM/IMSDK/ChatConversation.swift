@@ -15,7 +15,7 @@ import UIKit
     
     :param: messageChangedList
     */
-    func receiverMessage(message: BaseMessage)
+    optional func receiverMessage(message: BaseMessage)
     
     /**
     消息发送完成
@@ -26,14 +26,21 @@ import UIKit
 }
 
 class ChatConversation: NSObject {
+    var conversationId: Int = 0
     var chatterId: Int
     var chatterName: String = ""
     var lastUpdateTime: Int = 0
     var unReadMsgCount: Int = 0
     var chatMessageList: NSMutableArray
     var chatType: IMChatType
+    var isCurrentConversation: Bool = false        //是否是当前显示的会话，默认为 false
+    var unReadMessageCount: Int {
+        willSet {
+            ChatConversation.updateUnreadMessageCountInDB(newValue, chatterId: chatterId)
+        }
+    }//未读消息的数量， 默认为0
     
-    var delegate: ChatConversationDelegate?
+    weak var delegate: ChatConversationDelegate?
     
     let chatManager: ChatManager
     
@@ -42,7 +49,12 @@ class ChatConversation: NSObject {
         chatMessageList = NSMutableArray()
         chatType = IMChatType.IMChatSingleType
         chatManager = ChatManager(chatterId: chatterId, chatType: chatType)
+        unReadMessageCount = 0
         super.init()
+    }
+    
+    deinit {
+        println("ChatConversation deinit")
     }
     
 //MARK: private function
@@ -92,15 +104,41 @@ class ChatConversation: NSObject {
     func addReceiveMessage(message: BaseMessage) {
         chatMessageList.addObject(message)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            delegate?.receiverMessage(message)
+            delegate?.receiverMessage?(message)
         })
     }
     
     /**
     初始化会话中的聊天记录
     */
-    func initChatMessageInConversation(messageCount: Int) {
-        chatMessageList = chatManager.selectChatMessageList(chatterId, untilLocalId: Int.max, messageCount: messageCount).mutableCopy() as! NSMutableArray
+    func getchatMessageInConversation(messageCount: Int) {
+        NSLog("开始加载聊天界面记录")
+//        chatMessageList = chatManager.selectChatMessageList(chatterId, untilLocalId: Int.max, messageCount: messageCount).mutableCopy() as! NSMutableArray
+        var daoHelper = DaoHelper.shareInstance()
+        var tableName = "chat_\(chatterId)"
+        var retArray = NSArray()
+        chatMessageList = daoHelper.selectChatMessageList(tableName, untilLocalId: Int.max, messageCount: messageCount) as! NSMutableArray
+
+        NSLog("结束加载聊天界面记录")
+
+    }
+    
+    /**
+    将会话的未读消息置为0
+    */
+    func resetConvsersationUnreadMessageCount() {
+        unReadMessageCount = 0
+        ChatConversation.updateUnreadMessageCountInDB(0, chatterId: chatterId)
+    }
+    
+    /**
+    更新数据库里未读消息的数量
+    
+    :param: count
+    */
+    private class func updateUnreadMessageCountInDB(count: Int, chatterId: Int) {
+        var daoHelper = DaoHelper.shareInstance()
+        daoHelper.updateUnreadMessageCountInConversation(count, userId: chatterId)
     }
     
     /**

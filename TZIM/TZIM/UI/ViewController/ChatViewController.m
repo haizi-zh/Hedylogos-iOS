@@ -44,7 +44,10 @@ static NSString *messageCellIdentifier = @"messageCell";
      keyboardIsShow = NO;
     _bubbleTable.bubbleDataSource = self;
     _bubbleTable.showAvatars = YES;
-    [_conversation initChatMessageInConversation:20];
+    _conversation.isCurrentConversation = YES;
+    _conversation.delegate = self;
+    [_conversation resetConvsersationUnreadMessageCount];
+    [_conversation getchatMessageInConversation:20];
     
     if (!_chatDataSource) {
         _chatDataSource = [[NSMutableArray alloc] init];
@@ -139,6 +142,10 @@ static NSString *messageCellIdentifier = @"messageCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateChatView" object:nil];
     
+}
+
+- (void)dealloc {
+    _conversation.isCurrentConversation = NO;
 }
 
 - (void)didReceiveMemoryWarning

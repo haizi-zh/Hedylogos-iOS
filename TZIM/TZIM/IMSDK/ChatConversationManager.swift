@@ -49,7 +49,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     private func updateConversationList() {
         var daoHelper = DaoHelper.shareInstance()
         NSLog("****开始获取会话列表*****")
-        conversationList = daoHelper.getAllConversationList() as! NSMutableArray
+        conversationList = daoHelper.getAllConversationList()
         NSLog("****结束获取会话列表*****")
     }
 
@@ -125,6 +125,9 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
             if let conversation = conversation as? ChatConversation {
                 if conversation.chatterId == message.chatterId {
                     conversation.addReceiveMessage(message)
+                    if !conversation.isCurrentConversation {
+                        conversation.unReadMessageCount++
+                    }
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         delegate?.conversationStatusHasChanged(conversation)
                     })

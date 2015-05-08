@@ -11,7 +11,7 @@ import UIKit
 private let messageReceivePool = MessageReceivePool()
 private let reorderTime = 0.5
 
-protocol MessageReceivePoolDelegate {
+@objc protocol MessageReceivePoolDelegate {
     /**
     消息重组已经完成
     :param: messageList 重组后的消息列表
@@ -24,7 +24,7 @@ class MessageReceivePool: NSObject {
     private let messagePrepare2Reorder: NSMutableDictionary = NSMutableDictionary()
     private var timer: NSTimer?
     
-    var delegate: MessageReceivePoolDelegate?
+    weak var delegate: MessageReceivePoolDelegate?
     
     class func shareInstance() -> MessageReceivePool {
         return messageReceivePool

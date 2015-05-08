@@ -10,7 +10,7 @@ import UIKit
 
 private let iMClientManager = IMClientManager()
 
-protocol IMClientDelegate {
+@objc protocol IMClientDelegate {
     
     func userDidLogin(isSuccess: Bool, errorCode: Int)
     
@@ -23,7 +23,7 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
     var messageSendManager: MessageSendManager!
     var conversationManager: ChatConversationManager!
     
-    var delegate: IMClientDelegate?
+    weak var delegate: IMClientDelegate?
     
     override init() {
         connectionManager = ConnectionManager()

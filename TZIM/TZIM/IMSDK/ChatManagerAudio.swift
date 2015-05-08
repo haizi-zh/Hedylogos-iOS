@@ -44,7 +44,7 @@ class ChatManagerAudio: NSObject, ChatManagerAudioProtocol, AudioManagerDelegate
     private let chatterId: Int
     private let chatType: IMChatType
     
-    var delegate: ChatManagerAudioDelegate?
+    weak var delegate: ChatManagerAudioDelegate?
     
     var timer: NSTimer!
     
