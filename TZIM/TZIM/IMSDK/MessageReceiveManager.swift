@@ -188,10 +188,6 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         println("共有\(messagesPrepare2DistributeArray.count)条消息是从 fetch 接口过来的，并且是合法的")
         var array = messagesPrepare2DistributeArray as AnyObject as! [BaseMessage]
         distributionMessage(array)
-//        for message in messagesPrepare2DistributeArray {
-//            println("fetch后 合法的消息的 message id 为\((message as? BaseMessage)?.serverId)")
-//            distributionMessage(message as BaseMessage)
-//        }
     }
     
     /**

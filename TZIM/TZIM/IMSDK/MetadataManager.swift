@@ -115,25 +115,26 @@ class MetadataDownloadManager:NSObject{
     :param: completion 下载的回掉
     */
     class func asyncDownloadThumbImage(imageMessage: ImageMessage, completion:(isSuccess:Bool, retMessage:ImageMessage) -> ()) {
+        
+        println("开始下载图片缩略图")
         var currentSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         if imageMessage.thumbUrl == nil {
             return
         }
         if let url = NSURL(string: imageMessage.thumbUrl!) {
-            var request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 10)
+            var request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 30)
             
-            var downloadTask = currentSession.downloadTaskWithRequest(request, completionHandler: { (url: NSURL!, response: NSURLResponse!, error: NSError!) -> Void in
+            var downloadTask = currentSession.dataTaskWithRequest(request, completionHandler: { (data: NSData!, response: NSURLResponse!, error: NSError!) -> Void in
                 if error != nil {
                     NSLog("下载图片预览图失败 失败原因是: \(error)")
                     completion(isSuccess: false, retMessage: imageMessage)
                 } else {
                     
                     dispatch_async(metadataOperationQueue, { () -> Void in
-
+                        
                         var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageMessage.metadataId!).jpeg")
                         
-                        if let imageData = NSData(contentsOfURL: url) {
-
+                        if let imageData = data {
                             var fileManager =  NSFileManager()
                             fileManager.createFileAtPath(imagePath, contents: imageData, attributes: nil)
                             NSLog("下载图片预览图成功 保存后的地址为: \(imagePath)")
@@ -156,18 +157,21 @@ class MetadataDownloadManager:NSObject{
     
     /**
     异步下载语音消息信息
-    :param: url        图片的 url
+    :param: url        语音的 url
     :param: completion 下载的回掉
     */
     class func asyncDownloadAudioData(audioMessage: AudioMessage, completion:(isSuccess:Bool, retMessage:AudioMessage) -> ()) {
+        
+        println("开始下载语音")
         var currentSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         if audioMessage.remoteUrl == nil {
             return
         }
         if let url = NSURL(string: audioMessage.remoteUrl!) {
-            var request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 10)
+            var request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 30)
             
-            var downloadTask = currentSession.downloadTaskWithRequest(request, completionHandler: { (url: NSURL!, response: NSURLResponse!, error: NSError!) -> Void in
+            var downloadTask = currentSession.dataTaskWithRequest(request, completionHandler: { (data: NSData!, response: NSURLResponse!, error: NSError!) -> Void in
+                
                 if error != nil {
                     NSLog("下载语音失败 失败原因是: \(error)")
                     completion(isSuccess: false, retMessage: audioMessage)
@@ -178,9 +182,9 @@ class MetadataDownloadManager:NSObject{
                         
                         var tempAmrPath = AccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).amr")
                         
-                        if let imageData = NSData(contentsOfURL: url) {
+                        if let audioData = data {
                             var fileManager =  NSFileManager()
-                            fileManager.createFileAtPath(tempAmrPath, contents: imageData, attributes: nil)
+                            fileManager.createFileAtPath(tempAmrPath, contents: audioData, attributes: nil)
                             
                             VoiceConverter.amrToWav(tempAmrPath, wavSavePath: audioWavPath)
                             NSLog("下载语音成功 保存后的地址为: \(audioWavPath)")

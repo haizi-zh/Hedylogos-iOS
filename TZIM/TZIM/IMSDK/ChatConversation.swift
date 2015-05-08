@@ -112,15 +112,17 @@ class ChatConversation: NSObject {
     初始化会话中的聊天记录
     */
     func getchatMessageInConversation(messageCount: Int) {
+        
+        if chatMessageList.count > 0 {
+            return
+        }
         NSLog("开始加载聊天界面记录")
-//        chatMessageList = chatManager.selectChatMessageList(chatterId, untilLocalId: Int.max, messageCount: messageCount).mutableCopy() as! NSMutableArray
         var daoHelper = DaoHelper.shareInstance()
         var tableName = "chat_\(chatterId)"
         var retArray = NSArray()
         chatMessageList = daoHelper.selectChatMessageList(tableName, untilLocalId: Int.max, messageCount: messageCount) as! NSMutableArray
 
         NSLog("结束加载聊天界面记录")
-
     }
     
     /**
