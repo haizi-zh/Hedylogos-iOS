@@ -38,7 +38,7 @@ class LoginViewController: UIViewController, IMClientDelegate {
         
         if isSuccess {
             var storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            var conversationCtl = storyBoard.instantiateViewControllerWithIdentifier("conversationCtl") as! ConversationViewController
+            var conversationCtl = storyBoard.instantiateViewControllerWithIdentifier("homeCtl") as! HomeViewController
             self.navigationController?.viewControllers[0] = conversationCtl
         } else {
             SVProgressHUD.showErrorWithStatus("登录失败: code :\(errorCode)")

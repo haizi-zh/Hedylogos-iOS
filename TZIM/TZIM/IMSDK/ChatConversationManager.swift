@@ -42,7 +42,9 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     }
     
     func getConversationList() -> NSArray {
-        self.updateConversationList()
+        if conversationList.count < 1 {
+            self.updateConversationList()
+        }
         return conversationList
     }
     
@@ -62,6 +64,22 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         var timeInt: Int = Int(round(time))
         conversation.lastUpdateTime = timeInt
         return conversation
+    }
+    
+    /**
+    通过 chatterid 获取一个 conversation，如果已经存在那么返回一个已存在的，如果不存在新建一个新的
+    
+    :param: chatterId
+    
+    :returns:
+    */
+    func getConversationWithChatterId(chatterId: Int) -> ChatConversation {
+        for exitConversation in conversationList {
+            if (exitConversation as! ChatConversation).chatterId == chatterId {
+                return exitConversation as! ChatConversation
+            }
+        }
+        return self.createNewConversation(chatterId)
     }
     
     /**

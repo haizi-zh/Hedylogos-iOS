@@ -10,3 +10,4 @@
 #import "SVProgressHUD.h"
 #import "QiniuSDK.h"
 #import "VoiceConverter.h"
+#import "ChatViewController.h"

@@ -7,9 +7,8 @@
 //
 
 #import "ChatViewController.h"
-#import "TZIM-swift.h"
 #import <AVFoundation/AVFoundation.h>
-
+#import "TZIM-swift.h"
 @interface ChatViewController () <ChatConversationDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ChatManagerAudioDelegate, AVAudioPlayerDelegate>
 {
     float currentKeyboardHeigh;

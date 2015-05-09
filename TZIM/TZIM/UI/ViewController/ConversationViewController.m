@@ -8,6 +8,7 @@
 
 #import "ConversationViewController.h"
 #import "ChatViewController.h"
+#import "TZIM-swift.h"
 
 @interface ConversationViewController () <MessageTransferManagerDelegate, ChatConversationManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *dataSource;

@@ -10,7 +10,8 @@
 #import "UIBubbleTableViewDataSource.h"
 #import "UIBubbleTableView.h"
 #import "NSBubbleData.h"
-#import "TZIM-swift.h"
+
+@class ChatConversation;
 
 @interface ChatViewController : UIViewController<UIBubbleTableViewDataSource, UITextViewDelegate>
 

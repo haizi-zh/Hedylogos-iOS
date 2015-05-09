@@ -25,7 +25,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     
     override init() {
         super.init()
-        pushSDKManager.pushMessageDelegate = self
+        pushSDKManager.addPushMessageListener(self, withRoutingKey: "IM")
         messagePool.delegate = self
     }
     

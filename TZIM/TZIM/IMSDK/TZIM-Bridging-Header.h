@@ -6,3 +6,8 @@
 #import "AESCrypt.h"
 #import "AppDelegate.h"
 #import "GexinSdk.h"
+#import "ChatViewController.h"
+#import "ConversationViewController.h"
+#import "UIBubbleTableViewDataSource.h"
+#import "UIBubbleTableView.h"
+#import "NSBubbleData.h"

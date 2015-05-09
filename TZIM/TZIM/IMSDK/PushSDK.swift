@@ -21,8 +21,8 @@ private let pushSDKManager = PushSDKManager()
 
 class PushSDKManager: NSObject, GexinSdkDelegate {
     private var gexinSdk: GexinSdk?
+    private var listenerQueue: NSMutableArray = NSMutableArray()
     
-    weak var pushMessageDelegate: PushMessageDelegate?
     weak var pushConnectionDelegate: PushConnectionDelegate?
     
     var timer: NSTimer?
@@ -46,6 +46,35 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
     }
     
     /**
+    注册消息的监听
+    
+    :param: monitor        监听的对象
+    :param: withRoutingKey 需要监听消息的key
+    */
+    func addPushMessageListener(listener: PushMessageDelegate, withRoutingKey routingKey: String) {
+        listenerQueue.addObject([routingKey: listener])
+    }
+    
+    /**
+    移除消息的监听者
+    
+    :param: listener   监听对象
+    :param: routingKey 监听消息的 key
+    */
+    func removePushMessageListener(listener: PushMessageDelegate, withRoutingKey routingKey: String) {
+        for value in listenerQueue {
+            var listenerDic = value as! Dictionary<String, PushMessageDelegate>
+            if let oldListener = listenerDic[routingKey] {
+                if oldListener === listener {
+                    listenerQueue.removeObject(value)
+                    return
+                }
+            }
+        }
+        
+    }
+    
+    /**
     登录
     :param: userId   用户名
     :param: password 密码
@@ -60,6 +89,8 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
     :param: error
     */
     func GexinSdkDidOccurError(error: NSError!) {
+        
+        println("*****  GexinSdkDidOccurError  ******")
 
     }
     
@@ -75,11 +106,33 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         var payloadMsg = NSString(bytes:bytes! , length: length!, encoding: NSUTF8StringEncoding)
         
         if let message = payloadMsg {
-            pushMessageDelegate?.receivePushMessage(message)
+            dispatchPushMessage(message)
         }
-        
-//        testMessageReorder()
+    }
+    
+    /**
+    分发给不同监听者不同的消息
+    
+    :param: message 需要分发的消息
+    */
+    func dispatchPushMessage(message: NSString) {
+        let dispatchMessageDic: NSDictionary
+        var mseesageData = message.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
+        var messageJson: AnyObject? = NSJSONSerialization.JSONObjectWithData(mseesageData!, options:.AllowFragments, error: nil)
+        if messageJson is NSDictionary {
+            dispatchMessageDic = messageJson as! NSDictionary
+        } else {
+            dispatchMessageDic = NSDictionary()
+        }
 
+        var routingKey = "IM"
+        
+        for value in listenerQueue {
+            var listenerDic = value as! Dictionary<String, PushMessageDelegate>
+            if let pushMessageDelegate = listenerDic[routingKey] {
+                pushMessageDelegate.receivePushMessage(message)
+            }
+        }
     }
     
     /**
@@ -90,50 +143,6 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         pushConnectionDelegate?.getuiDidConnection(clientId)
     }
     
-//MARK : TEST
-    func testMessageReorder() {
-        println("新一轮 testMessageReorder")
-
-        for i in 0...10 {
-            var serverId = 21+i
-            var message = "{\"id\":\"55476288f4428a03c1c19622\",\"msgId\":\(629),\"msgType\":\(2),\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"{\"width\":640,\"height\":640,\"origin\":\"http://7xirnn.com1.z0.glb.clouddn.com/33dd5526-5362-4091-b17d-e0cbe688d85e?e=1431346440&token=jU6KkDZdGYODmrPVh5sbBIkJX65y-Cea991uWpWZ:JTrGaf2oFMw2Q-uSHuEJ6iQEpKM=\",\"thumb\":\"http://7xirnn.com1.z0.glb.clouddn.com/33dd5526-5362-4091-b17d-e0cbe688d85e!thumb?e=1431346440&token=jU6KkDZdGYODmrPVh5sbBIkJX65y-Cea991uWpWZ:ayExSDbszJ_p8siyiJF8D7RZuHE=\",\"full\":\"http://7xirnn.com1.z0.glb.clouddn.com/33dd5526-5362-4091-b17d-e0cbe688d85e!full?e=1431346440&token=jU6KkDZdGYODmrPVh5sbBIkJX65y-Cea991uWpWZ:njWNJj_lJNRDeyEjMqj1-zssdm4=\"}\",\"senderId\":9,\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":(1430741640656)}"
-            allMessage.addObject(message)
-        }
-//
-////        for i in 0...10 {
-////            var serverId = i
-////            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(10),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
-////            allMessage.addObject(message)
-////        }
-////        
-////        for i in 0...10 {
-////            var serverId = i
-////            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello\(NSDate())\",\"senderId\":\(11),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
-////            allMessage.addObject(message)
-////        }
-//        
-////        for i in 1...10 {
-////            var serverId = 100%i
-////            var message = "{\"id\":\"55404aaef4428a00c43b4158\",\"msgId\":\(serverId),\"msgType\":0,\"conversation\":\"553a06e86773af0001fa51f9\",\"contents\":\"hello world\",\"senderId\":\(11),\"senderAvatar\":\"\",\"senderName\":\"测试用户\",\"timestamp\":\(1430276782540)}"
-////            allMessage.addObject(message)
-////        }
-//
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("receiveMessages"), userInfo: nil, repeats: true)
-        
-//        anotherTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("anotherReceiveMessages"), userInfo: nil, repeats: true)
-
-    }
-    
-    func receiveMessages() {
-        if allMessage.count == 0 {
-            timer?.invalidate()
-            timer = nil
-            return
-        }
-        var messageStr = allMessage.firstObject as! String
-        pushMessageDelegate?.receivePushMessage(messageStr)
-        allMessage.removeObject(messageStr)
-    }
 }
 
 
@@ -153,3 +162,11 @@ class GetuiPush: GexinSdk {
         println("GetuiPush deinit")
     }
 }
+
+
+
+
+
+
+
+

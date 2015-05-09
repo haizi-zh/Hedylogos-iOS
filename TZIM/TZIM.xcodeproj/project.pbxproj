@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0228EBB9277C91B46CCC1962 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C3F1E40AE1504999FDF8060 /* libPods.a */; };
+		D907C9F51AFCE0DB0034D444 /* FrendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D907C9F41AFCE0DB0034D444 /* FrendTableViewController.swift */; };
+		D907C9F71AFCE0FC0034D444 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D907C9F61AFCE0FC0034D444 /* HomeViewController.swift */; };
 		D907E2181AE75A3400B37D56 /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D907E2171AE75A3400B37D56 /* ChatManager.swift */; };
 		D90840A01AE5F90900FA31C0 /* ChatConversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908409F1AE5F90900FA31C0 /* ChatConversation.swift */; };
 		D908E91D1AE8D6F500C984C7 /* NetworkUserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E91C1AE8D6F500C984C7 /* NetworkUserAPI.swift */; };
@@ -103,6 +105,9 @@
 		0C3F1E40AE1504999FDF8060 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		75097DFCEAAC3FB1955D3992 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A591CD351345A019841A1FAF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		D907C9F41AFCE0DB0034D444 /* FrendTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrendTableViewController.swift; sourceTree = "<group>"; };
+		D907C9F61AFCE0FC0034D444 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D907C9FE1AFCEFEF0034D444 /* TZIM-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TZIM-Bridging-Header.h"; sourceTree = "<group>"; };
 		D907E2171AE75A3400B37D56 /* ChatManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
 		D908409F1AE5F90900FA31C0 /* ChatConversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatConversation.swift; sourceTree = "<group>"; };
 		D908E91C1AE8D6F500C984C7 /* NetworkUserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkUserAPI.swift; sourceTree = "<group>"; };
@@ -119,7 +124,6 @@
 		D92BF8161AE25B2F00031C63 /* TZIMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TZIMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92BF81B1AE25B2F00031C63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D92BF81C1AE25B2F00031C63 /* TZIMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TZIMTests.swift; sourceTree = "<group>"; };
-		D92BF8261AE25B4000031C63 /* TZIM-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TZIM-Bridging-Header.h"; sourceTree = "<group>"; };
 		D92BF82C1AE25B5B00031C63 /* AESCrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AESCrypt.h; sourceTree = "<group>"; };
 		D92BF82D1AE25B5B00031C63 /* AESCrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESCrypt.m; sourceTree = "<group>"; };
 		D92BF82E1AE25B5B00031C63 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -332,10 +336,10 @@
 		D92BF8031AE25B2F00031C63 /* TZIM */ = {
 			isa = PBXGroup;
 			children = (
+				D907C9FE1AFCEFEF0034D444 /* TZIM-Bridging-Header.h */,
 				D92BF8881AE25B6B00031C63 /* UI */,
 				D92BF82A1AE25B5B00031C63 /* IMSDK */,
 				D92BF8041AE25B2F00031C63 /* Supporting Files */,
-				D92BF8261AE25B4000031C63 /* TZIM-Bridging-Header.h */,
 				D92BF81A1AE25B2F00031C63 /* Supporting Files */,
 			);
 			path = TZIM;
@@ -542,6 +546,8 @@
 				D92BF89E1AE25B6B00031C63 /* ConversationViewController.h */,
 				D92BF89F1AE25B6B00031C63 /* ConversationViewController.m */,
 				D908E9221AE90E0F00C984C7 /* LoginViewController.swift */,
+				D907C9F41AFCE0DB0034D444 /* FrendTableViewController.swift */,
+				D907C9F61AFCE0FC0034D444 /* HomeViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -857,6 +863,7 @@
 				D908E9211AE8ECD100C984C7 /* TextMessage.swift in Sources */,
 				D92BF8841AE25B5C00031C63 /* wav.mm in Sources */,
 				D921BFA31AEA20830054DD99 /* IMConstants.swift in Sources */,
+				D907C9F71AFCE0FC0034D444 /* HomeViewController.swift in Sources */,
 				D92BF8701AE25B5C00031C63 /* ChatMessageDaoHelper.swift in Sources */,
 				D96393471AE79FE200725E4C /* ChatManagerMessage.swift in Sources */,
 				D9C932041AE6852C003FEBA3 /* FrendManager.swift in Sources */,
@@ -872,6 +879,7 @@
 				D92BF8721AE25B5C00031C63 /* DaoHelper.swift in Sources */,
 				D92BF8A71AE25B6B00031C63 /* UIBubbleTableViewCell.m in Sources */,
 				D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */,
+				D907C9F51AFCE0DB0034D444 /* FrendTableViewController.swift in Sources */,
 				D92BF86E1AE25B5C00031C63 /* BaseMessage.swift in Sources */,
 				D970978B1AEE68B900B9D3AF /* MetadataManager.swift in Sources */,
 				D9E6B9F11AE4FA5000C95767 /* UserDaoHelper.swift in Sources */,
