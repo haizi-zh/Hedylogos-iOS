@@ -10,5 +10,9 @@ import UIKit
 
 class GroupDaoHelper: BaseDaoHelper {
     
+    func createGroupsTable() {
+        
+    }
+    
 
 }

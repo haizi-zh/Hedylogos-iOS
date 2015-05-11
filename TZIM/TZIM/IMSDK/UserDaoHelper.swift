@@ -35,7 +35,7 @@ protocol UserDaoProtocol {
     获取所有的是我的好友的列表
     :returns:
     */
-    func selectAllContacts() -> NSArray
+    func selectAllContacts() -> Array<FrendModel>
     
 }
 
@@ -48,7 +48,7 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
     
     class func createFrendTable(DB: FMDatabase) -> Bool {
         
-        var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER)"
+        var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ExtData Text)"
         if (DB.executeUpdate(sql, withArgumentsInArray: nil)) {
             println("执行 sql 语句：\(sql)")
             return true
@@ -58,8 +58,7 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
     
     func createFrendTable() {
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
-
-            var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER)"
+            var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ExtData Text)"
             if (super.dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
                 println("success 执行 sql 语句：\(sql)")
                 
@@ -85,7 +84,7 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
 
             var sql = "insert into \(frendTableName) (UserId, NickName, Avatar, AvatarSmall, ShortPY, FullPY, Signature, Memo, Sex, Type) values (?,?,?,?,?,?,?,?,?,?)"
             println("执行 sql 语句：\(sql)")
-            var array = [frend.userId, frend.nickName, frend.avatar, frend.avatarSmall, frend.shortPY, frend.fullPY, frend.signature, frend.memo, frend.sex, frend.type]
+            var array = [frend.userId, frend.nickName, frend.avatar, frend.avatarSmall, frend.shortPY, frend.fullPY, frend.signature, frend.memo, frend.sex, frend.type.rawValue]
             dataBase.executeUpdate(sql, withArgumentsInArray: array as [AnyObject])
         }
     }
@@ -94,11 +93,11 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
     获取所有的是我的好友的列表
     :returns:
     */
-    func selectAllContacts() -> NSArray {
-        var retArray = NSMutableArray()
+    func selectAllContacts() -> Array<FrendModel> {
+        var retArray = Array<FrendModel>()
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
             var sql = "select * from \(frendTableName) where Type = ?"
-            var rs = dataBase.executeQuery(sql, withArgumentsInArray: [1])
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: [IMFrendType.Frend.rawValue])
             if (rs != nil) {
                 while rs.next() {
                     var frend = FrendModel()
@@ -108,9 +107,9 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
                     frend.avatarSmall = rs.stringForColumn("AvatarSmall")
                     frend.signature = rs.stringForColumn("Signature")
                     frend.sex = Int(rs.intForColumn("Sex"))
-                    frend.type = Int(rs.intForColumn("Type"))
+                    frend.type = IMFrendType(rawValue: Int(rs.intForColumn("Type")))!
                     frend.memo = rs.stringForColumn("memo")
-                    retArray.addObject(frend)
+                    retArray.append(frend)
                 }
             }
         }

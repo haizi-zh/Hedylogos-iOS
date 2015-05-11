@@ -8,35 +8,22 @@
 
 import UIKit
 
-let frendManger = FrendManager()
-
 class FrendManager: NSObject {
     
-    let frendList: NSMutableArray!
-    
-    class func shareInstance() -> FrendManager {
-        return frendManger
-    }
-    
-    override init() {
-        frendList = FrendManager.getAllMyContacts().mutableCopy() as! NSMutableArray
-    }
-    
     /**
-    添加一个好友
+    添加一个好友到数据库里
     :param: frend
     */
-    func addFrend(frend: FrendModel) {
+    func addFrend2DB(frend: FrendModel) {
         var daoHelper = DaoHelper.shareInstance()
         daoHelper.addFrend2DB(frend)
-        frendList.addObject(frend)
     }
     
     /**
     获取所有的好友列表
     :returns:
     */
-    private class func getAllMyContacts() -> NSArray {
+    func getAllMyContacts() -> NSArray {
         var retArray = NSArray()
         var daoHelper = DaoHelper.shareInstance()
         retArray = daoHelper.selectAllContacts()
@@ -49,12 +36,7 @@ class FrendManager: NSObject {
     :returns:
     */
     func frendIsExit(userId: Int) -> Bool {
-        for model in frendList {
-            if (model as! FrendModel).userId == userId {
-                return true
-            }
-        }
-        return false
+       return true
     }
 }
 

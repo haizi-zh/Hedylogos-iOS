@@ -16,6 +16,16 @@ class IMGroupModel: NSObject {
     var isPublic: Bool = false
     var maxUser: Int = 0
     var tags: Array<String>?
-    var creator: FrendModel!
-   
+    var creatorId: Int!
+    
+    init(jsonData: NSDictionary) {
+        groupId = jsonData.objectForKey("groupId") as! Int
+        subject = jsonData.objectForKey("name") as! String
+        desc = jsonData.objectForKey("desc") as? String
+        creatorId = jsonData.objectForKey("creator") as? Int
+        super.init()
+    }
 }
+
+
+

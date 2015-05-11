@@ -10,24 +10,16 @@ import UIKit
 
 class FrendTableViewController: UITableViewController {
 
-    var dataSource: Array<Int>!
+    var dataSource: Array<FrendModel>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        dataSource = [1,2,3,44,45,46,47,100,9,10]
-
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        let frendManager = FrendManager()
+        dataSource = frendManager.getAllMyContacts() as! Array<FrendModel>
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
@@ -47,14 +39,14 @@ class FrendTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("frendCell", forIndexPath: indexPath) as! UITableViewCell
 
-        cell.textLabel?.text = "\(dataSource[indexPath.row])"
+        cell.textLabel?.text = "\(dataSource[indexPath.row].userId)   \(dataSource[indexPath.row].nickName)"
 
         return cell
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var manager = IMClientManager.shareInstance()
-        var conversation = manager.conversationManager.getConversationWithChatterId(dataSource[indexPath.row])
+        var conversation = manager.conversationManager.getConversationWithChatterId(dataSource[indexPath.row].userId)
         manager.conversationManager.addConversation(conversation)
         var viewController = ChatViewController()
         viewController.conversation = conversation

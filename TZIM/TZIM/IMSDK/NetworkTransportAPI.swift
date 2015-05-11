@@ -82,7 +82,38 @@ class NetworkTransportAPI: NSObject {
         }
     }
     
-   
+    /**
+    发送一个 post 请求
+    
+    :param: url             请求的 url
+    :param: parameters      post 参数
+    :param: completionBlock 请求的回掉
+    */
+    class func asyncGET(#requestUrl: String, parameters: NSDictionary?, completionBlock: (isSuccess: Bool, errorCode: Int, retMessage: AnyObject?) -> ()) {
+        let manager = AFHTTPRequestOperationManager()
+        
+        let requestSerializer = AFJSONRequestSerializer()
+        
+        manager.requestSerializer = requestSerializer
+        var accountManager = AccountManager.shareInstance()
+        manager.requestSerializer.setValue("\(accountManager.userId)", forHTTPHeaderField: "UserId")
+        manager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
+        manager.requestSerializer.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        manager.GET(requestUrl, parameters: parameters, success:
+            {
+                (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
+                if let reslutDic: AnyObject = responseObject.objectForKey("result") {
+                    completionBlock(isSuccess: true, errorCode: 0, retMessage: reslutDic)
+                }
+            })
+            {
+                (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                print(error)
+                completionBlock(isSuccess: false, errorCode: 0, retMessage: nil)
+        }
+    }
+    
     /**
     fetch 消息
     

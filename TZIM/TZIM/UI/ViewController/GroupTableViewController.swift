@@ -16,31 +16,32 @@ class GroupTableViewController: UITableViewController {
         super.viewDidLoad()
         
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        var imClient = IMClientManager.shareInstance()
+        imClient.groupManager.asyncLoadAllMyGroupsFromServer { (isSuccess, errorCode, groupList) -> () in
+            
+        }
+    }
 
     @IBAction func addGroup(sender: AnyObject) {
         var imClient = IMClientManager.shareInstance()
         imClient.groupManager.asyncCreateGroup(subject: "第一个群组", description: "大家好", isPublic: true, invitees: [], welcomeMessage: "大家好") { (isSuccess, errorCode, retMessage) -> () in
-            
         }
-        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 0
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
         return 0
     }
 

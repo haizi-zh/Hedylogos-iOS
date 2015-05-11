@@ -205,14 +205,18 @@ public class DaoHelper:NSObject {
         })
     }
     
-    func selectAllContacts() -> NSArray {
+    /**
+    获取我的说有联系人
+    :returns:
+    */
+    func selectAllContacts() -> Array<FrendModel> {
         if self.openDB() {
             var result = userDaoHelper.selectAllContacts()
             self.closeDB()
             return result
             
         } else {
-            return NSArray()
+            return Array<FrendModel>()
         }
     }
     

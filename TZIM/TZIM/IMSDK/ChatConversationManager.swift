@@ -94,12 +94,16 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         }
         
         //如果这个好友在本地不存在，那么去服务器加载一个好友
-        var frendManager = FrendManager.shareInstance()
+        var frendManager = FrendManager()
         if !frendManager.frendIsExit(conversation.chatterId) {
             var frendModel = FrendModel()
             frendModel.userId = conversation.chatterId
-            frendModel.nickName = "测试用户"
-            frendManager.addFrend(frendModel)
+            if conversation.chatType == IMChatType.IMChatSingleType {
+                frendModel.type = IMFrendType.Group
+            } else if conversation.chatType == IMChatType.IMChatSingleType {
+                frendModel.type = IMFrendType.Frend
+            }
+            frendManager.addFrend2DB(frendModel)
         }
 
         var daoHelper = DaoHelper.shareInstance()
