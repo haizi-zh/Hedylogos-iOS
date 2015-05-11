@@ -22,6 +22,7 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
     var messageReceiveManager: MessageReceiveManager!
     var messageSendManager: MessageSendManager!
     var conversationManager: ChatConversationManager!
+    var groupManager: IMGroupManager!
     
     weak var delegate: IMClientDelegate?
     
@@ -30,7 +31,6 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
         super.init()
         connectionManager.connectionManagerDelegate = self
     }
-    
     
     deinit {
         println("IMClientManager deinit")
@@ -50,6 +50,7 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
         if isSuccess {
             self.messageReceiveManager = MessageReceiveManager.shareInstance()
             self.messageSendManager = MessageSendManager.shareInstance()
+            self.groupManager = IMGroupManager()
             self.conversationManager = ChatConversationManager()
             self.addMessageDelegate(conversationManager)
             self.messageReceiveManager.fetchOmitMessageWithReceivedMessages(nil)

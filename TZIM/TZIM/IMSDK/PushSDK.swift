@@ -71,7 +71,6 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
                 }
             }
         }
-        
     }
     
     /**
@@ -142,9 +141,7 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
     func GexinSdkDidRegisterClient(clientId: String!) {
         pushConnectionDelegate?.getuiDidConnection(clientId)
     }
-    
 }
-
 
 class GetuiPush: GexinSdk {
     

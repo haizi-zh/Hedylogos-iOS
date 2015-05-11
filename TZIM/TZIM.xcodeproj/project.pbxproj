@@ -17,6 +17,9 @@
 		D908E9211AE8ECD100C984C7 /* TextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9201AE8ECD100C984C7 /* TextMessage.swift */; };
 		D908E9231AE90E0F00C984C7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9221AE90E0F00C984C7 /* LoginViewController.swift */; };
 		D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9241AE9E33100C984C7 /* AccountManager.swift */; };
+		D912452A1AFDB55900480181 /* IMGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245291AFDB55900480181 /* IMGroupManager.swift */; };
+		D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D912452B1AFDDA2800480181 /* GroupTableViewController.swift */; };
+		D91245371AFE0BBD00480181 /* IMGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245361AFE0BBD00480181 /* IMGroupModel.swift */; };
 		D921BFA31AEA20830054DD99 /* IMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D921BFA21AEA20830054DD99 /* IMConstants.swift */; };
 		D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8061AE25B2F00031C63 /* AppDelegate.swift */; };
 		D92BF80E1AE25B2F00031C63 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92BF80D1AE25B2F00031C63 /* Images.xcassets */; };
@@ -115,6 +118,9 @@
 		D908E9201AE8ECD100C984C7 /* TextMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextMessage.swift; sourceTree = "<group>"; };
 		D908E9221AE90E0F00C984C7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D908E9241AE9E33100C984C7 /* AccountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		D91245291AFDB55900480181 /* IMGroupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupManager.swift; sourceTree = "<group>"; };
+		D912452B1AFDDA2800480181 /* GroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewController.swift; sourceTree = "<group>"; };
+		D91245361AFE0BBD00480181 /* IMGroupModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupModel.swift; sourceTree = "<group>"; };
 		D921BFA21AEA20830054DD99 /* IMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMConstants.swift; sourceTree = "<group>"; };
 		D92BF8011AE25B2F00031C63 /* TZIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TZIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92BF8051AE25B2F00031C63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -290,6 +296,15 @@
 			name = ChatConversation;
 			sourceTree = "<group>";
 		};
+		D91245251AFDAA6300480181 /* GroupManager */ = {
+			isa = PBXGroup;
+			children = (
+				D91245291AFDB55900480181 /* IMGroupManager.swift */,
+				D91245361AFE0BBD00480181 /* IMGroupModel.swift */,
+			);
+			name = GroupManager;
+			sourceTree = "<group>";
+		};
 		D921BFA41AEA27590054DD99 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -388,6 +403,7 @@
 				D92BF84F1AE25B5C00031C63 /* LvSDKManager.swift */,
 				D907E2161AE75A1600B37D56 /* ChatManager */,
 				D9C932021AE684F7003FEBA3 /* UserManager */,
+				D91245251AFDAA6300480181 /* GroupManager */,
 				D9E6B9EA1AE498A100C95767 /* MessageManager */,
 			);
 			path = IMSDK;
@@ -546,6 +562,7 @@
 				D92BF89E1AE25B6B00031C63 /* ConversationViewController.h */,
 				D92BF89F1AE25B6B00031C63 /* ConversationViewController.m */,
 				D908E9221AE90E0F00C984C7 /* LoginViewController.swift */,
+				D912452B1AFDDA2800480181 /* GroupTableViewController.swift */,
 				D907C9F41AFCE0DB0034D444 /* FrendTableViewController.swift */,
 				D907C9F61AFCE0FC0034D444 /* HomeViewController.swift */,
 			);
@@ -864,6 +881,7 @@
 				D92BF8841AE25B5C00031C63 /* wav.mm in Sources */,
 				D921BFA31AEA20830054DD99 /* IMConstants.swift in Sources */,
 				D907C9F71AFCE0FC0034D444 /* HomeViewController.swift in Sources */,
+				D912452A1AFDB55900480181 /* IMGroupManager.swift in Sources */,
 				D92BF8701AE25B5C00031C63 /* ChatMessageDaoHelper.swift in Sources */,
 				D96393471AE79FE200725E4C /* ChatManagerMessage.swift in Sources */,
 				D9C932041AE6852C003FEBA3 /* FrendManager.swift in Sources */,
@@ -884,6 +902,7 @@
 				D970978B1AEE68B900B9D3AF /* MetadataManager.swift in Sources */,
 				D9E6B9F11AE4FA5000C95767 /* UserDaoHelper.swift in Sources */,
 				D9B9EFF31AF0C69E000331B5 /* MessageReceivePool.swift in Sources */,
+				D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */,
 				D96393451AE79FB000725E4C /* ChatManagerAudio.swift in Sources */,
 				D907E2181AE75A3400B37D56 /* ChatManager.swift in Sources */,
 				D92BF8691AE25B5C00031C63 /* NSData+Base64.m in Sources */,
@@ -902,6 +921,7 @@
 				D92BF8871AE25B5C00031C63 /* VoiceConverter.mm in Sources */,
 				D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */,
 				D92BF8751AE25B5C00031C63 /* FMDatabaseAdditions.m in Sources */,
+				D91245371AFE0BBD00480181 /* IMGroupModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
