@@ -22,6 +22,8 @@ class AccountManager: NSObject {
     }
     
     override init() {
+        var accountDaoHelper = AccountDaoHelper()
+        account = accountDaoHelper.loadAccountFromDB()
         super.init()
     }
     
@@ -33,6 +35,8 @@ class AccountManager: NSObject {
     func userDidLogin(accountInfo: NSDictionary) {
         self.account = AccountModel()
         self.account.userId = accountInfo.objectForKey("userId") as! Int
+        var accountDaoHelper = AccountDaoHelper()
+        accountDaoHelper.insertAccountInfo2DB(account)  
     }
     
     var userChatImagePath: String {

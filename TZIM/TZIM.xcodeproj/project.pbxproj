@@ -17,6 +17,7 @@
 		D908E9211AE8ECD100C984C7 /* TextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9201AE8ECD100C984C7 /* TextMessage.swift */; };
 		D908E9231AE90E0F00C984C7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9221AE90E0F00C984C7 /* LoginViewController.swift */; };
 		D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9241AE9E33100C984C7 /* AccountManager.swift */; };
+		D911377C1B019A8000B4A3A3 /* AccountDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D911377B1B019A8000B4A3A3 /* AccountDaoHelper.swift */; };
 		D912452A1AFDB55900480181 /* IMGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245291AFDB55900480181 /* IMGroupManager.swift */; };
 		D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D912452B1AFDDA2800480181 /* GroupTableViewController.swift */; };
 		D91245371AFE0BBD00480181 /* IMGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245361AFE0BBD00480181 /* IMGroupModel.swift */; };
@@ -90,7 +91,7 @@
 		D9C931FD1AE605C6003FEBA3 /* ConversationDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C931FC1AE605C6003FEBA3 /* ConversationDaoHelper.swift */; };
 		D9C932011AE66B66003FEBA3 /* FrendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C932001AE66B66003FEBA3 /* FrendModel.swift */; };
 		D9C932041AE6852C003FEBA3 /* FrendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C932031AE6852C003FEBA3 /* FrendManager.swift */; };
-		D9E6B9F11AE4FA5000C95767 /* UserDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6B9F01AE4FA5000C95767 /* UserDaoHelper.swift */; };
+		D9E6B9F11AE4FA5000C95767 /* FrendDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6B9F01AE4FA5000C95767 /* FrendDaoHelper.swift */; };
 		D9E6B9F41AE513F400C95767 /* GroupDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6B9F31AE513F400C95767 /* GroupDaoHelper.swift */; };
 		D9E6B9F81AE51D2C00C95767 /* NetworkTransportAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6B9F71AE51D2C00C95767 /* NetworkTransportAPI.swift */; };
 /* End PBXBuildFile section */
@@ -119,6 +120,7 @@
 		D908E9201AE8ECD100C984C7 /* TextMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextMessage.swift; sourceTree = "<group>"; };
 		D908E9221AE90E0F00C984C7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D908E9241AE9E33100C984C7 /* AccountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		D911377B1B019A8000B4A3A3 /* AccountDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDaoHelper.swift; sourceTree = "<group>"; };
 		D91245291AFDB55900480181 /* IMGroupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupManager.swift; sourceTree = "<group>"; };
 		D912452B1AFDDA2800480181 /* GroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewController.swift; sourceTree = "<group>"; };
 		D91245361AFE0BBD00480181 /* IMGroupModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupModel.swift; sourceTree = "<group>"; };
@@ -224,7 +226,7 @@
 		D9C931FC1AE605C6003FEBA3 /* ConversationDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationDaoHelper.swift; sourceTree = "<group>"; };
 		D9C932001AE66B66003FEBA3 /* FrendModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrendModel.swift; sourceTree = "<group>"; };
 		D9C932031AE6852C003FEBA3 /* FrendManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrendManager.swift; sourceTree = "<group>"; };
-		D9E6B9F01AE4FA5000C95767 /* UserDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDaoHelper.swift; sourceTree = "<group>"; };
+		D9E6B9F01AE4FA5000C95767 /* FrendDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrendDaoHelper.swift; sourceTree = "<group>"; };
 		D9E6B9F31AE513F400C95767 /* GroupDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupDaoHelper.swift; sourceTree = "<group>"; };
 		D9E6B9F71AE51D2C00C95767 /* NetworkTransportAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkTransportAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -685,8 +687,9 @@
 		D9E6B9EF1AE4FA2D00C95767 /* UserDaoHelper */ = {
 			isa = PBXGroup;
 			children = (
-				D9E6B9F01AE4FA5000C95767 /* UserDaoHelper.swift */,
+				D9E6B9F01AE4FA5000C95767 /* FrendDaoHelper.swift */,
 				D9C931FC1AE605C6003FEBA3 /* ConversationDaoHelper.swift */,
+				D911377B1B019A8000B4A3A3 /* AccountDaoHelper.swift */,
 			);
 			name = UserDaoHelper;
 			sourceTree = "<group>";
@@ -886,6 +889,7 @@
 				D907C9F71AFCE0FC0034D444 /* HomeViewController.swift in Sources */,
 				D912452A1AFDB55900480181 /* IMGroupManager.swift in Sources */,
 				D92BF8701AE25B5C00031C63 /* ChatMessageDaoHelper.swift in Sources */,
+				D911377C1B019A8000B4A3A3 /* AccountDaoHelper.swift in Sources */,
 				D96393471AE79FE200725E4C /* ChatManagerMessage.swift in Sources */,
 				D9C932041AE6852C003FEBA3 /* FrendManager.swift in Sources */,
 				D966BAEB1AFB9C0B00FA53E7 /* ChatConversationManager.swift in Sources */,
@@ -903,7 +907,7 @@
 				D907C9F51AFCE0DB0034D444 /* FrendTableViewController.swift in Sources */,
 				D92BF86E1AE25B5C00031C63 /* BaseMessage.swift in Sources */,
 				D970978B1AEE68B900B9D3AF /* MetadataManager.swift in Sources */,
-				D9E6B9F11AE4FA5000C95767 /* UserDaoHelper.swift in Sources */,
+				D9E6B9F11AE4FA5000C95767 /* FrendDaoHelper.swift in Sources */,
 				D9B9EFF31AF0C69E000331B5 /* MessageReceivePool.swift in Sources */,
 				D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */,
 				D96393451AE79FB000725E4C /* ChatManagerAudio.swift in Sources */,

@@ -14,6 +14,11 @@ class LoginViewController: UIViewController, IMClientDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+        var accountManager = AccountManager.shareInstance()
+        if accountManager.account != nil {
+            userIdTextField.text = "\(accountManager.account.userId)"
+            self.login(0)
+        }
     }
 
     override func didReceiveMemoryWarning() {

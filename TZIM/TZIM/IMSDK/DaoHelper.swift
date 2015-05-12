@@ -19,7 +19,8 @@ public class DaoHelper:NSObject {
     private let db: FMDatabase
     private let chatMessageDaoHelper: ChatMessageDaoHelper
     private let metaDataDaoHelper: MetaDataDaoHelper
-    private let userDaoHelper: FrendDaoHelper
+    private let frendDaoHelper: FrendDaoHelper
+
     private let conversationHelper: ConversationDaoHelper
     private let dbQueue: FMDatabaseQueue
     
@@ -47,7 +48,7 @@ public class DaoHelper:NSObject {
 
         chatMessageDaoHelper = ChatMessageDaoHelper(db: db, dbQueue: dbQueue)
         metaDataDaoHelper = MetaDataDaoHelper(db: db)
-        userDaoHelper = FrendDaoHelper(db: db, dbQueue: dbQueue)
+        frendDaoHelper = FrendDaoHelper(db: db, dbQueue: dbQueue)
         conversationHelper = ConversationDaoHelper(db: db, dbQueue: dbQueue)
         super.init()
     }
@@ -183,7 +184,7 @@ public class DaoHelper:NSObject {
 
         dispatch_async(databaseWriteQueue, { () -> Void in
             self.openDB()
-            self.userDaoHelper.createFrendTable()
+            self.frendDaoHelper.createFrendTable()
             self.closeDB()
         })
     }
@@ -191,7 +192,7 @@ public class DaoHelper:NSObject {
     func deleteFrendTable() {
         dispatch_async(databaseWriteQueue, { () -> Void in
             self.openDB()
-            self.userDaoHelper.deleteFrendTable()
+            self.frendDaoHelper.deleteFrendTable()
             self.closeDB()
         })
        
@@ -200,7 +201,7 @@ public class DaoHelper:NSObject {
     func addFrend2DB(frend: FrendModel) {
         dispatch_async(databaseWriteQueue, { () -> Void in
             self.openDB()
-            self.userDaoHelper.addFrend2DB(frend)
+            self.frendDaoHelper.addFrend2DB(frend)
             self.closeDB()
         })
     }
@@ -211,7 +212,7 @@ public class DaoHelper:NSObject {
     */
     func selectAllContacts() -> Array<FrendModel> {
         if self.openDB() {
-            var result = userDaoHelper.selectAllContacts()
+            var result = frendDaoHelper.selectAllContacts()
             self.closeDB()
             return result
             
@@ -222,7 +223,7 @@ public class DaoHelper:NSObject {
     
     func frendIsExitInDB(userId: Int) -> Bool {
         if self.openDB() {
-            var result = userDaoHelper.frendIsExitInDB(userId)
+            var result = frendDaoHelper.frendIsExitInDB(userId)
             self.closeDB()
             return result
         } else {
@@ -275,6 +276,9 @@ public class DaoHelper:NSObject {
             self.closeDB()
         })
     }
+
+    
+    
     
 }
 

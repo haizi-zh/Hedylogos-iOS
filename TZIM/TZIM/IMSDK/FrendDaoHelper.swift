@@ -138,20 +138,5 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
 
 
 
-class AccountDaoHelper: BaseDaoHelper {
-    func createAccountTable() {
-        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
-            var sql = "create table '\(accountTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ExtData Text)"
-            if (super.dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
-                println("success 执行 sql 语句：\(sql)")
-                
-            } else {
-                println("error 执行 sql 语句：\(sql)")
-            }
-        }
-    }
-    
-}
-
 
 
