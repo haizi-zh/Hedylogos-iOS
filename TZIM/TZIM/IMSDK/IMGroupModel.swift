@@ -24,7 +24,7 @@ class IMGroupModel: NSObject {
         subject = jsonData.objectForKey("name") as! String
         desc = jsonData.objectForKey("desc") as? String
         creatorId = jsonData.objectForKey("creator") as? Int
-        if let conversationId = jsonData.objectForKey("conversationId") as? String {
+        if let conversationId = jsonData.objectForKey("conversation") as? String {
             self.conversationId = conversationId
         }
         super.init()

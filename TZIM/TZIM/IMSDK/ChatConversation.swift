@@ -26,7 +26,7 @@ import UIKit
 }
 
 class ChatConversation: NSObject {
-    var conversationId: Int = 0
+    var conversationId: String = String()
     var chatterId: Int
     var chatterName: String = ""
     var lastUpdateTime: Int = 0

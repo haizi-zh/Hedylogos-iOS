@@ -344,7 +344,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     NSLog(@"%lf", [[NSDate date] timeIntervalSince1970]);
        
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-    BaseMessage *message = [imClientManager.messageSendManager sendTextMessage:_conversation.chatterId isChatGroup:NO message:_messageToSend.text];
+    BaseMessage *message = [imClientManager.messageSendManager sendTextMessage:_messageToSend.text receiver:_conversation.chatterId conversationId:_conversation.conversationId];
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 }
@@ -369,7 +369,7 @@ static NSString *messageCellIdentifier = @"messageCell";
 - (void)audioRecordEnd:(NSString * __nonnull)audioPath
 {
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-    AudioMessage *audioMessage = [imClientManager.messageSendManager sendAudioMessageWithWavFormat:_conversation.chatterId isChatGroup:NO wavAudioPath:audioPath progress:^(float progress) {
+    AudioMessage *audioMessage = [imClientManager.messageSendManager sendAudioMessageWithWavFormat:_conversation.chatterId conversationId:_conversation.conversationId wavAudioPath:audioPath progress:^(float progress) {
         
     }];
     
@@ -393,9 +393,13 @@ static NSString *messageCellIdentifier = @"messageCell";
     
     UIImage *headerImage = [info objectForKey:UIImagePickerControllerEditedImage];
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-    ImageMessage *image = [imClientManager.messageSendManager sendImageMessage:_conversation.chatterId isChatGroup:NO image:headerImage progress:^(float progressValue) {
+    
+    ImageMessage *image = [imClientManager.messageSendManager sendImageMessage:_conversation.chatterId conversationId:_conversation.conversationId image:headerImage progress:^(float progressValue) {
         
     }];
+    
+
+
     
     NSLog(@"info: %@", info);
     [self addMessageToDataSource:image];
