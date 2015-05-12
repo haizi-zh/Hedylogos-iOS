@@ -17,12 +17,16 @@ class IMGroupModel: NSObject {
     var maxUser: Int = 0
     var tags: Array<String>?
     var creatorId: Int!
+    var conversationId: String = String()
     
     init(jsonData: NSDictionary) {
         groupId = jsonData.objectForKey("groupId") as! Int
         subject = jsonData.objectForKey("name") as! String
         desc = jsonData.objectForKey("desc") as? String
         creatorId = jsonData.objectForKey("creator") as? Int
+        if let conversationId = jsonData.objectForKey("conversationId") as? String {
+            self.conversationId = conversationId
+        }
         super.init()
     }
     

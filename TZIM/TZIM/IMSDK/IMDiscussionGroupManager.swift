@@ -9,5 +9,29 @@
 import UIKit
 
 class IMDiscussionGroupManager: NSObject {
-   
+    
+    /**
+    异步创建一个讨论组
+    :returns:
+    */
+    func asyncCreateDiscussionGroup(completion:(isSuccess: Bool, errorCode: Int, discussionGroup: IMDiscussionGroup?)) {
+        
+    }
+    
+    /**
+    离开一个讨论组
+    
+    :param: completion
+    */
+    func asyncLeaveDiscussionGroup(completion:(isSuccess: Bool, errorCode: Int)) {
+    }
+    
+    func asyncChangeDiscussionGroupTitle(completion:(isSuccess: Bool, errorCode: Int)) {
+    }
+    
+    func asyncAddNumbers(numbers: Array<FrendModel>, completion:(isSuccess: Bool, errorCode: Int)) {
+    }
+    
+    
+    
 }

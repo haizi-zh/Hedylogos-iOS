@@ -139,6 +139,7 @@ class IMGroupManager: NSObject {
         frendModel.userId = group.groupId
         frendModel.nickName = group.subject
         frendModel.type = IMFrendType.Group
+        frendModel.conversationId = group.conversationId
         return frendModel
     }
 

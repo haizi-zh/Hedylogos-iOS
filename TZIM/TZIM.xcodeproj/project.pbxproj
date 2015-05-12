@@ -18,6 +18,8 @@
 		D908E9231AE90E0F00C984C7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9221AE90E0F00C984C7 /* LoginViewController.swift */; };
 		D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9241AE9E33100C984C7 /* AccountManager.swift */; };
 		D911377C1B019A8000B4A3A3 /* AccountDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D911377B1B019A8000B4A3A3 /* AccountDaoHelper.swift */; };
+		D911377F1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D911377E1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift */; };
+		D91137821B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91137811B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift */; };
 		D912452A1AFDB55900480181 /* IMGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245291AFDB55900480181 /* IMGroupManager.swift */; };
 		D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D912452B1AFDDA2800480181 /* GroupTableViewController.swift */; };
 		D91245371AFE0BBD00480181 /* IMGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245361AFE0BBD00480181 /* IMGroupModel.swift */; };
@@ -120,6 +122,8 @@
 		D908E9221AE90E0F00C984C7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D908E9241AE9E33100C984C7 /* AccountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		D911377B1B019A8000B4A3A3 /* AccountDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDaoHelper.swift; sourceTree = "<group>"; };
+		D911377E1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMDiscussionGroup.swift; sourceTree = "<group>"; };
+		D91137811B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMDiscussionGroupManager.swift; sourceTree = "<group>"; };
 		D91245291AFDB55900480181 /* IMGroupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupManager.swift; sourceTree = "<group>"; };
 		D912452B1AFDDA2800480181 /* GroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewController.swift; sourceTree = "<group>"; };
 		D91245361AFE0BBD00480181 /* IMGroupModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupModel.swift; sourceTree = "<group>"; };
@@ -298,11 +302,29 @@
 			name = ChatConversation;
 			sourceTree = "<group>";
 		};
-		D91245251AFDAA6300480181 /* GroupManager */ = {
+		D911377D1B01E5AF00B4A3A3 /* DiscussionGroup */ = {
+			isa = PBXGroup;
+			children = (
+				D911377E1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift */,
+				D91137811B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift */,
+			);
+			name = DiscussionGroup;
+			sourceTree = "<group>";
+		};
+		D91137801B01E79100B4A3A3 /* IMGroup */ = {
 			isa = PBXGroup;
 			children = (
 				D91245291AFDB55900480181 /* IMGroupManager.swift */,
 				D91245361AFE0BBD00480181 /* IMGroupModel.swift */,
+			);
+			name = IMGroup;
+			sourceTree = "<group>";
+		};
+		D91245251AFDAA6300480181 /* GroupManager */ = {
+			isa = PBXGroup;
+			children = (
+				D911377D1B01E5AF00B4A3A3 /* DiscussionGroup */,
+				D91137801B01E79100B4A3A3 /* IMGroup */,
 			);
 			name = GroupManager;
 			sourceTree = "<group>";
@@ -898,6 +920,7 @@
 				D92BF8A91AE25B6B00031C63 /* ChatViewController.m in Sources */,
 				D96393431AE7963500725E4C /* AudioDeviceManager.swift in Sources */,
 				D92BF8721AE25B5C00031C63 /* DaoHelper.swift in Sources */,
+				D911377F1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift in Sources */,
 				D92BF8A71AE25B6B00031C63 /* UIBubbleTableViewCell.m in Sources */,
 				D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */,
 				D907C9F51AFCE0DB0034D444 /* FrendTableViewController.swift in Sources */,
@@ -922,6 +945,7 @@
 				D92BF8811AE25B5C00031C63 /* MetaDataDaoHelper.swift in Sources */,
 				D92BF8761AE25B5C00031C63 /* FMDatabasePool.m in Sources */,
 				D92BF8771AE25B5C00031C63 /* FMDatabaseQueue.m in Sources */,
+				D91137821B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift in Sources */,
 				D92BF8871AE25B5C00031C63 /* VoiceConverter.mm in Sources */,
 				D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */,
 				D92BF8751AE25B5C00031C63 /* FMDatabaseAdditions.m in Sources */,

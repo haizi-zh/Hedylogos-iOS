@@ -34,6 +34,7 @@ class ChatConversation: NSObject {
     var chatMessageList: NSMutableArray
     var chatType: IMChatType
     var isCurrentConversation: Bool = false        //是否是当前显示的会话，默认为 false
+    var isTopConversation: Bool = false            //是否置顶
     var unReadMessageCount: Int {
         willSet {
             ChatConversation.updateUnreadMessageCountInDB(newValue, chatterId: chatterId)
@@ -57,7 +58,28 @@ class ChatConversation: NSObject {
         println("ChatConversation deinit")
     }
     
+    func fillConversationType(#frendType: IMFrendType) {
+        isTopConversation = self.typeIsCorrect(frendType, typeWeight: IMFrendWeightType.ConversationTop)
+        
+        if self.typeIsCorrect(frendType, typeWeight: IMFrendWeightType.Frend) {
+            chatType = IMChatType.IMChatSingleType
+            
+        } else if self.typeIsCorrect(frendType, typeWeight: IMFrendWeightType.Group) {
+            chatType = IMChatType.IMChatGroupType
+            
+        } else if self.typeIsCorrect(frendType, typeWeight: IMFrendWeightType.DiscussionGroup) {
+            chatType = IMChatType.IMChatDiscussionGroupType
+        }
+    }
+    
 //MARK: private function
+    
+    private func typeIsCorrect(frendType: IMFrendType, typeWeight: IMFrendWeightType) -> Bool {
+        if (frendType.rawValue & typeWeight.rawValue) == 0 {
+            return false
+        }
+        return true
+    }
     
     /**
     更新最新一条本地消息

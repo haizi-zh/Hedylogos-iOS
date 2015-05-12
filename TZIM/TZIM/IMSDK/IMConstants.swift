@@ -50,6 +50,11 @@ import UIKit
 *  聊天类型
 */
 @objc enum IMChatType: Int {
-    case IMChatSingleType = 0
-    case IMChatGroupType = 1
+    case IMChatSingleType = 0               //单聊
+    case IMChatGroupType = 1                //群聊
+    case IMChatDiscussionGroupType = 2      //讨论组
 }
+
+
+
+

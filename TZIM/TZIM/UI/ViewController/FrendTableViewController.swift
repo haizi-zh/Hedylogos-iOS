@@ -14,8 +14,13 @@ class FrendTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+           }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         let frendManager = FrendManager()
         dataSource = frendManager.getAllMyContacts() as! Array<FrendModel>
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {

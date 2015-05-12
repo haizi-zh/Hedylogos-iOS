@@ -72,9 +72,7 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
                         conversation.chatterName = chatterName
                     }
                     var typeValue  = rs.intForColumn("Type")
-                    if let type = IMChatType(rawValue: Int(typeValue)) {
-                        conversation.chatType = type
-                    }
+                    conversation.fillConversationType(frendType: IMFrendType(rawValue: Int(typeValue))!)
                     conversation.unReadMessageCount = Int(rs.intForColumn("UnreadMessageCount"))
                     conversation.conversationId = Int(rs.intForColumn("ConversationId"))
 

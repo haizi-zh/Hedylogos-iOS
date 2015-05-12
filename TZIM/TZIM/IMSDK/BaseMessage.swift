@@ -18,6 +18,7 @@ class BaseMessage: NSObject {
     var sendType: IMMessageSendType
     var chatterId: Int
     var metadataId: String?
+    var chatType: IMChatType = IMChatType.IMChatSingleType
     
     override init() {
         localId = -1

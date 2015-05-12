@@ -63,7 +63,7 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
     
     class func createFrendTable(DB: FMDatabase) -> Bool {
         
-        var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ExtData Text)"
+        var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ConversationId Text, ExtData Text)"
         if (DB.executeUpdate(sql, withArgumentsInArray: nil)) {
             println("执行 sql 语句：\(sql)")
             return true
@@ -73,7 +73,7 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
     
     func createFrendTable() {
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
-            var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ExtData Text)"
+            var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ConversationId Text, ExtData Text)"
             if (super.dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
                 println("success 执行 sql 语句：\(sql)")
                 
@@ -97,9 +97,9 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
         }
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
-            var sql = "insert or replace into \(frendTableName) (UserId, NickName, Avatar, AvatarSmall, ShortPY, FullPY, Signature, Memo, Sex, Type) values (?,?,?,?,?,?,?,?,?,?)"
+            var sql = "insert or replace into \(frendTableName) (UserId, NickName, Avatar, AvatarSmall, ShortPY, FullPY, Signature, Memo, Sex, Type, ConversationId) values (?,?,?,?,?,?,?,?,?,?)"
             println("执行 sql 语句：\(sql)")
-            var array = [frend.userId, frend.nickName, frend.avatar, frend.avatarSmall, frend.shortPY, frend.fullPY, frend.signature, frend.memo, frend.sex, frend.type.rawValue]
+            var array = [frend.userId, frend.nickName, frend.avatar, frend.avatarSmall, frend.shortPY, frend.fullPY, frend.signature, frend.memo, frend.sex, frend.type.rawValue, frend.conversationId]
             dataBase.executeUpdate(sql, withArgumentsInArray: array as [AnyObject])
         }
     }
@@ -131,6 +131,11 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
         return retArray
     }
     
+    /**
+    好友是否是在数据库里已经存在
+    :param: userId
+    :returns:
+    */
     func frendIsExitInDB(userId: Int) -> Bool {
         var sql = "select * from \(frendTableName) where userId = ?"
         var rs = dataBase.executeQuery(sql, withArgumentsInArray: [userId])
@@ -143,7 +148,7 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
     }
     
     
-    //MARK: Group
+//MARK: Group
     
     /**
     获取所有的是我的群组 的列表
@@ -153,12 +158,13 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
         var retArray = Array<IMGroupModel>()
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
             var sql = "select * from \(frendTableName) where Type = ?"
-            var rs = dataBase.executeQuery(sql, withArgumentsInArray: [IMFrendType.Frend.rawValue])
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: [IMFrendType.Group.rawValue])
             if (rs != nil) {
                 while rs.next() {
                     var group = IMGroupModel()
                     group.groupId = Int(rs.intForColumn("UserId"))
                     group.subject = rs.stringForColumn("NickName")
+                    group.conversationId = rs.stringForColumn("ConversationId")
                     retArray.append(group)
                 }
             }

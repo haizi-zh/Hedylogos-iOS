@@ -35,6 +35,7 @@ import UIKit
     case Frend = 1
     case Expert = 2
     case Group = 8
+    case DiscussionGroup = 256
     case Business = 16
     case GroupMember = 4
     case Frend_Expert = 3
@@ -44,9 +45,22 @@ import UIKit
     case Business_GroupMember = 20
     case ChatTop_Frend = 65
     case ChatTop_Group = 72
+    case ChatTop_DiscussionGroup = 320
     case Black_Frend = 129
     case Black_Business = 144
     case Black_Expert = 130
+}
+
+//类型的权重值
+@objc enum IMFrendWeightType: Int {
+    case Frend = 1
+    case Expert = 2
+    case Group = 8
+    case Business = 16
+    case Favorite = 32
+    case ConversationTop = 64
+    case BlackList = 128
+    case DiscussionGroup = 256
 }
 
 class FrendModel: NSObject {
@@ -60,4 +74,5 @@ class FrendModel: NSObject {
     var signature: String = ""
     var memo: String = ""
     var sex: Int = 0
+    var conversationId: String = String()
 }
