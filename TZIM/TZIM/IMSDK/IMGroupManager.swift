@@ -24,6 +24,7 @@ class IMGroupManager: NSObject {
                     groupList.append(IMGroupModel(jsonData: groupData as! NSDictionary))
                 }
             }
+            completionBlock(isSuccess: isSuccess, errorCode: errorCode, groupList: groupList)
         }
     }
     

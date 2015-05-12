@@ -17,7 +17,7 @@ class LoginViewController: UIViewController, IMClientDelegate {
         var accountManager = AccountManager.shareInstance()
         if accountManager.account != nil {
             userIdTextField.text = "\(accountManager.account.userId)"
-            self.login(0)
+//            self.login(0)
         }
     }
 

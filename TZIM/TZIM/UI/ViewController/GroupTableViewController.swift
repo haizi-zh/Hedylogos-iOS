@@ -10,18 +10,18 @@ import UIKit
 
 class GroupTableViewController: UITableViewController {
     
-    var dataSource :NSMutableArray!
+    var dataSource :Array<IMGroupModel> = Array()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         var imClient = IMClientManager.shareInstance()
-        imClient.groupManager.asyncLoadAllMyGroupsFromServer { (isSuccess, errorCode, groupList) -> () in
-            
+        imClient.groupManager.asyncLoadAllMyGroupsFromServer { (isSuccess: Bool, errorCode: Int, groupList: Array<IMGroupModel>) -> () in
+            self.dataSource = groupList
+            self.tableView.reloadData()
         }
     }
 
@@ -38,22 +38,20 @@ class GroupTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return self.dataSource.count
     }
 
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-
-        // Configure the cell...
+        var group = dataSource[indexPath.row]
+        let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as! UITableViewCell
+        cell.textLabel?.text = "\(group.groupId)"
 
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.

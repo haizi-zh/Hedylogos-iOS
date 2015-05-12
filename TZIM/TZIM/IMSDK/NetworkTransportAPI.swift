@@ -100,6 +100,8 @@ class NetworkTransportAPI: NSObject {
         manager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
         manager.requestSerializer.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
+        println("开始网络请求: \(requestUrl)")
+        
         manager.GET(requestUrl, parameters: parameters, success:
             {
                 (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
