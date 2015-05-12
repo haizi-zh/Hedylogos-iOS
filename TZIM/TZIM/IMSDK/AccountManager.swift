@@ -8,11 +8,14 @@
 
 import UIKit
 
+let userUrl = "http://hedy.zephyre.me/users"
+
+
 private let accountManager = AccountManager()
 
 class AccountManager: NSObject {
     
-    var userId = -1
+    var account: AccountModel!
 
     class func shareInstance() -> AccountManager {
         return accountManager
@@ -22,10 +25,20 @@ class AccountManager: NSObject {
         super.init()
     }
     
+    /**
+    用户登录成功
+    
+    :param: account
+    */
+    func userDidLogin(accountInfo: NSDictionary) {
+        self.account = AccountModel()
+        self.account.userId = accountInfo.objectForKey("userId") as! Int
+    }
+    
     var userChatImagePath: String {
         get {
             var fileManager = NSFileManager()
-            var imagePath = documentPath.stringByAppendingPathComponent("\(userId)/ChatImage/")
+            var imagePath = documentPath.stringByAppendingPathComponent("\(account.userId)/ChatImage/")
             if !fileManager.fileExistsAtPath(imagePath) {
                 fileManager.createDirectoryAtPath(imagePath, withIntermediateDirectories: true, attributes: nil, error: nil)
             }
@@ -36,7 +49,7 @@ class AccountManager: NSObject {
     var userChatAudioPath: String {
         get {
             var fileManager =  NSFileManager()
-            var audioPath = documentPath.stringByAppendingPathComponent("\(userId)/ChatAudio/")
+            var audioPath = documentPath.stringByAppendingPathComponent("\(account.userId)/ChatAudio/")
             if !fileManager.fileExistsAtPath(audioPath) {
                 fileManager.createDirectoryAtPath(audioPath, withIntermediateDirectories: true, attributes: nil, error: nil)
             }
@@ -48,7 +61,7 @@ class AccountManager: NSObject {
     var userTempPath: String {
         get {
             var fileManager =  NSFileManager()
-            var tempPath = tempDirectory.stringByAppendingPathComponent("\(userId)/tempFile/")
+            var tempPath = tempDirectory.stringByAppendingPathComponent("\(account.userId)/tempFile/")
             if !fileManager.fileExistsAtPath(tempPath) {
                 fileManager.createDirectoryAtPath(tempPath, withIntermediateDirectories: true, attributes: nil, error: nil)
             }

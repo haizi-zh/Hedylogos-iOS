@@ -64,7 +64,7 @@ class NetworkTransportAPI: NSObject {
         
         manager.requestSerializer = requestSerializer
         var accountManager = AccountManager.shareInstance()
-        manager.requestSerializer.setValue("\(accountManager.userId)", forHTTPHeaderField: "UserId")
+        manager.requestSerializer.setValue("\(accountManager.account.userId)", forHTTPHeaderField: "UserId")
         manager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
         manager.requestSerializer.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
@@ -96,7 +96,7 @@ class NetworkTransportAPI: NSObject {
         
         manager.requestSerializer = requestSerializer
         var accountManager = AccountManager.shareInstance()
-        manager.requestSerializer.setValue("\(accountManager.userId)", forHTTPHeaderField: "UserId")
+        manager.requestSerializer.setValue("\(accountManager.account.userId)", forHTTPHeaderField: "UserId")
         manager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
         manager.requestSerializer.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         

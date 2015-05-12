@@ -8,13 +8,9 @@
 
 import UIKit
 
-protocol NetworkUserProtocol {
-    static func asyncLogin(#userId: Int, registionId: String, completionBlock: (isSuccess: Bool, errorCode: Int) -> ())
-}
-
-class NetworkUserAPI: NSObject, NetworkUserProtocol {
+class NetworkUserAPI: NSObject {
     
-    static func asyncLogin(#userId: Int, registionId: String, completionBlock: (isSuccess: Bool, errorCode: Int) -> ()) {
+    class func asyncLogin(#userId: Int, registionId: String, completionBlock: (isSuccess: Bool, errorCode: Int, retJson: NSDictionary?) -> ()) {
         let manager = AFHTTPRequestOperationManager()
         
         let requestSerializer = AFJSONRequestSerializer()
@@ -29,13 +25,13 @@ class NetworkUserAPI: NSObject, NetworkUserProtocol {
         manager.POST(loginUrl, parameters:params, success:
             {
                 (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
-                completionBlock(isSuccess: true, errorCode: 200)
+                    completionBlock(isSuccess: true, errorCode: 200, retJson: nil)
                 
             })
             {
                 (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 print(error)
-                completionBlock(isSuccess: false, errorCode: 400)
+                completionBlock(isSuccess: false, errorCode: 400, retJson: nil)
         }
     }
    

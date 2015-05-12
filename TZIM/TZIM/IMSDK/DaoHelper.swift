@@ -19,7 +19,7 @@ public class DaoHelper:NSObject {
     private let db: FMDatabase
     private let chatMessageDaoHelper: ChatMessageDaoHelper
     private let metaDataDaoHelper: MetaDataDaoHelper
-    private let userDaoHelper: UserDaoHelper
+    private let userDaoHelper: FrendDaoHelper
     private let conversationHelper: ConversationDaoHelper
     private let dbQueue: FMDatabaseQueue
     
@@ -29,7 +29,7 @@ public class DaoHelper:NSObject {
     
     override init() {
         
-        var userId = AccountManager.shareInstance().userId
+        var userId = AccountManager.shareInstance().account.userId
         
         var dbPath: String = documentPath.stringByAppendingPathComponent("\(userId)/user.sqlite")
         
@@ -47,7 +47,7 @@ public class DaoHelper:NSObject {
 
         chatMessageDaoHelper = ChatMessageDaoHelper(db: db, dbQueue: dbQueue)
         metaDataDaoHelper = MetaDataDaoHelper(db: db)
-        userDaoHelper = UserDaoHelper(db: db, dbQueue: dbQueue)
+        userDaoHelper = FrendDaoHelper(db: db, dbQueue: dbQueue)
         conversationHelper = ConversationDaoHelper(db: db, dbQueue: dbQueue)
         super.init()
     }
@@ -206,7 +206,7 @@ public class DaoHelper:NSObject {
     }
     
     /**
-    获取我的说有联系人
+    获取我的所有联系人
     :returns:
     */
     func selectAllContacts() -> Array<FrendModel> {
@@ -217,6 +217,16 @@ public class DaoHelper:NSObject {
             
         } else {
             return Array<FrendModel>()
+        }
+    }
+    
+    func frendIsExitInDB(userId: Int) -> Bool {
+        if self.openDB() {
+            var result = userDaoHelper.frendIsExitInDB(userId)
+            self.closeDB()
+            return result
+        } else {
+            return false
         }
     }
     

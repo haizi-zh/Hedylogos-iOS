@@ -9,8 +9,9 @@
 import UIKit
 
 let frendTableName = "Frend"
+let accountTableName = "Account"
 
-protocol UserDaoProtocol {
+protocol FrendDaoProtocol {
     
     /**
     创建好友表
@@ -37,9 +38,16 @@ protocol UserDaoProtocol {
     */
     func selectAllContacts() -> Array<FrendModel>
     
+    /**
+    frend是否在数据库里存在
+    :param: userId
+    :returns:
+    */
+    func frendIsExitInDB(userId: Int) -> Bool
+    
 }
 
-class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
+class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
     
     /**
     创建 frend 表，frend 表存的是所有好友和非好友的人。利用 type 来区分类型
@@ -82,7 +90,7 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
         }
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
-            var sql = "insert into \(frendTableName) (UserId, NickName, Avatar, AvatarSmall, ShortPY, FullPY, Signature, Memo, Sex, Type) values (?,?,?,?,?,?,?,?,?,?)"
+            var sql = "insert or replace into \(frendTableName) (UserId, NickName, Avatar, AvatarSmall, ShortPY, FullPY, Signature, Memo, Sex, Type) values (?,?,?,?,?,?,?,?,?,?)"
             println("执行 sql 语句：\(sql)")
             var array = [frend.userId, frend.nickName, frend.avatar, frend.avatarSmall, frend.shortPY, frend.fullPY, frend.signature, frend.memo, frend.sex, frend.type.rawValue]
             dataBase.executeUpdate(sql, withArgumentsInArray: array as [AnyObject])
@@ -115,4 +123,35 @@ class UserDaoHelper: BaseDaoHelper, UserDaoProtocol {
         }
         return retArray
     }
+    
+    func frendIsExitInDB(userId: Int) -> Bool {
+        var sql = "select * from \(frendTableName) where userId = ?"
+        var rs = dataBase.executeQuery(sql, withArgumentsInArray: [userId])
+        if (rs != nil) {
+            while rs.next() {
+               return true
+            }
+        }
+        return false
+    }
 }
+
+
+
+class AccountDaoHelper: BaseDaoHelper {
+    func createAccountTable() {
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "create table '\(accountTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ExtData Text)"
+            if (super.dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
+                println("success 执行 sql 语句：\(sql)")
+                
+            } else {
+                println("error 执行 sql 语句：\(sql)")
+            }
+        }
+    }
+    
+}
+
+
+

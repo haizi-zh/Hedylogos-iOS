@@ -58,7 +58,7 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
             self.createConversationsTable()
         }
         if !super.tableIsExit(frendTableName) {
-            UserDaoHelper.createFrendTable(dataBase)
+            FrendDaoHelper.createFrendTable(dataBase)
         }
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
           

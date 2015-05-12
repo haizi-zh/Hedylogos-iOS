@@ -88,7 +88,7 @@ class MetadataUploadManager: NSObject {
         
         var params = NSMutableDictionary()
         params.setObject("\(metadataMessage.chatterId)", forKey: "x:receiver")
-        params.setObject("\(AccountManager.shareInstance().userId)", forKey: "x:sender")
+        params.setObject("\(AccountManager.shareInstance().account.userId)", forKey: "x:sender")
         params.setObject("\(metadataMessage.messageType.rawValue)", forKey: "x:msgType")
         
         var opt = QNUploadOption(mime: "text/plain", progressHandler: { (key: String!, progressValue: Float) -> Void in

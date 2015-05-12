@@ -26,7 +26,7 @@ class MessageSendManager: MessageTransferManager {
             (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(message)
         }
         var accountManager = AccountManager.shareInstance()
-        NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.userId, message: message), completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
+        NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.account.userId, message: message), completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
             if isSuccess {
                 message.status = IMMessageStatus.IMMessageSuccessful
                 if let retMessage = retMessage {

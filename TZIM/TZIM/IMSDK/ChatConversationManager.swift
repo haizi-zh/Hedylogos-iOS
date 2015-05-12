@@ -98,7 +98,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         if !frendManager.frendIsExit(conversation.chatterId) {
             var frendModel = FrendModel()
             frendModel.userId = conversation.chatterId
-            if conversation.chatType == IMChatType.IMChatSingleType {
+            if conversation.chatType == IMChatType.IMChatGroupType {
                 frendModel.type = IMFrendType.Group
             } else if conversation.chatType == IMChatType.IMChatSingleType {
                 frendModel.type = IMFrendType.Frend
@@ -134,7 +134,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     
         return false
     }
-    
+
     
 //MARK: private methods
     

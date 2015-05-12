@@ -101,7 +101,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         //储存需要额外处理的消息
         var messagesNeed2Deal = NSMutableArray()
 
-        NetworkTransportAPI.asyncFecthMessage(accountManager.userId, completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> () in
+        NetworkTransportAPI.asyncFecthMessage(accountManager.account.userId, completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> () in
             
             println("fetch Result 一共是：\(retMessage?.count): \(retMessage)")
 

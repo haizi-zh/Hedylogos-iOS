@@ -36,9 +36,43 @@ class FrendManager: NSObject {
     :returns:
     */
     func frendIsExit(userId: Int) -> Bool {
-       return true
+        var daoHelper = DaoHelper.shareInstance()
+        return daoHelper.frendIsExitInDB(userId)
+    }
+    
+    /**
+    异步通过 userid 获取用户信息
+    
+    :param: userId
+    */
+    func asyncGetFrendInfo(userId: Int, completion: (isSuccess: Bool, errorCode: Int, frendInfo: FrendModel) -> ()) {
+        
+    }
+    
+    /**
+    从数据库里通过 userid 获取用户信息
+    
+    :param: userId
+    
+    :returns:
+    */
+    func getFrendInfoFromDB(userId: Int) -> FrendModel? {
+        var frend = FrendModel()
+        return frend
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

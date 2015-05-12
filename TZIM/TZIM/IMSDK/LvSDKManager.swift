@@ -48,6 +48,7 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
 //MARK: ConnectionManager
     func connectionSetup(isSuccess: Bool, errorCode: Int) {
         if isSuccess {
+            
             self.messageReceiveManager = MessageReceiveManager.shareInstance()
             self.messageSendManager = MessageSendManager.shareInstance()
             self.groupManager = IMGroupManager()

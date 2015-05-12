@@ -21,6 +21,7 @@
 		D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D912452B1AFDDA2800480181 /* GroupTableViewController.swift */; };
 		D91245371AFE0BBD00480181 /* IMGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245361AFE0BBD00480181 /* IMGroupModel.swift */; };
 		D921BFA31AEA20830054DD99 /* IMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D921BFA21AEA20830054DD99 /* IMConstants.swift */; };
+		D92439F81B00C28100A7AAA4 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92439F71B00C28100A7AAA4 /* AccountModel.swift */; };
 		D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8061AE25B2F00031C63 /* AppDelegate.swift */; };
 		D92BF80E1AE25B2F00031C63 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92BF80D1AE25B2F00031C63 /* Images.xcassets */; };
 		D92BF8111AE25B2F00031C63 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D92BF80F1AE25B2F00031C63 /* LaunchScreen.xib */; };
@@ -122,6 +123,7 @@
 		D912452B1AFDDA2800480181 /* GroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewController.swift; sourceTree = "<group>"; };
 		D91245361AFE0BBD00480181 /* IMGroupModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupModel.swift; sourceTree = "<group>"; };
 		D921BFA21AEA20830054DD99 /* IMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMConstants.swift; sourceTree = "<group>"; };
+		D92439F71B00C28100A7AAA4 /* AccountModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		D92BF8011AE25B2F00031C63 /* TZIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TZIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92BF8051AE25B2F00031C63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D92BF8061AE25B2F00031C63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -607,6 +609,7 @@
 				D9C931FF1AE66B4C003FEBA3 /* FrendModel */,
 				D9C932031AE6852C003FEBA3 /* FrendManager.swift */,
 				D908E9241AE9E33100C984C7 /* AccountManager.swift */,
+				D92439F71B00C28100A7AAA4 /* AccountModel.swift */,
 			);
 			name = UserManager;
 			sourceTree = "<group>";
@@ -908,6 +911,7 @@
 				D92BF8691AE25B5C00031C63 /* NSData+Base64.m in Sources */,
 				D92BF8821AE25B5C00031C63 /* PushSDK.swift in Sources */,
 				D92BF86A1AE25B5C00031C63 /* NSData+CommonCrypto.m in Sources */,
+				D92439F81B00C28100A7AAA4 /* AccountModel.swift in Sources */,
 				D908E91F1AE8EADC00C984C7 /* MessageManager.swift in Sources */,
 				D92BF86D1AE25B5C00031C63 /* BaseDaoHelper.swift in Sources */,
 				D908E91D1AE8D6F500C984C7 /* NetworkUserAPI.swift in Sources */,
