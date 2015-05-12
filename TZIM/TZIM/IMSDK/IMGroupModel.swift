@@ -25,6 +25,10 @@ class IMGroupModel: NSObject {
         creatorId = jsonData.objectForKey("creator") as? Int
         super.init()
     }
+    
+    override init() {
+        super.init()
+    }
 }
 
 

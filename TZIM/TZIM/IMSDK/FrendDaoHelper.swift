@@ -45,6 +45,13 @@ protocol FrendDaoProtocol {
     */
     func frendIsExitInDB(userId: Int) -> Bool
     
+    /**
+    获取我所有的群组列表
+    
+    :returns:
+    */
+    func selectAllGroup() -> Array<IMGroupModel>
+    
 }
 
 class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
@@ -134,6 +141,31 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
         }
         return false
     }
+    
+    
+    //MARK: Group
+    
+    /**
+    获取所有的是我的群组 的列表
+    :returns:
+    */
+    func selectAllGroup() -> Array<IMGroupModel> {
+        var retArray = Array<IMGroupModel>()
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "select * from \(frendTableName) where Type = ?"
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: [IMFrendType.Frend.rawValue])
+            if (rs != nil) {
+                while rs.next() {
+                    var group = IMGroupModel()
+                    group.groupId = Int(rs.intForColumn("UserId"))
+                    group.subject = rs.stringForColumn("NickName")
+                    retArray.append(group)
+                }
+            }
+        }
+        return retArray
+    }
+
 }
 
 

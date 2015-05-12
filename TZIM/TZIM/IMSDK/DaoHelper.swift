@@ -231,6 +231,10 @@ public class DaoHelper:NSObject {
         }
     }
     
+    func selectAllGroup() -> Array<IMGroupModel> {
+        return frendDaoHelper.selectAllGroup()
+    }
+    
     //MARK: ConversationDaoProtocol 
     func createConversationsTable() {
         dispatch_async(databaseWriteQueue, { () -> Void in

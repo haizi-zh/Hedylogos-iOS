@@ -21,7 +21,10 @@ class IMGroupManager: NSObject {
             var groupList = Array<IMGroupModel>()
             if let retData = retMessage as? NSArray {
                 for groupData in retData  {
-                    groupList.append(IMGroupModel(jsonData: groupData as! NSDictionary))
+                    var group = IMGroupModel(jsonData: groupData as! NSDictionary)
+                    groupList.append(group)
+                    var frendManager = FrendManager()
+                    frendManager.addFrend2DB(self.convertGroupModel2FrendModel(group))
                 }
             }
             completionBlock(isSuccess: isSuccess, errorCode: errorCode, groupList: groupList)
@@ -29,7 +32,8 @@ class IMGroupManager: NSObject {
     }
     
     func loadAllMyGroupsFromDB() -> Array<IMGroupModel> {
-        return Array()
+        var daoHelper = DaoHelper()
+        return daoHelper.selectAllGroup()
     }
     
     func asyncCreateGroup(#subject: NSString, description: String?, isPublic: Bool, invitees: Array<Int>, welcomeMessage: String?, completionBlock: (isSuccess: Bool, errorCode: Int, retGroup: IMGroupModel?) -> ()) {

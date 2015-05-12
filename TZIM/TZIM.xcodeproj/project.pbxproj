@@ -92,7 +92,6 @@
 		D9C932011AE66B66003FEBA3 /* FrendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C932001AE66B66003FEBA3 /* FrendModel.swift */; };
 		D9C932041AE6852C003FEBA3 /* FrendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C932031AE6852C003FEBA3 /* FrendManager.swift */; };
 		D9E6B9F11AE4FA5000C95767 /* FrendDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6B9F01AE4FA5000C95767 /* FrendDaoHelper.swift */; };
-		D9E6B9F41AE513F400C95767 /* GroupDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6B9F31AE513F400C95767 /* GroupDaoHelper.swift */; };
 		D9E6B9F81AE51D2C00C95767 /* NetworkTransportAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E6B9F71AE51D2C00C95767 /* NetworkTransportAPI.swift */; };
 /* End PBXBuildFile section */
 
@@ -227,7 +226,6 @@
 		D9C932001AE66B66003FEBA3 /* FrendModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrendModel.swift; sourceTree = "<group>"; };
 		D9C932031AE6852C003FEBA3 /* FrendManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrendManager.swift; sourceTree = "<group>"; };
 		D9E6B9F01AE4FA5000C95767 /* FrendDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrendDaoHelper.swift; sourceTree = "<group>"; };
-		D9E6B9F31AE513F400C95767 /* GroupDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupDaoHelper.swift; sourceTree = "<group>"; };
 		D9E6B9F71AE51D2C00C95767 /* NetworkTransportAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkTransportAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -697,7 +695,6 @@
 		D9E6B9F21AE513D400C95767 /* GroupDaoHelper */ = {
 			isa = PBXGroup;
 			children = (
-				D9E6B9F31AE513F400C95767 /* GroupDaoHelper.swift */,
 			);
 			name = GroupDaoHelper;
 			sourceTree = "<group>";
@@ -881,7 +878,6 @@
 				D9C932011AE66B66003FEBA3 /* FrendModel.swift in Sources */,
 				D9E6B9F81AE51D2C00C95767 /* NetworkTransportAPI.swift in Sources */,
 				D92BF87E1AE25B5C00031C63 /* MessageProtocol.swift in Sources */,
-				D9E6B9F41AE513F400C95767 /* GroupDaoHelper.swift in Sources */,
 				D92BF87F1AE25B5C00031C63 /* MessageReceiveManager.swift in Sources */,
 				D908E9211AE8ECD100C984C7 /* TextMessage.swift in Sources */,
 				D92BF8841AE25B5C00031C63 /* wav.mm in Sources */,
