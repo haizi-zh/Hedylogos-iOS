@@ -360,7 +360,13 @@
                             <outlet property="delegate" destination="mIu-66-ZlJ" id="GBt-b5-kEO"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="iVj-Mx-3fM"/>
+                    <navigationItem key="navigationItem" id="iVj-Mx-3fM">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="QUQ-89-bvf">
+                            <connections>
+                                <action selector="addFrend:" destination="mIu-66-ZlJ" id="thV-d0-FGQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gOv-Rq-T22" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -97,7 +97,7 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
         }
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
-            var sql = "insert or replace into \(frendTableName) (UserId, NickName, Avatar, AvatarSmall, ShortPY, FullPY, Signature, Memo, Sex, Type, ConversationId) values (?,?,?,?,?,?,?,?,?,?)"
+            var sql = "insert or replace into \(frendTableName) (UserId, NickName, Avatar, AvatarSmall, ShortPY, FullPY, Signature, Memo, Sex, Type, ConversationId) values (?,?,?,?,?,?,?,?,?,?,?)"
             println("执行 sql 语句：\(sql)")
             var array = [frend.userId, frend.nickName, frend.avatar, frend.avatarSmall, frend.shortPY, frend.fullPY, frend.signature, frend.memo, frend.sex, frend.type.rawValue, frend.conversationId]
             dataBase.executeUpdate(sql, withArgumentsInArray: array as [AnyObject])

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FrendTableViewController: UITableViewController {
+class FrendTableViewController: UITableViewController, UIAlertViewDelegate {
 
     var dataSource: Array<FrendModel>!
     
@@ -27,6 +27,15 @@ class FrendTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
 
+    @IBAction func addFrend(sender: AnyObject) {
+        var alertView = UIAlertView()
+        alertView.addButtonWithTitle("OK")
+        alertView.title = "Add Frend"
+        alertView.alertViewStyle = UIAlertViewStyle.PlainTextInput
+        alertView.delegate = self
+        alertView.show()
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -52,6 +61,19 @@ class FrendTableViewController: UITableViewController {
         var viewController = ChatViewController()
         viewController.conversation = conversation
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    // MARK: - UIAlertViewDelegate
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 0 {
+            let frendManager = FrendManager()
+            if let textField = alertView.textFieldAtIndex(0) {
+                var frendModel = FrendModel()
+                frendModel.userId = textField.text.toInt()!
+                frendModel.type = IMFrendType.Frend
+                frendManager.addFrend2DB(frendModel)
+            }
+        }
     }
 }
 

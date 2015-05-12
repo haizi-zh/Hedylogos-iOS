@@ -52,7 +52,6 @@ class IMGroupManager: NSObject {
             } else {
                 completionBlock(isSuccess: isSuccess, errorCode: errorCode, retGroup: nil)
             }
-            
         }
     }
     
