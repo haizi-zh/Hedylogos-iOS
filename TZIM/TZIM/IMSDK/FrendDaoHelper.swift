@@ -175,7 +175,7 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
     :returns:
     */
     func frendIsExitInDB(userId: Int) -> Bool {
-        var sql = "select * from \(frendTableName) where userId = ?"
+        var sql = "select * from \(frendTableName) where UserId = ?"
         var rs = dataBase.executeQuery(sql, withArgumentsInArray: [userId])
         if (rs != nil) {
             while rs.next() {
