@@ -112,14 +112,7 @@ public class DaoHelper:NSObject {
     }
     
     func selectChatMessageList(fromTable:String, untilLocalId: Int, messageCount: Int) -> NSArray {
-        if self.openDB() {
-            var result = chatMessageDaoHelper.selectChatMessageList(fromTable, untilLocalId: untilLocalId, messageCount: messageCount)
-            self.closeDB()
-            return result
-            
-        } else {
-            return NSArray()
-        }
+        return chatMessageDaoHelper.selectChatMessageList(fromTable, untilLocalId: untilLocalId, messageCount: messageCount)
     }
     
     func selectLastServerMessage(fromTable: String) -> BaseMessage? {

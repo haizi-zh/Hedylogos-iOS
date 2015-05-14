@@ -46,7 +46,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     _conversation.isCurrentConversation = YES;
     _conversation.delegate = self;
     [_conversation resetConvsersationUnreadMessageCount];
-    [_conversation getchatMessageInConversation:20];
+    [_conversation getDefaultChatMessageInConversation:20];
     
     if (!_chatDataSource) {
         _chatDataSource = [[NSMutableArray alloc] init];

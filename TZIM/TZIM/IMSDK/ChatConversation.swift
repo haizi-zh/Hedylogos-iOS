@@ -88,7 +88,7 @@ class ChatConversation: NSObject {
             var retMessage = chatMessageList.lastObject as? BaseMessage
             if retMessage != nil {
                 return retMessage
-                
+
             } else {
                 var daoHelper = DaoHelper.shareInstance()
                 var tableName = "chat_\(chatterId)"
@@ -132,7 +132,7 @@ class ChatConversation: NSObject {
     /**
     初始化会话中的聊天记录
     */
-    func getchatMessageInConversation(messageCount: Int) {
+    func getDefaultChatMessageInConversation(messageCount: Int) {
         
         if chatMessageList.count > 0 {
             return
@@ -144,6 +144,26 @@ class ChatConversation: NSObject {
         chatMessageList = daoHelper.selectChatMessageList(tableName, untilLocalId: Int.max, messageCount: messageCount) as! NSMutableArray
 
         NSLog("结束加载聊天界面记录")
+    }
+    
+    /**
+    获取更多的聊天记录
+    */
+    func getMoreChatMessageInConversation(messageCount: Int) {
+        
+        NSLog("开始加载更多的聊天界面记录")
+        var daoHelper = DaoHelper.shareInstance()
+        var tableName = "chat_\(chatterId)"
+        var retArray = NSArray()
+        var localId: Int
+        if chatMessageList.count > 0 {
+            localId = (chatMessageList.lastObject as! BaseMessage).localId
+        } else {
+            localId = Int.max
+        }
+        chatMessageList.addObjectsFromArray(daoHelper.selectChatMessageList(tableName, untilLocalId: localId, messageCount: messageCount) as [AnyObject])
+        
+        NSLog("结束加载更多的聊天界面记录")
     }
     
     /**
