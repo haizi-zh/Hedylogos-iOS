@@ -10,7 +10,13 @@ import UIKit
 
 class AudioMessage: BaseMessage {
     var audioLength: Float = 0.0
-    var audioStatus: Int = 0
+    var audioStatus: Int = 0 {
+        didSet {
+            self.updateMessageContent()
+            var daoHelper = DaoHelper()
+            daoHelper.updateMessageContents("chat_\(chatterId)", message: self)
+        }
+    }
     var localPath: String?
     var remoteUrl: String?
     
@@ -43,11 +49,12 @@ class AudioMessage: BaseMessage {
         var imageDic: NSMutableDictionary = super.jsonObjcWithString(message).mutableCopy() as! NSMutableDictionary
         if let metadataId = metadataId {
             imageDic.setObject(metadataId, forKey: "metadataId")
+            imageDic.setObject(audioStatus, forKey: "audioStatus")
+            imageDic.setObject(audioLength, forKey: "duration")
+
             if let content = super.contentsStrWithJsonObjc(imageDic) {
                 message = content as String
             }
         }
     }
-
-   
 }
