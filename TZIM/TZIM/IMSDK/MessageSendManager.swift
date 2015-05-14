@@ -140,7 +140,7 @@ class MessageSendManager: MessageTransferManager {
     :param: progress     发送进度的回调
     :returns:
     */
-    func sendAudioMessageWithWavFormat(chatterId: Int, conversationId: Int, wavAudioPath: String, progress:(progressValue: Float) -> ()) -> AudioMessage {
+    func sendAudioMessageWithWavFormat(chatterId: Int, conversationId: String, wavAudioPath: String, progress:(progressValue: Float) -> ()) -> AudioMessage {
         var audioMessage = AudioMessage()
         audioMessage.chatterId = chatterId
         audioMessage.sendType = IMMessageSendType.MessageSendMine
