@@ -61,7 +61,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"conversationCell"];
     }
     ChatConversation *conversation = [_dataSource objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"未读数量:%ld %@ 用户 ID:%ld", (long)conversation.unReadMessageCount, conversation.chatterName, (long)conversation.chatterId];
+    cell.textLabel.text = [NSString stringWithFormat:@"未读数量:%ld %@ 用户 ID:%ld cId: %@", (long)conversation.unReadMessageCount, conversation.chatterName, (long)conversation.chatterId, conversation.conversationId];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", conversation.lastLocalMessage.message];
     return cell;
 }
