@@ -72,25 +72,19 @@ public class DaoHelper:NSObject {
     
     func createChatTable(tableName: String) {
         dispatch_async(databaseWriteQueue, { () -> Void in
-            self.openDB()
             self.chatMessageDaoHelper.createChatTable(tableName)
-            self.closeDB()
         })
     }
     
     func createAudioMessageTable(tableName: String) {
         dispatch_async(databaseWriteQueue, { () -> Void in
-            self.openDB()
             self.metaDataDaoHelper.createAudioMessageTable(tableName)
-            self.closeDB()
         })
     }
     
     func insertChatMessage(tableName: String, message:BaseMessage) {
         dispatch_async(databaseWriteQueue, { () -> Void in
-            self.openDB()
             self.chatMessageDaoHelper.insertChatMessage(tableName, message:message)
-            self.closeDB()
         })
     }
     

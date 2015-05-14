@@ -243,7 +243,6 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 delegate?.conversationStatusHasChanged(conversation)
             })
-            return
         }
     }
     
@@ -253,10 +252,12 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     */
     private func handleSendedMessage(message: BaseMessage) {
         if let conversation = self.getConversationWithMessage(message) {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                delegate?.conversationStatusHasChanged(conversation)
-            })
-            return
+            conversation.messageHaveSended(message)
+            if conversation.lastLocalMessage?.localId == message.localId {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    delegate?.conversationStatusHasChanged(conversation)
+                })
+            }
         }
     }
     

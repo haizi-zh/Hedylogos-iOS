@@ -41,6 +41,8 @@ class NetworkTransportAPI: NSObject {
                 (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
                 if let reslutDic = responseObject.objectForKey("result") as? NSDictionary {
                     completionBlock(isSuccess: true, errorCode: 0, retMessage: reslutDic)
+                } else {
+                    completionBlock(isSuccess: false, errorCode: 0, retMessage: nil)
                 }
             })
             {
