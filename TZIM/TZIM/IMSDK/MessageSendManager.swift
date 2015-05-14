@@ -162,10 +162,10 @@ class MessageSendManager: MessageTransferManager {
         if let url = NSURL(string: tempAmrPath) {
             var play = AVAudioPlayer(contentsOfURL: url, error: nil)
             audioContentDic.setObject(play.duration, forKey: "duration")
+            audioMessage.audioLength = Float(play.duration)
         }
         
         audioMessage.localPath = audioWavPath
-
         audioMessage.message = audioMessage.contentsStrWithJsonObjc(audioContentDic) as! String
         
         println("开始发送语音消息： 消息内容为： \(audioMessage.message)")
@@ -193,7 +193,6 @@ class MessageSendManager: MessageTransferManager {
                             if error != nil {
                                 println("移除发送完成后的临时文件出错 error\(error)")
                             }
-
                             if isSuccess {
                                 audioMessage.status = IMMessageStatus.IMMessageSuccessful
                                 if let retMessage = retMessage {
