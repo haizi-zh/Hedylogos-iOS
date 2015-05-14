@@ -16,9 +16,11 @@ class BaseMessage: NSObject {
     var status: IMMessageStatus
     var createTime: Int
     var sendType: IMMessageSendType
-    var chatterId: Int
+    var chatterId: Int   //与你对话的人，如果是单聊那么是用户 id 如果是群组的话那么是群组 id
+    var messageSenderId: Int   //发送消息的人
     var metadataId: String?
     var chatType: IMChatType = IMChatType.IMChatSingleType
+    var conversationId: String = String()
     
     override init() {
         localId = -1
@@ -29,6 +31,7 @@ class BaseMessage: NSObject {
         createTime = 0
         sendType = .MessageSendMine
         chatterId = -1
+        messageSenderId = -1
         super.init()
     }
     

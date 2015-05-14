@@ -56,9 +56,22 @@ class FrendManager: NSObject {
     
     :returns:
     */
-    func getFrendInfoFromDB(userId: Int) -> FrendModel? {
-        var frend = FrendModel()
-        return frend
+    func getFrendInfoFromDB(#userId: Int) -> FrendModel? {
+        var daoHelper = DaoHelper.shareInstance()
+
+        return daoHelper.selectFrend(userId: userId)
+    }
+    
+    /**
+    从数据库里通过 conversationId 获取用户信息
+    
+    :param: conversationId
+    
+    :returns:
+    */
+    func getFrendInfoFromDB(#conversationId: String) -> FrendModel? {
+        var daoHelper = DaoHelper.shareInstance()
+        return daoHelper.selectFrend(conversationId: conversationId)
     }
 }
 

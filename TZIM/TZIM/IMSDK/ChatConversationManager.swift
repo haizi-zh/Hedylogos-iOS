@@ -32,12 +32,12 @@ import UIKit
 
 class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     
-    private var conversationList: NSMutableArray
+    private var conversationList: Array<ChatConversation>
     
     var delegate: ChatConversationManagerDelegate?
         
     override init() {
-        conversationList = NSMutableArray()
+        conversationList = Array<ChatConversation>()
         super.init()
     }
     
@@ -54,12 +54,39 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         conversationList = daoHelper.getAllConversationList()
         NSLog("****结束获取会话列表*****")
     }
+    
+    private func conversationIsExit(conversation: ChatConversation) -> Bool {
+        for exitConversation in conversationList {
+            if exitConversation.conversationId == conversation.conversationId {
+                return true
+            }
+        }
+        for exitConversation in conversationList {
+            if exitConversation.chatterId == conversation.chatterId {
+                return true
+            }
+        }
+        return false
+    }
 
     /**
     新建会话列表, 会话的 用户 id
     */
-    func createNewConversation(chatterId: Int) -> ChatConversation {
-        var conversation = ChatConversation(chatterId: chatterId)
+    func createNewConversation(#chatterId: Int) -> ChatConversation {
+        var conversation = ChatConversation()
+        conversation.chatterId = chatterId
+        var time = NSDate().timeIntervalSince1970
+        var timeInt: Int = Int(round(time))
+        conversation.lastUpdateTime = timeInt
+        return conversation
+    }
+    
+    /**
+    新建会话列表, 会话的id 
+    */
+    func createNewConversation(#conversationId: String) -> ChatConversation {
+        var conversation = ChatConversation()
+        conversation.conversationId = conversationId
         var time = NSDate().timeIntervalSince1970
         var timeInt: Int = Int(round(time))
         conversation.lastUpdateTime = timeInt
@@ -75,11 +102,30 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     */
     func getConversationWithChatterId(chatterId: Int) -> ChatConversation {
         for exitConversation in conversationList {
-            if (exitConversation as! ChatConversation).chatterId == chatterId {
-                return exitConversation as! ChatConversation
+            if exitConversation.chatterId == chatterId {
+                return exitConversation
             }
         }
-        return self.createNewConversation(chatterId)
+        return self.createNewConversation(chatterId: chatterId)
+    }
+    
+    /**
+    通过一条消息得到这条消息所属的 conversation
+    :param: message
+    :returns:
+    */
+    func getConversationWithMessage(message: BaseMessage) -> ChatConversation? {
+        for exitConversation in conversationList {
+            if exitConversation.conversationId == message.conversationId {
+                return exitConversation
+            }
+        }
+        for exitConversation in conversationList {
+            if exitConversation.chatterId == message.chatterId {
+                return exitConversation
+            }
+        }
+        return nil
     }
     
     /**
@@ -87,10 +133,8 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     :param: chatterId
     */
     func addConversation(conversation: ChatConversation) {
-        for exitConversation in conversationList {
-            if (exitConversation as! ChatConversation).chatterId == conversation.chatterId {
-                return
-            }
+        if self.conversationIsExit(conversation) {
+            return
         }
         
         //如果这个好友在本地不存在，那么去服务器加载一个好友
@@ -108,7 +152,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
 
         var daoHelper = DaoHelper.shareInstance()
         daoHelper.addConversation(conversation)
-        self.conversationList.addObject(conversation)
+        self.conversationList.append(conversation)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             delegate?.conversationsHaveAdded(conversationList)
         })
@@ -121,17 +165,15 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     */
     func removeConversation(chatterId: Int) -> Bool {
         var daoHelper = DaoHelper.shareInstance()
-        daoHelper.removeConversationfromDB(chatterId) 
-        for conversation in conversationList {
-            if let conversation = conversation as? ChatConversation {
-                if conversation.chatterId == chatterId {
-                    conversationList.removeObject(conversation)
-                    delegate?.conversationsHaveRemoved([conversation])
-                    return true
-                }
+        daoHelper.removeConversationfromDB(chatterId)
+        for i in 0 ..< conversationList.count {
+            var conversation = conversationList[i]
+            if conversation.chatterId == chatterId {
+                conversationList.removeAtIndex(i)
+                delegate?.conversationsHaveRemoved([conversation])
+                return true
             }
         }
-    
         return false
     }
 
@@ -143,25 +185,52 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     :param: message 待处理的消息
     */
     private func handleReceiveMessage(message: BaseMessage) {
-        for conversation in conversationList {
-            if let conversation = conversation as? ChatConversation {
-                if conversation.chatterId == message.chatterId {
-                    conversation.addReceiveMessage(message)
-                    if !conversation.isCurrentConversation {
-                        conversation.unReadMessageCount++
-                    }
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        delegate?.conversationStatusHasChanged(conversation)
-                    })
-                    return
-                }
+        if let conversation = self.getConversationWithMessage(message) {
+            conversation.addReceiveMessage(message)
+            if !conversation.isCurrentConversation {
+                conversation.unReadMessageCount++
             }
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                delegate?.conversationStatusHasChanged(conversation)
+            })
+            return
         }
         
         //如果在所有的已有会话里找不到这条消息的会话，那么新建一个会话并加入到会话列表里
-        var conversation = createNewConversation(message.chatterId)
+
+        var conversation = createNewConversation(conversationId: message.conversationId)
+        var frendManager = FrendManager()
         conversation.addReceiveMessage(message)
-        addConversation(conversation)
+        conversation.unReadMessageCount = 1
+
+        if let frend = frendManager.getFrendInfoFromDB(conversationId: message.conversationId) {
+            self.fillConversationWithFrendData(conversation, frendModel: frend)
+            addConversation(conversation)
+            
+        } else if let frend = frendManager.getFrendInfoFromDB(userId: message.chatterId) {
+            self.fillConversationWithFrendData(conversation, frendModel: frend)
+            addConversation(conversation)
+            
+        } else {
+            self.asyncGetConversationInfoFromServer(conversation, completion: { (frendModel) -> () in
+                if let frend = frendModel {
+                    self.fillConversationWithFrendData(conversation, frendModel: frend)
+                }
+                self.addConversation(conversation)
+            })
+        }
+    }
+    
+    /**
+    利用 frend 信息来补全 conversation 的信息
+    
+    :param: conversation
+    :param: frendModel
+    */
+    private func fillConversationWithFrendData(conversation: ChatConversation, frendModel: FrendModel) {
+        conversation.fillConversationType(frendType: frendModel.type)
+        conversation.chatterName = frendModel.nickName
+        conversation.chatterId = frendModel.userId
     }
     
     /**
@@ -169,16 +238,12 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     :param: message
     */
     private func handleSendingMessage(message: BaseMessage) {
-        for conversation in conversationList {
-            if let conversation = conversation as? ChatConversation {
-                if conversation.chatterId == message.chatterId {
-                    conversation.addSendingMessage(message)
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        delegate?.conversationStatusHasChanged(conversation)
-                    })
-                    return
-                }
-            }
+        if let conversation = self.getConversationWithMessage(message) {
+            conversation.addSendingMessage(message)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                delegate?.conversationStatusHasChanged(conversation)
+            })
+            return
         }
     }
     
@@ -187,21 +252,24 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     :param: message
     */
     private func handleSendedMessage(message: BaseMessage) {
-        for conversation in conversationList {
-            if let conversation = conversation as? ChatConversation {
-                if conversation.chatterId == message.chatterId {
-                    conversation.messageHaveSended(message)
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        delegate?.conversationStatusHasChanged(conversation)
-                    })
-                    return
-                }
-            }
+        if let conversation = self.getConversationWithMessage(message) {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                delegate?.conversationStatusHasChanged(conversation)
+            })
+            return
         }
     }
     
-//MARK: MessageTransferManagerDelegate
+    //获取一个会话的详细信息
+    private func asyncGetConversationInfoFromServer(conversation: ChatConversation, completion:(frendModel: FrendModel?) -> ()) {
+        var frend = FrendModel()
+        frend.userId = 101
+        frend.nickName = "新用户"
+        frend.type = IMFrendType.Frend
+        completion(frendModel: frend)
+    }
     
+//MARK: MessageTransferManagerDelegate
     /**
     会话中增加了一条新消息
     :param: message

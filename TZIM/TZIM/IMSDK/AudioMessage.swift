@@ -8,13 +8,21 @@
 
 import UIKit
 
+@objc enum IMAudioStatus: Int {
+    case UnRead = 0
+    case Readed = 1
+}
+
+
 class AudioMessage: BaseMessage {
     var audioLength: Float = 0.0
-    var audioStatus: Int = 0 {
-        didSet {
-            self.updateMessageContent()
-            var daoHelper = DaoHelper()
-            daoHelper.updateMessageContents("chat_\(chatterId)", message: self)
+    var audioStatus: IMAudioStatus = .UnRead {
+        willSet {
+            if audioStatus != newValue {
+                self.updateAudioStatus(newValue)
+                var daoHelper = DaoHelper()
+                daoHelper.updateMessageContents("chat_\(chatterId)", message: self)
+            }
         }
     }
     var localPath: String?
@@ -36,7 +44,12 @@ class AudioMessage: BaseMessage {
         }
         
         if let audioId = contentsDic.objectForKey("metadataId") as? String {
+            metadataId = audioId
             localPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(audioId).wav")
+        }
+        
+        if let audioStatusValue = contentsDic.objectForKey("audioStatus") as? Int {
+            audioStatus = IMAudioStatus(rawValue: audioStatusValue)!
         }
 
         remoteUrl = contentsDic.objectForKey("url") as? String
@@ -49,7 +62,7 @@ class AudioMessage: BaseMessage {
         var imageDic: NSMutableDictionary = super.jsonObjcWithString(message).mutableCopy() as! NSMutableDictionary
         if let metadataId = metadataId {
             imageDic.setObject(metadataId, forKey: "metadataId")
-            imageDic.setObject(audioStatus, forKey: "audioStatus")
+            imageDic.setObject(audioStatus.rawValue, forKey: "audioStatus")
             imageDic.setObject(audioLength, forKey: "duration")
 
             if let content = super.contentsStrWithJsonObjc(imageDic) {
@@ -57,4 +70,20 @@ class AudioMessage: BaseMessage {
             }
         }
     }
+    
+    /**
+    更新消息的状态
+    */
+    func updateAudioStatus(status: IMAudioStatus) {
+        var imageDic: NSMutableDictionary = super.jsonObjcWithString(message).mutableCopy() as! NSMutableDictionary
+        imageDic.setObject(status.rawValue, forKey: "audioStatus")
+        if let content = super.contentsStrWithJsonObjc(imageDic) {
+            message = content as String
+        }
+    }
 }
+
+
+
+
+

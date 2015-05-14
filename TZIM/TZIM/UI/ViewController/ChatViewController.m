@@ -257,7 +257,9 @@ static NSString *messageCellIdentifier = @"messageCell";
         _audioPlayer.delegate = self;
         [_audioPlayer play];
         NSLog(@"开始播放语音");
-
+        if (message.audioStatus == IMAudioStatusUnRead) {
+            message.audioStatus = IMAudioStatusReaded;
+        }
     }
 }
 
@@ -397,9 +399,6 @@ static NSString *messageCellIdentifier = @"messageCell";
     ImageMessage *image = [imClientManager.messageSendManager sendImageMessage:_conversation.chatterId conversationId:_conversation.conversationId image:headerImage progress:^(float progressValue) {
         
     }];
-    
-
-
     
     NSLog(@"info: %@", info);
     [self addMessageToDataSource:image];

@@ -27,12 +27,12 @@ import UIKit
 
 class ChatConversation: NSObject {
     var conversationId: String = String()
-    var chatterId: Int
+    var chatterId: Int = 0
     var chatterName: String = ""
     var lastUpdateTime: Int = 0
     var unReadMsgCount: Int = 0
     var chatMessageList: NSMutableArray
-    var chatType: IMChatType
+    var chatType: IMChatType = IMChatType.IMChatSingleType     //聊天类型，默认是单聊
     var isCurrentConversation: Bool = false        //是否是当前显示的会话，默认为 false
     var isTopConversation: Bool = false            //是否置顶
     var unReadMessageCount: Int {
@@ -45,10 +45,9 @@ class ChatConversation: NSObject {
     
     let chatManager: ChatManager
     
-    init(chatterId: Int) {
-        self.chatterId = chatterId
+    override init() {
+        chatterId = 0
         chatMessageList = NSMutableArray()
-        chatType = IMChatType.IMChatSingleType
         chatManager = ChatManager(chatterId: chatterId, chatType: chatType)
         unReadMessageCount = 0
         super.init()

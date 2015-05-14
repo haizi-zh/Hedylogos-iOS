@@ -52,6 +52,25 @@ protocol FrendDaoProtocol {
     */
     func selectAllGroup() -> Array<IMGroupModel>
     
+    /**
+    通过 userId 来获取 frend
+    
+    :param: userId
+    
+    :returns:
+    */
+    func selectFrend(#userId: Int) -> FrendModel?
+    
+    /**
+    通过 conversationId 来获取 frend
+    
+    :param: conversationId
+    
+    :returns: 
+    */
+    func selectFrend(#conversationId: String) -> FrendModel?
+
+    
 }
 
 class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
@@ -104,6 +123,34 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
         }
     }
     
+    func selectFrend(#userId: Int) -> FrendModel? {
+        var frend: FrendModel?
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "select * from \(frendTableName) where UserId = ?"
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: [userId])
+            if (rs != nil) {
+                while rs.next() {
+                    frend = self.fillFrendModelWithFMResultSet(rs)
+                }
+            }
+        }
+        return frend
+    }
+    
+    func selectFrend(#conversationId: String) -> FrendModel? {
+        var frend: FrendModel?
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "select * from \(frendTableName) where ConversationId = ?"
+            var rs = dataBase.executeQuery(sql, withArgumentsInArray: [conversationId])
+            if (rs != nil) {
+                while rs.next() {
+                    frend = self.fillFrendModelWithFMResultSet(rs)
+                }
+            }
+        }
+        return frend
+    }
+    
     /**
     获取所有的是我的好友的列表
     :returns:
@@ -115,16 +162,7 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
             var rs = dataBase.executeQuery(sql, withArgumentsInArray: [IMFrendType.Frend.rawValue])
             if (rs != nil) {
                 while rs.next() {
-                    var frend = FrendModel()
-                    frend.userId = Int(rs.intForColumn("UserId"))
-                    frend.nickName = rs.stringForColumn("NickName")
-                    frend.avatar = rs.stringForColumn("Avatar")
-                    frend.avatarSmall = rs.stringForColumn("AvatarSmall")
-                    frend.signature = rs.stringForColumn("Signature")
-                    frend.sex = Int(rs.intForColumn("Sex"))
-                    frend.type = IMFrendType(rawValue: Int(rs.intForColumn("Type")))!
-                    frend.memo = rs.stringForColumn("memo")
-                    retArray.append(frend)
+                    retArray.append(self.fillFrendModelWithFMResultSet(rs))
                 }
             }
         }
@@ -147,6 +185,20 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
         return false
     }
     
+    
+//MARK: private methods
+    private func fillFrendModelWithFMResultSet(rs: FMResultSet) -> FrendModel {
+        var frend = FrendModel()
+        frend.userId = Int(rs.intForColumn("UserId"))
+        frend.nickName = rs.stringForColumn("NickName")
+        frend.avatar = rs.stringForColumn("Avatar")
+        frend.avatarSmall = rs.stringForColumn("AvatarSmall")
+        frend.signature = rs.stringForColumn("Signature")
+        frend.sex = Int(rs.intForColumn("Sex"))
+        frend.type = IMFrendType(rawValue: Int(rs.intForColumn("Type")))!
+        frend.memo = rs.stringForColumn("memo")
+        return frend
+    }
     
 //MARK: Group
     

@@ -172,16 +172,12 @@ public class DaoHelper:NSObject {
     
     func updateMessageContents(tableName: String, message: BaseMessage) {
         dispatch_async(databaseWriteQueue, { () -> Void in
-            self.openDB()
             self.chatMessageDaoHelper.updateMessageContents(tableName, message: message)
-            self.closeDB()
         })
     }
 
-    
     //MARK:UserDaoProtocol
     func createFrendTable() {
-
         dispatch_async(databaseWriteQueue, { () -> Void in
             self.openDB()
             self.frendDaoHelper.createFrendTable()
@@ -200,10 +196,16 @@ public class DaoHelper:NSObject {
     
     func addFrend2DB(frend: FrendModel) {
         dispatch_async(databaseWriteQueue, { () -> Void in
-            self.openDB()
             self.frendDaoHelper.addFrend2DB(frend)
-            self.closeDB()
         })
+    }
+    
+    func selectFrend(#userId: Int) -> FrendModel? {
+        return self.frendDaoHelper.selectFrend(userId: userId)
+    }
+    
+    func selectFrend(#conversationId: String) -> FrendModel? {
+        return self.frendDaoHelper.selectFrend(conversationId: conversationId)
     }
     
     /**
@@ -247,21 +249,19 @@ public class DaoHelper:NSObject {
     
     func addConversation(conversation :ChatConversation) {
         dispatch_async(databaseWriteQueue, { () -> Void in
-            self.openDB()
             self.conversationHelper.addConversation(conversation)
-            self.closeDB()
         })
 
     }
     
-    func getAllConversationList() -> NSMutableArray {
+    func getAllConversationList() -> Array<ChatConversation> {
         if self.openDB() {
-            var retArray = conversationHelper.getAllConversationList()
+            var retArray = conversationHelper.getAllCoversation()
             self.closeDB()
             return retArray
             
         } else {
-            return NSMutableArray()
+            return Array()
         }
     }
     
@@ -281,8 +281,6 @@ public class DaoHelper:NSObject {
         })
     }
 
-    
-    
     
 }
 

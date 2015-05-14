@@ -106,7 +106,7 @@ class MessageManager: NSObject {
                     messageModel!.message = contents
                     messageModel?.fillContentWithContent(contents)
                 }
-                
+                messageModel!.conversationId = messageDic.objectForKey("conversation") as! String
                 messageModel!.createTime = messageDic.objectForKey("timestamp") as! Int
                 
                 if let senderId = messageDic.objectForKey("senderId") as? Int {

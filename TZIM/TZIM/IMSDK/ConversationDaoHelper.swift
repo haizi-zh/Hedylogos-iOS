@@ -27,8 +27,7 @@ protocol ConversationDaoProtocol {
     获取所有的聊天会话列表
     :returns:
     */
-    func getAllConversationList() -> NSMutableArray
-    
+    func getAllCoversation() -> Array<ChatConversation>
     /**
     移除一个 conversation
     :param: chatterId 需要移除的 ID
@@ -46,13 +45,14 @@ protocol ConversationDaoProtocol {
 
 class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     
-// MARK: private method
+    //MARK: *******  ConversationDaoProtocol  ******
+
     /**
     从会话列表数据库里获取所有的会话列表,按照时间逆序排列
     :returns: 包含所有会话列表
     */
-    private func getAllCoversation() -> NSMutableArray {
-        var retArray = NSMutableArray()
+    func getAllCoversation() -> Array<ChatConversation> {
+        var retArray = Array<ChatConversation>()
         
         if !super.tableIsExit(conversationTableName) {
             self.createConversationsTable()
@@ -66,7 +66,8 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
             var rs = dataBase.executeQuery(sql, withArgumentsInArray: nil)
             if rs != nil {
                 while rs.next() {
-                    var conversation = ChatConversation(chatterId: Int(rs.intForColumn("UserId")))
+                    var conversation = ChatConversation()
+                    conversation.chatterId = Int(rs.intForColumn("UserId"))
                     conversation.lastUpdateTime = Int(rs.intForColumn("LastUpdateTime"))
                     if let chatterName = rs.stringForColumn("NickName") {
                         conversation.chatterName = chatterName
@@ -76,14 +77,13 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
                     conversation.unReadMessageCount = Int(rs.intForColumn("UnreadMessageCount"))
                     conversation.conversationId = String(rs.stringForColumn("ConversationId"))
 
-                    retArray.addObject(conversation)
+                    retArray.append(conversation)
                 }
             }
         }
         return retArray
     }
     
-   //MARK: *******  ConversationDaoProtocol  ******
     /**
     创建一个会话表
     :returns:
@@ -113,11 +113,11 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         }
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
-            var sql = "insert or replace into \(conversationTableName) (UserId, LastUpdateTime) values (?,?)"
+            var sql = "insert or replace into \(conversationTableName) (UserId, LastUpdateTime, ConversationId) values (?,?,?)"
             
             println("执行 addConversation userId: \(conversation.chatterId)")
 
-            var array = [conversation.chatterId, conversation.lastUpdateTime]
+            var array = [conversation.chatterId, conversation.lastUpdateTime, conversation.conversationId]
             if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
                 println("success 执行 sql 语句：\(sql)")
                 
@@ -145,15 +145,7 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         }
     }
     
-    /**
-    获取所有的会话列表
-    :returns:
-    */
-    func getAllConversationList() -> NSMutableArray {
-        var retArray = self.getAllCoversation()
-        return retArray
-    }
-   
+
     func removeConversationfromDB(chatterId: Int) {
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
