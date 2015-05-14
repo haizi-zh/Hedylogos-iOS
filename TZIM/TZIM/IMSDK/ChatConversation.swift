@@ -59,7 +59,6 @@ class ChatConversation: NSObject {
     
     func fillConversationType(#frendType: IMFrendType) {
         isTopConversation = self.typeIsCorrect(frendType, typeWeight: IMFrendWeightType.ConversationTop)
-        
         if self.typeIsCorrect(frendType, typeWeight: IMFrendWeightType.Frend) {
             chatType = IMChatType.IMChatSingleType
             

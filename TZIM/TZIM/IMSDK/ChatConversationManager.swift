@@ -57,11 +57,6 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     
     private func conversationIsExit(conversation: ChatConversation) -> Bool {
         for exitConversation in conversationList {
-            if exitConversation.conversationId == conversation.conversationId {
-                return true
-            }
-        }
-        for exitConversation in conversationList {
             if exitConversation.chatterId == conversation.chatterId {
                 return true
             }
@@ -82,17 +77,20 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     }
     
     /**
-    新建会话列表, 会话的id 
+    通过一条 message 新建一个会话
+    :param: message
+    :returns:
     */
-    func createNewConversation(#conversationId: String) -> ChatConversation {
+    func createNewConversation(#message: BaseMessage) -> ChatConversation {
         var conversation = ChatConversation()
-        conversation.conversationId = conversationId
+        conversation.chatterId = message.chatterId
+        conversation.conversationId = message.conversationId;
         var time = NSDate().timeIntervalSince1970
         var timeInt: Int = Int(round(time))
         conversation.lastUpdateTime = timeInt
         return conversation
     }
-    
+
     /**
     通过 chatterid 获取一个 conversation，如果已经存在那么返回一个已存在的，如果不存在新建一个新的
     
@@ -115,11 +113,6 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     :returns:
     */
     func getConversationWithMessage(message: BaseMessage) -> ChatConversation? {
-        for exitConversation in conversationList {
-            if exitConversation.conversationId == message.conversationId {
-                return exitConversation
-            }
-        }
         for exitConversation in conversationList {
             if exitConversation.chatterId == message.chatterId {
                 return exitConversation
@@ -198,16 +191,12 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         
         //如果在所有的已有会话里找不到这条消息的会话，那么新建一个会话并加入到会话列表里
 
-        var conversation = createNewConversation(conversationId: message.conversationId)
+        var conversation = createNewConversation(chatterId: message.chatterId)
         var frendManager = FrendManager()
         conversation.addReceiveMessage(message)
         conversation.unReadMessageCount = 1
 
-        if let frend = frendManager.getFrendInfoFromDB(conversationId: message.conversationId) {
-            self.fillConversationWithFrendData(conversation, frendModel: frend)
-            addConversation(conversation)
-            
-        } else if let frend = frendManager.getFrendInfoFromDB(userId: message.chatterId) {
+       if let frend = frendManager.getFrendInfoFromDB(userId: message.chatterId) {
             self.fillConversationWithFrendData(conversation, frendModel: frend)
             addConversation(conversation)
             
