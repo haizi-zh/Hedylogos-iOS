@@ -9,7 +9,7 @@
 import UIKit
 
 @objc protocol PushMessageDelegate {
-    func receivePushMessage(messageStr: NSString)
+    func receivePushMessage(messageStr: NSDictionary)
 }
 
 @objc protocol PushConnectionDelegate {
@@ -119,7 +119,7 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         var mseesageData = message.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
         var messageJson: AnyObject? = NSJSONSerialization.JSONObjectWithData(mseesageData!, options:.AllowFragments, error: nil)
         if messageJson is NSDictionary {
-            dispatchMessageDic = messageJson as! NSDictionary
+            dispatchMessageDic = messageJson?.objectForKey("message") as! NSDictionary
         } else {
             dispatchMessageDic = NSDictionary()
         }
@@ -129,7 +129,7 @@ class PushSDKManager: NSObject, GexinSdkDelegate {
         for value in listenerQueue {
             var listenerDic = value as! Dictionary<String, PushMessageDelegate>
             if let pushMessageDelegate = listenerDic[routingKey] {
-                pushMessageDelegate.receivePushMessage(message)
+                pushMessageDelegate.receivePushMessage(dispatchMessageDic)
             }
         }
     }

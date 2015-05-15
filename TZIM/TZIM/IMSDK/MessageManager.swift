@@ -197,11 +197,4 @@ class MessageManager: NSObject {
         }
     }
     
-    
-    
-
-    
-    
-    
-    
 }

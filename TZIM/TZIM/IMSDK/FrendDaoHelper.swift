@@ -82,7 +82,7 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
     
     class func createFrendTable(DB: FMDatabase) -> Bool {
         
-        var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ConversationId Text, ExtData Text)"
+        var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ExtData Text)"
         if (DB.executeUpdate(sql, withArgumentsInArray: nil)) {
             println("执行 sql 语句：\(sql)")
             return true
@@ -92,7 +92,7 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
     
     func createFrendTable() {
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
-            var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ConversationId Text, ExtData Text)"
+            var sql = "create table '\(frendTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, NickName TEXT, Avatar Text, AvatarSmall Text, ShortPY Text, FullPY Text, Signature Text, Memo Text, Sex INTEGER, Type INTEGER, ExtData Text)"
             if (super.dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
                 println("success 执行 sql 语句：\(sql)")
                 
@@ -116,9 +116,9 @@ class FrendDaoHelper: BaseDaoHelper, FrendDaoProtocol {
         }
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
-            var sql = "insert or replace into \(frendTableName) (UserId, NickName, Avatar, AvatarSmall, ShortPY, FullPY, Signature, Memo, Sex, Type, ConversationId) values (?,?,?,?,?,?,?,?,?,?,?)"
+            var sql = "insert or replace into \(frendTableName) (UserId, NickName, Avatar, AvatarSmall, ShortPY, FullPY, Signature, Memo, Sex, Type) values (?,?,?,?,?,?,?,?,?,?)"
             println("执行 sql 语句：\(sql)")
-            var array = [frend.userId, frend.nickName, frend.avatar, frend.avatarSmall, frend.shortPY, frend.fullPY, frend.signature, frend.memo, frend.sex, frend.type.rawValue, frend.conversationId]
+            var array = [frend.userId, frend.nickName, frend.avatar, frend.avatarSmall, frend.shortPY, frend.fullPY, frend.signature, frend.memo, frend.sex, frend.type.rawValue]
             dataBase.executeUpdate(sql, withArgumentsInArray: array as [AnyObject])
         }
     }

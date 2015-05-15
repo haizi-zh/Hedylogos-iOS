@@ -84,7 +84,9 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
                     var typeValue  = rs.intForColumn("Type")
                     conversation.fillConversationType(frendType: IMFrendType(rawValue: Int(typeValue))!)
                     conversation.unReadMessageCount = Int(rs.intForColumn("UnreadMessageCount"))
-                    conversation.conversationId = String(rs.stringForColumn("ConversationId"))
+                    if let conversationId = rs.stringForColumn("ConversationId") {
+                        conversation.conversationId = String(conversationId)
+                    }
 
                     retArray.append(conversation)
                 }

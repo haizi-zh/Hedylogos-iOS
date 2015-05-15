@@ -55,5 +55,4 @@ class FrendModel: NSObject {
     var signature: String = ""
     var memo: String = ""
     var sex: Int = 0
-    var conversationId: String = String()
 }

@@ -59,7 +59,6 @@ class FrendTableViewController: UITableViewController, UIAlertViewDelegate {
         var conversation = manager.conversationManager.getConversationWithChatterId(dataSource[indexPath.row].userId)
         manager.conversationManager.addConversation(conversation)
         conversation.chatterId = dataSource[indexPath.row].userId
-        conversation.conversationId = dataSource[indexPath.row].conversationId
         var viewController = ChatViewController()
         viewController.conversation = conversation
         self.navigationController?.pushViewController(viewController, animated: true)

@@ -270,7 +270,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     
 //MARK: PushMessageDelegate
     
-    func receivePushMessage(message: NSString) {
+    func receivePushMessage(message: NSDictionary) {
         NSLog("收到消息： 消息为：\(message)")
         if let message = MessageManager.messageModelWithMessage(message) {
             message.sendType = .MessageSendSomeoneElse
