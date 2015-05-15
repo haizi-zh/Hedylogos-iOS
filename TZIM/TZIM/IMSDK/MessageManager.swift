@@ -9,7 +9,9 @@
 import UIKit
 
 /// ACKArray 当超过多少是进行 ack
-let MaxACKCount = 5
+let MaxACKCount = 20
+let ACKTime = 120.0
+
 
 private let messageManger = MessageManager()
 
@@ -23,6 +25,8 @@ class MessageManager: NSObject {
     let allLastMessageList: NSMutableDictionary
     weak var delegate: MessageManagerDelegate?
     
+    private var timer: NSTimer!
+    
     /// 储存将要 ACK 的消息
     var messagesShouldACK: Array<String> = Array()
     
@@ -33,8 +37,8 @@ class MessageManager: NSObject {
     override init() {
         var daoHelper = DaoHelper.shareInstance()
         allLastMessageList = daoHelper.selectAllLastServerChatMessageInDB().mutableCopy() as! NSMutableDictionary
-      
         super.init()
+        self.startTimer()
     }
     
     func updateLastServerMessage(message: BaseMessage) {
@@ -55,6 +59,11 @@ class MessageManager: NSObject {
         }
     }
     
+    
+    func ackMessageWhenTimeout() {
+        self.shouldACK()
+    }
+
     /**
     当 ack 成功后只清除ack 成功的数据
     
@@ -125,6 +134,12 @@ class MessageManager: NSObject {
     
        
 //MARK: private methods
+    
+    private func startTimer() {
+        timer = NSTimer.scheduledTimerWithTimeInterval(ACKTime, target: self, selector: Selector("ackMessageWhenTimeout"), userInfo: nil, repeats: true)
+        println("********ACK 的定时器开始启动了*******")
+    }
+    
     private class func messageModelWithMessageDic(messageDic: NSDictionary) -> BaseMessage? {
         var messageModel: BaseMessage?
         if let messageTypeInteger = messageDic.objectForKey("msgType")?.integerValue {
