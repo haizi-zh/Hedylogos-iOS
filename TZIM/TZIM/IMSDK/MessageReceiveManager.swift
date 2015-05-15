@@ -227,14 +227,15 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                 if message.messageType == .ImageMessageType {
                     self.downloadPreviewImageAndDistribution(message as! ImageMessage)
                     
-                } else if message.messageType == .TextMessageType || message.messageType == .LocationMessageType {
+                } else if message.messageType == .AudioMessageType {
+                    self.downloadAudioDataAndDistribution(message as! AudioMessage)
+                    
+                } else  {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                             (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
                         }
                     })
-                } else if message.messageType == .AudioMessageType {
-                    self.downloadAudioDataAndDistribution(message as! AudioMessage)
                 }
             }
         })
@@ -288,7 +289,6 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                 self.checkMessages(messageList as! NSArray)
             }
         })
-    
     }
     
     // MARK: MessageManagerDelegate

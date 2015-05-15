@@ -168,7 +168,36 @@ static NSString *messageCellIdentifier = @"messageCell";
                 [locationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 bubbleData  = [NSBubbleData dataWithView:locationBtn date:[NSDate date] type:BubbleTypeMine insets:UIEdgeInsetsZero];
                 locationBtn.tag = _chatDataSource.count;
-            }
+        } else if (message.messageType == IMMessageTypeCityPoiMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMCityMessage *)message).poiName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        } else if (message.messageType == IMMessageTypeSpotMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld spotId：%@", (long)message.localId, (long)message.serverId, ((IMSpotMessage *)message).spotName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        } else if (message.messageType == IMMessageTypeGuideMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMGuideMessage *)message).guideName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        } else if (message.messageType == IMMessageTypeTravelNoteMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMTravelNoteMessage *)message).name];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        } else if (message.messageType == IMMessageTypeRestaurantMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        } else if (message.messageType == IMMessageTypeShoppingMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMShoppingMessage *)message).poiName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        } else if (message.messageType == IMMessageTypeRestaurantMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        }
+
         
     } else {
         if (message.messageType == IMMessageTypeImageMessageType) {
@@ -201,6 +230,35 @@ static NSString *messageCellIdentifier = @"messageCell";
             [locationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             bubbleData  = [NSBubbleData dataWithView:locationBtn date:[NSDate date] type:BubbleTypeSomeoneElse insets:UIEdgeInsetsZero];
             locationBtn.tag = _chatDataSource.count;
+            
+        } else if (message.messageType == IMMessageTypeCityPoiMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMCityMessage *)message).poiName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        } else if (message.messageType == IMMessageTypeSpotMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld spotId：%@", (long)message.localId, (long)message.serverId, ((IMSpotMessage *)message).spotName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        } else if (message.messageType == IMMessageTypeGuideMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMGuideMessage *)message).guideName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        } else if (message.messageType == IMMessageTypeTravelNoteMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMTravelNoteMessage *)message).name];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        } else if (message.messageType == IMMessageTypeRestaurantMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        } else if (message.messageType == IMMessageTypeShoppingMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMShoppingMessage *)message).poiName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        } else if (message.messageType == IMMessageTypeRestaurantMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
+            
+            bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
         }
 
     }
@@ -360,11 +418,86 @@ static NSString *messageCellIdentifier = @"messageCell";
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 }
+- (IBAction)sendCityPoi:(id)sender {
+    IMPoiModel *model = [[IMPoiModel alloc] init];
+    model.poiId = @"100032132";
+    model.poiName = @"北京";
+    model.poiType = IMPoiTypeCity;
+    model.image = @"http://imageurl....";
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    [_messageToSend setText:@""];
+    [self addMessageToDataSource:message];
+
+}
+- (IBAction)sendSpotPoi:(id)sender {
+    IMPoiModel *model = [[IMPoiModel alloc] init];
+    model.poiId = @"100001231";
+    model.poiName = @"天安门";
+    model.poiType = IMPoiTypeSpot;
+    model.image = @"http://imageurl....";
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    [_messageToSend setText:@""];
+    [self addMessageToDataSource:message];
+}
+- (IBAction)sendGuidePoi:(id)sender {
+    IMPoiModel *model = [[IMPoiModel alloc] init];
+    model.poiId = @"10000123";
+    model.poiName = @"东莞一晚游";
+    model.poiType = IMPoiTypeGuide;
+    model.image = @"http://imageurl....";
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    [_messageToSend setText:@""];
+    [self addMessageToDataSource:message];
+}
+- (IBAction)sendTravelnotePoi:(id)sender {
+    IMPoiModel *model = [[IMPoiModel alloc] init];
+    model.poiId = @"100002121";
+    model.poiName = @"山东游记";
+    model.poiType = IMPoiTypeTravelNote;
+    model.image = @"http://imageurl....";
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    [_messageToSend setText:@""];
+    [self addMessageToDataSource:message];
+}
+
+- (IBAction)sendShopPoi:(id)sender {
+    IMPoiModel *model = [[IMPoiModel alloc] init];
+    model.poiId = @"1000212";
+    model.poiName = @"香港购物";
+    model.poiType = IMPoiTypeShopping;
+    model.image = @"http://imageurl....";
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    [_messageToSend setText:@""];
+    [self addMessageToDataSource:message];
+}
+
+- (IBAction)sendFoodPoi:(id)sender {
+    IMPoiModel *model = [[IMPoiModel alloc] init];
+    model.poiId = @"10000123";
+    model.poiName = @"吃遍天下";
+    model.poiType = IMPoiTypeRestaurant;
+    model.image = @"http://imageurl....";
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    [_messageToSend setText:@""];
+    [self addMessageToDataSource:message];
+}
 
 - (void)audioRecordEnd:(NSString * __nonnull)audioPath
 {
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-    AudioMessage *audioMessage = [imClientManager.messageSendManager sendAudioMessageWithWavFormat:_conversation.chatterId conversationId:_conversation.conversationId wavAudioPath:audioPath progress:^(float progress) {
+    BaseMessage *audioMessage = [imClientManager.messageSendManager sendAudioMessageWithWavFormat:_conversation.chatterId conversationId:_conversation.conversationId wavAudioPath:audioPath progress:^(float progress) {
         
     }];
     

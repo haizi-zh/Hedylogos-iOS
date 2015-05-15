@@ -136,7 +136,7 @@ class MessageManager: NSObject {
     
     class func messageModelWithPoiModel(poiModel: IMPoiModel) -> BaseMessage {
         var message: BaseMessage
-        switch poiModel.poiType! {
+        switch poiModel.poiType {
         case IMPoiType.City:
             var cityMsg = IMCityMessage()
             cityMsg.poiId = poiModel.poiId
@@ -234,6 +234,28 @@ class MessageManager: NSObject {
 
                 case .LocationMessageType:
                     messageModel = LocationMessage()
+                    
+                case .CityPoiMessageType:
+                    messageModel = IMCityMessage()
+                    
+                case .SpotMessageType:
+                    messageModel = IMSpotMessage()
+                    
+                case .GuideMessageType:
+                    messageModel = IMGuideMessage()
+                    
+                case .TravelNoteMessageType:
+                    messageModel = IMTravelNoteMessage()
+                    
+                case .RestaurantMessageType:
+                    messageModel = IMRestaurantMessage()
+                    
+                case .ShoppingMessageType:
+                    messageModel = IMShoppingMessage()
+                    
+                case .HotelMessageType:
+                    messageModel = IMHotelMessage()
+                    
                 default :
                     break
                 }

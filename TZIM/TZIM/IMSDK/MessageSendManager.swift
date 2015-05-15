@@ -89,6 +89,13 @@ class MessageSendManager: MessageTransferManager {
     
     func sendPoiMessage(poiModel: IMPoiModel, receiver: Int, conversationId: String?) -> BaseMessage {
         let message = MessageManager.messageModelWithPoiModel(poiModel)
+        message.chatterId = receiver
+        message.sendType = IMMessageSendType.MessageSendMine
+        message.conversationId = conversationId
+        var daoHelper = DaoHelper.shareInstance()
+        daoHelper.insertChatMessage("chat_\(receiver)", message: message)
+        sendMessage(message, receiver: receiver, conversationId: conversationId)
+        
         return message
     }
     

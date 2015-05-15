@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum IMPoiType: Int {
+@objc enum IMPoiType: Int {
     case City = 0
     case Guide = 1
     case Spot = 2
@@ -20,7 +20,7 @@ enum IMPoiType: Int {
 
 class IMPoiModel: NSObject {
     var poiId: String!
-    var poiType: IMPoiType!
+    var poiType: IMPoiType = .City  //默认是城市
     var poiName: String?
     var desc: String?
     var image: String?
