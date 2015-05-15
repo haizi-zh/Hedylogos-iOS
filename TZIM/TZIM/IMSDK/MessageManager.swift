@@ -134,7 +134,81 @@ class MessageManager: NSObject {
         return nil
     }
     
-    
+    class func messageModelWithPoiModel(poiModel: IMPoiModel) -> BaseMessage {
+        var message: BaseMessage
+        switch poiModel.poiType! {
+        case IMPoiType.City:
+            var cityMsg = IMCityMessage()
+            cityMsg.poiId = poiModel.poiId
+            cityMsg.poiName = poiModel.poiName
+            cityMsg.image = poiModel.image
+            cityMsg.desc = poiModel.desc
+            message = cityMsg
+
+        case IMPoiType.Spot:
+            var spotMsg = IMSpotMessage()
+            spotMsg.spotId = poiModel.poiId
+            spotMsg.spotName = poiModel.poiName
+            spotMsg.image = poiModel.image
+            spotMsg.desc = poiModel.desc
+            message = spotMsg
+
+        case IMPoiType.Guide:
+            var guideMsg = IMGuideMessage()
+            guideMsg.guideId = poiModel.poiId
+            guideMsg.guideName = poiModel.poiName
+            guideMsg.image = poiModel.image
+            guideMsg.desc = poiModel.desc
+            guideMsg.timeCost = poiModel.timeCost
+            message = guideMsg
+
+        case IMPoiType.TravelNote:
+            var travelNoteMsg = IMTravelNoteMessage()
+            travelNoteMsg.travelNoteId = poiModel.poiId
+            travelNoteMsg.name = poiModel.poiName
+            travelNoteMsg.image = poiModel.image
+            travelNoteMsg.desc = poiModel.desc
+            message = travelNoteMsg
+
+        case IMPoiType.Restaurant:
+            var restaurantMsg = IMRestaurantMessage()
+            restaurantMsg.restaurantId = poiModel.poiId
+            restaurantMsg.poiName = poiModel.poiName
+            restaurantMsg.image = poiModel.image
+            restaurantMsg.rating = poiModel.rating
+            restaurantMsg.address = poiModel.address
+            restaurantMsg.price = poiModel.price
+            message = restaurantMsg
+
+        case IMPoiType.Shopping:
+            var shoppingMsg = IMShoppingMessage()
+            shoppingMsg.shoppingId = poiModel.poiId
+            shoppingMsg.poiName = poiModel.poiName
+            shoppingMsg.image = poiModel.image
+            shoppingMsg.rating = poiModel.rating
+            shoppingMsg.address = poiModel.address
+            shoppingMsg.price = poiModel.price
+            message = shoppingMsg
+
+        case IMPoiType.Hotel:
+            var hotelMsg = IMHotelMessage()
+            hotelMsg.hotelId = poiModel.poiId
+            hotelMsg.poiName = poiModel.poiName
+            hotelMsg.image = poiModel.image
+            hotelMsg.rating = poiModel.rating
+            hotelMsg.address = poiModel.address
+            hotelMsg.price = poiModel.price
+            message = hotelMsg
+
+        default:
+            message = BaseMessage()
+
+        }
+        if let content = poiModel.getContentStr() {
+            message.message = content as String
+        }
+        return message
+    }
        
 //MARK: private methods
     

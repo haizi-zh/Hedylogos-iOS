@@ -54,7 +54,7 @@ class MessageSendManager: MessageTransferManager {
     :param: message     消息的内容
     :returns: 被发送的 message
     */
-    func sendTextMessage(message: String, receiver: Int, conversationId: String?) -> TextMessage {
+    func sendTextMessage(message: String, receiver: Int, conversationId: String?) -> BaseMessage {
         var textMessage = TextMessage()
         textMessage.createTime = Int(NSDate().timeIntervalSince1970)
         textMessage.status = IMMessageStatus.IMMessageSending
@@ -70,7 +70,7 @@ class MessageSendManager: MessageTransferManager {
         return textMessage
     }
     
-    func sendLocationMessage(location: LocationModel, receiver: Int, conversationId: String?) -> LocationMessage {
+    func sendLocationMessage(location: LocationModel, receiver: Int, conversationId: String?) -> BaseMessage {
         var locationMessage = LocationMessage()
         locationMessage.latitude = location.latitude
         locationMessage.longitude = location.longitude
@@ -87,6 +87,11 @@ class MessageSendManager: MessageTransferManager {
         return locationMessage
     }
     
+    func sendPoiMessage(poiModel: IMPoiModel, receiver: Int, conversationId: String?) -> BaseMessage {
+        let message = MessageManager.messageModelWithPoiModel(poiModel)
+        return message
+    }
+    
     /**
     发送一条图片消息
     
@@ -95,7 +100,7 @@ class MessageSendManager: MessageTransferManager {
     :param: image   发送的图片，必选
     :returns:
     */
-    func sendImageMessage(chatterId: Int, conversationId: String?, image: UIImage, progress:(progressValue: Float) -> ()) -> ImageMessage {
+    func sendImageMessage(chatterId: Int, conversationId: String?, image: UIImage, progress:(progressValue: Float) -> ()) -> BaseMessage {
         var imageMessage = ImageMessage()
         imageMessage.chatterId = chatterId
         imageMessage.sendType = IMMessageSendType.MessageSendMine
@@ -158,7 +163,7 @@ class MessageSendManager: MessageTransferManager {
     :param: progress     发送进度的回调
     :returns:
     */
-    func sendAudioMessageWithWavFormat(chatterId: Int, conversationId: String?, wavAudioPath: String, progress:(progressValue: Float) -> ()) -> AudioMessage {
+    func sendAudioMessageWithWavFormat(chatterId: Int, conversationId: String?, wavAudioPath: String, progress:(progressValue: Float) -> ()) -> BaseMessage {
         var audioMessage = AudioMessage()
         audioMessage.chatterId = chatterId
         audioMessage.sendType = IMMessageSendType.MessageSendMine
