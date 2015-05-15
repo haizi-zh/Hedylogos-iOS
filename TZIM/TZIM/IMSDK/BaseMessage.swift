@@ -10,6 +10,7 @@ import UIKit
 
 class BaseMessage: NSObject {
     var localId: Int
+    var messageId: String = ""
     var serverId: Int
     var message: String
     var messageType: IMMessageType
@@ -20,7 +21,7 @@ class BaseMessage: NSObject {
     var messageSenderId: Int   //发送消息的人
     var metadataId: String?
     var chatType: IMChatType = IMChatType.IMChatSingleType
-    var conversationId: String = String()
+    var conversationId: String?
     
     override init() {
         localId = -1

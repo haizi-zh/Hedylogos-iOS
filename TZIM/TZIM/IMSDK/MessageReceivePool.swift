@@ -48,7 +48,7 @@ class MessageReceivePool: NSObject {
             startTimer()
         }
         if conversationIsExit(message) {
-            var messageList = messagePrepare2Reorder.objectForKey(message.conversationId) as! NSMutableArray
+            var messageList = messagePrepare2Reorder.objectForKey(message.chatterId) as! NSMutableArray
             var haveAdded = false
             for var i = messageList.count-1; i>=0; i-- {
                 var oldMessage = messageList.objectAtIndex(i) as! BaseMessage

@@ -262,9 +262,13 @@ public class DaoHelper:NSObject {
     
     func updateUnreadMessageCountInConversation(unReadMessageCount: Int, userId: Int) {
         dispatch_async(databaseWriteQueue, { () -> Void in
-            self.openDB()
             self.conversationHelper.updateUnreadMessageCountInConversation(unReadMessageCount, userId: userId)
-            self.closeDB()
+        })
+    }
+    
+    func updateTimestampInConversation(timeStamp: Int, userId: Int) {
+        dispatch_async(databaseWriteQueue, { () -> Void in
+            self.conversationHelper.updateTimestampInConversation(timeStamp, userId: userId)
         })
     }
 

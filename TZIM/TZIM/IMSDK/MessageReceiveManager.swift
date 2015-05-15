@@ -10,12 +10,13 @@ import UIKit
 
 private let messageReceiveManager = MessageReceiveManager()
 
-class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, MessageReceivePoolDelegate {
+class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, MessageReceivePoolDelegate, MessageManagerDelegate {
     
     private let messageReceiveQueue = dispatch_queue_create("messageReceiveQueue", nil)
     
     let pushSDKManager = PushSDKManager.shareInstance()
     let messagePool = MessageReceivePool.shareInstance()
+    let messageManager = MessageManager.shareInsatance()
     
     private var receiveMessageList: NSDictionary?
 
@@ -27,6 +28,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         super.init()
         pushSDKManager.addPushMessageListener(self, withRoutingKey: "IM")
         messagePool.delegate = self
+        messageManager.delegate = self
     }
     
 //MARK: private method
@@ -43,10 +45,12 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         
         println("checkMessages queue: \(NSThread.currentThread())")
         
-        var allLastMessageList = MessageManager.shareInsatance().allLastMessageList
+        var allLastMessageList = messageManager.allLastMessageList
 
         for message in (messageList as! NSMutableArray) {
             if let message = message as? BaseMessage {
+                messageManager.addChatMessage2ACK(message)
+                
                 if let lastMessageServerId: AnyObject = allLastMessageList.objectForKey(message.chatterId) {
                     if (message.serverId - (lastMessageServerId as! Int)) > 1 {
                         println("消息非法: 带插入的 serverId: \(message.serverId)  最后一条的 serverId: \(lastMessageServerId)")
@@ -81,7 +85,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         
         if needFetchMessage {
             println("存在不合法的消息, 需要 fetch")
-            fetchOmitMessageWithReceivedMessages(messagePrepare2Fetch)
+            ACKMessageWithReceivedMessages(messagePrepare2Fetch)
         }
         var array = messagePrepate2Distribute as AnyObject as! [BaseMessage]
         distributionMessage(array)
@@ -93,7 +97,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     
     :param: receivedMessages 已经收到的消息
     */
-    func fetchOmitMessageWithReceivedMessages(receivedMessages: NSArray?) {
+    func ACKMessageWithReceivedMessages(receivedMessages: NSArray?) {
         var accountManager = AccountManager.shareInstance()
         
         println("fetchOmitMessageWithReceivedMessages queue: \(NSThread.currentThread())")
@@ -101,11 +105,12 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         //储存需要额外处理的消息
         var messagesNeed2Deal = NSMutableArray()
 
-        NetworkTransportAPI.asyncFecthMessage(accountManager.account.userId, completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> () in
+        NetworkTransportAPI.asyncACKMessage(accountManager.account.userId, shouldACKMessageList:messageManager.messagesShouldACK, completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> () in
             
             println("fetch Result 一共是：\(retMessage?.count): \(retMessage)")
 
             if (isSuccess) {
+                self.messageManager.clearAllMessageWhenACKSuccess()
                 if let retMessageArray = retMessage {
                     dispatch_async(self.messageReceiveQueue, { () -> Void in
                         self.dealwithFetchResult(receivedMessages, fetchMessages: retMessageArray)
@@ -129,7 +134,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         
         var messagesPrepare2DistributeArray = NSMutableArray()
         
-        var allLastMessageList = MessageManager.shareInsatance().allLastMessageList
+        var allLastMessageList = messageManager.allLastMessageList
 
         if let receivedMessageArray = receivedMessages {
             messagesPrepare2DistributeArray = receivedMessageArray.mutableCopy() as! NSMutableArray
@@ -141,6 +146,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
             for messageDic in fetchMessages {
                 if let message = MessageManager.messageModelWithMessage(messageDic) {
                     message.sendType = IMMessageSendType.MessageSendSomeoneElse
+                    messageManager.addChatMessage2ACK(message)
                     
                     if let lastMessageServerId: AnyObject = allLastMessageList.objectForKey(message.chatterId) {
                         if (message.serverId - (lastMessageServerId as! Int)) >= 1 {
@@ -222,9 +228,11 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                     self.downloadPreviewImageAndDistribution(message as! ImageMessage)
                     
                 } else if message.messageType == .TextMessageType {
-                    for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                        (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
-                    }
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
+                            (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
+                        }
+                    })
                 } else if message.messageType == .AudioMessageType {
                     self.downloadAudioDataAndDistribution(message as! AudioMessage)
                 }
@@ -282,7 +290,15 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         })
     
     }
+    
+    // MARK: MessageManagerDelegate
+    func shouldACK(messageList: Array<String>) {
+        self.ACKMessageWithReceivedMessages(nil)
+    }
 }
+
+
+
 
 
 

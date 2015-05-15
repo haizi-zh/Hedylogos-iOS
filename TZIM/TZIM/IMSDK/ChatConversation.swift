@@ -26,10 +26,14 @@ import UIKit
 }
 
 class ChatConversation: NSObject {
-    var conversationId: String = String()
+    var conversationId: String?
     var chatterId: Int = 0
     var chatterName: String = ""
-    var lastUpdateTime: Int = 0
+    var lastUpdateTime: Int = 0 {
+        willSet {
+            ChatConversation.updateConversationTimestampInDB(newValue, chatterId: chatterId)
+        }
+    }
     var unReadMsgCount: Int = 0
     var chatMessageList: NSMutableArray
     var chatType: IMChatType = IMChatType.IMChatSingleType     //聊天类型，默认是单聊
@@ -126,6 +130,7 @@ class ChatConversation: NSObject {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             delegate?.receiverMessage?(message)
         })
+        self.lastUpdateTime = message.createTime
     }
     
     /**
@@ -181,6 +186,11 @@ class ChatConversation: NSObject {
     private class func updateUnreadMessageCountInDB(count: Int, chatterId: Int) {
         var daoHelper = DaoHelper.shareInstance()
         daoHelper.updateUnreadMessageCountInConversation(count, userId: chatterId)
+    }
+    
+    private class func updateConversationTimestampInDB(timestamp: Int,  chatterId: Int) {
+        var daoHelper = DaoHelper.shareInstance()
+        daoHelper.updateTimestampInConversation(timestamp, userId: chatterId)
     }
     
     /**

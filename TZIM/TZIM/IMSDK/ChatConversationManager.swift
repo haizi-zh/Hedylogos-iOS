@@ -84,7 +84,9 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
     func createNewConversation(#message: BaseMessage) -> ChatConversation {
         var conversation = ChatConversation()
         conversation.chatterId = message.chatterId
-        conversation.conversationId = message.conversationId;
+        if let conversationId = message.conversationId {
+            conversation.conversationId = conversationId;
+        }
         var time = NSDate().timeIntervalSince1970
         var timeInt: Int = Int(round(time))
         conversation.lastUpdateTime = timeInt
@@ -191,7 +193,7 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
         
         //如果在所有的已有会话里找不到这条消息的会话，那么新建一个会话并加入到会话列表里
 
-        var conversation = createNewConversation(chatterId: message.chatterId)
+        var conversation = createNewConversation(message: message)
         var frendManager = FrendManager()
         conversation.addReceiveMessage(message)
         conversation.unReadMessageCount = 1

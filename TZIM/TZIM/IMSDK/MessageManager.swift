@@ -8,11 +8,23 @@
 
 import UIKit
 
+/// ACKArray 当超过多少是进行 ack
+let MaxACKCount = 5
+
 private let messageManger = MessageManager()
+
+@objc protocol MessageManagerDelegate {
+    func shouldACK(messageList: Array<String>)
+    
+}
 
 class MessageManager: NSObject {
     
     let allLastMessageList: NSMutableDictionary
+    weak var delegate: MessageManagerDelegate?
+    
+    /// 储存将要 ACK 的消息
+    var messagesShouldACK: Array<String> = Array()
     
     class func shareInsatance() -> MessageManager {
         return messageManger
@@ -34,6 +46,34 @@ class MessageManager: NSObject {
             allLastMessageList.setObject(message.serverId, forKey: message.chatterId)
         }
     }
+    
+    func addChatMessage2ACK(message: BaseMessage) {
+        messagesShouldACK.append(message.messageId)
+        println("ACK消息队列里一共有\(messagesShouldACK.count)条数据")
+        if messagesShouldACK.count > MaxACKCount {
+            self.shouldACK()
+        }
+    }
+    
+    /**
+    当 ack 成功后只清除ack 成功的数据
+    
+    :param: messageList 成功 ack 的消息
+    */
+    func clearMessageWhenACKSuccess(messageList: Array<BaseMessage>) {
+
+    }
+    
+    /**
+    当 ack 成功后清除说有的 ack 数据
+    */
+    func clearAllMessageWhenACKSuccess() {
+        messagesShouldACK.removeAll(keepCapacity: false)
+    }
+    
+    func shouldACK() {
+        self.delegate?.shouldACK(messagesShouldACK)
+    }
    
     /**
     将 MessageModel转化成发送的消息格式
@@ -46,8 +86,12 @@ class MessageManager: NSObject {
         var retDic = NSMutableDictionary()
         retDic.setValue(message.messageType.rawValue, forKey: "msgType")
         retDic.setValue(senderId, forKey: "sender")
-        retDic.setValue(receiverId, forKey: "receiver")
         retDic.setValue(message.message, forKey: "contents")
+        if let conversationId = message.conversationId {
+            retDic.setValue(conversationId, forKey: "conversation")
+        } else {
+            retDic.setValue(receiverId, forKey: "receiver")
+        }
         
         switch message.messageType {
         case .LocationMessageType :
@@ -77,6 +121,8 @@ class MessageManager: NSObject {
         }
         return nil
     }
+    
+    
        
 //MARK: private methods
     private class func messageModelWithMessageDic(messageDic: NSDictionary) -> BaseMessage? {
@@ -106,7 +152,7 @@ class MessageManager: NSObject {
                     messageModel!.message = contents
                     messageModel?.fillContentWithContent(contents)
                 }
-                messageModel!.conversationId = messageDic.objectForKey("conversation") as! String
+                messageModel!.conversationId = messageDic.objectForKey("conversation") as? String
                 messageModel!.createTime = messageDic.objectForKey("timestamp") as! Int
                 
                 if let senderId = messageDic.objectForKey("senderId") as? Int {
@@ -114,6 +160,10 @@ class MessageManager: NSObject {
                 }
                 if let senderId = messageDic.objectForKey("msgId") as? Int {
                     messageModel!.serverId = senderId
+                }
+                
+                if let messageId = messageDic.objectForKey("id") as? String {
+                    messageModel?.messageId = messageId
                 }
             }
         } else {
@@ -131,6 +181,7 @@ class MessageManager: NSObject {
             return NSDictionary()
         }
     }
+    
     
     
 

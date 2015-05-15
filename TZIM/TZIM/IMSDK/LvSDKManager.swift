@@ -54,7 +54,7 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
             self.groupManager = IMGroupManager()
             self.conversationManager = ChatConversationManager()
             self.addMessageDelegate(conversationManager)
-            self.messageReceiveManager.fetchOmitMessageWithReceivedMessages(nil)
+            self.messageReceiveManager.ACKMessageWithReceivedMessages(nil)
         }
         delegate?.userDidLogin(isSuccess, errorCode: errorCode)
     }

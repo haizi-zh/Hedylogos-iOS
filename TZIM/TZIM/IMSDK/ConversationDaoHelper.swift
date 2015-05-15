@@ -41,6 +41,15 @@ protocol ConversationDaoProtocol {
     :param: conversation
     */
     func updateUnreadMessageCountInConversation(unReadMessageCount: Int, userId: Int)
+    
+    /**
+    更新会话的时间戳
+    
+    :param: timeStamp
+    :param: userId    
+    */
+    func updateTimestampInConversation(timeStamp: Int, userId: Int)
+
 }
 
 class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
@@ -113,16 +122,28 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         }
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
-            var sql = "insert or replace into \(conversationTableName) (UserId, LastUpdateTime, ConversationId) values (?,?,?)"
-            
-            println("执行 addConversation userId: \(conversation.chatterId)")
-
-            var array = [conversation.chatterId, conversation.lastUpdateTime, conversation.conversationId]
-            if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
-                println("success 执行 sql 语句：\(sql)")
+            if let conversationId = conversation.conversationId {
+                var sql = "insert or replace into \(conversationTableName) (UserId, LastUpdateTime, ConversationId) values (?,?,?)"
+                println("执行 addConversation userId: \(conversation.chatterId)")
+                var array = [conversation.chatterId, conversation.lastUpdateTime, conversationId]
+                if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
+                    println("success 执行 sql 语句：\(sql)")
+                    
+                } else {
+                    println("error 执行 sql 语句：\(sql)")
+                }
                 
             } else {
-                println("error 执行 sql 语句：\(sql)")
+                var sql = "insert or replace into \(conversationTableName) (UserId, LastUpdateTime) values (?,?)"
+                println("执行 addConversation userId: \(conversation.chatterId)")
+                var array = [conversation.chatterId, conversation.lastUpdateTime]
+                if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
+                    println("success 执行 sql 语句：\(sql)")
+                    
+                } else {
+                    println("error 执行 sql 语句：\(sql)")
+                    
+                }
             }
         }
     }
@@ -130,11 +151,8 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     
     func updateUnreadMessageCountInConversation(unReadMessageCount: Int, userId: Int) {
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
-            
             var sql = "update \(conversationTableName) set UnreadMessageCount = ? where UserId = ?"
-            
             println("执行 updateUnreadMessageCountInConversation userId: \(userId)")
-            
             var array = [unReadMessageCount, userId]
             if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
                 println("success 执行 sql 语句：\(sql)")
@@ -144,6 +162,21 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
             }
         }
     }
+    
+    func updateTimestampInConversation(timeStamp: Int, userId: Int) {
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "update \(conversationTableName) set LastUpdateTime = ? where UserId = ?"
+            println("执行 updateTimestampInConversation userId: \(userId)")
+            var array = [timeStamp, userId]
+            if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
+                println("success 执行 sql 语句：\(sql)")
+                
+            } else {
+                println("error 执行 sql 语句：\(sql)")
+            }
+        }
+    }
+
     
 
     func removeConversationfromDB(chatterId: Int) {

@@ -20,7 +20,7 @@ class MessageSendManager: MessageTransferManager {
     
 //MARK: private methods
     
-    private func sendMessage(message: BaseMessage, receiver: Int, conversationId: String) {
+    private func sendMessage(message: BaseMessage, receiver: Int, conversationId: String?) {
         var daoHelper = DaoHelper.shareInstance()
         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
             (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(message)
@@ -54,13 +54,14 @@ class MessageSendManager: MessageTransferManager {
     :param: message     消息的内容
     :returns: 被发送的 message
     */
-    func sendTextMessage(message: String, receiver: Int, conversationId: String) -> TextMessage {
+    func sendTextMessage(message: String, receiver: Int, conversationId: String?) -> TextMessage {
         var textMessage = TextMessage()
         textMessage.createTime = Int(NSDate().timeIntervalSince1970)
         textMessage.status = IMMessageStatus.IMMessageSending
         textMessage.message = message
         textMessage.chatterId = receiver
         textMessage.sendType = IMMessageSendType.MessageSendMine
+        textMessage.conversationId = conversationId
         
         var daoHelper = DaoHelper.shareInstance()
         daoHelper.insertChatMessage("chat_\(receiver)", message: textMessage)

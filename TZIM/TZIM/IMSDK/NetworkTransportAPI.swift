@@ -12,7 +12,7 @@ let loginUrl = "http://hedy.zephyre.me/users/login"
 
 let sendMessageURL = "http://hedy.zephyre.me/chats"
 
-let fetchUrl = "http://hedy.zephyre.me/chats/"
+let ACKUrl = "http://hedy.zephyre.me/chats/"
 
 let requestQiniuTokenToUploadMetadata = "http://hedy.zephyre.me/upload/token-generator"
 
@@ -124,10 +124,10 @@ class NetworkTransportAPI: NSObject {
     :param: userId          fetch谁的消息
     :param: completionBlock fetch 后的回掉
     */
-    class func asyncFecthMessage(userId: Int, completionBlock: (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> ()) {
+    class func asyncACKMessage(userId: Int, shouldACKMessageList: Array<String>, completionBlock: (isSuccess: Bool, errorCode: Int, retMessage: NSArray?) -> ()) {
         let manager = AFHTTPRequestOperationManager()
         
-        println("开始执行 fetch 接口")
+        println("开始执行 ACK 接口")
         
         let requestSerializer = AFJSONRequestSerializer()
         
@@ -136,13 +136,13 @@ class NetworkTransportAPI: NSObject {
         manager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
         manager.requestSerializer.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
-        var params = ["userId": userId]
+        var params = ["msgList": shouldACKMessageList]
         
-        println("fetch接口,收取用户\(userId) 的未读消息")
+        println("ACK接口,收取用户\(userId) 的未读消息")
         
-        var url = fetchUrl+"\(userId)"
+        var url = ACKUrl+"\(userId)"+"/ack"
         
-        manager.GET(url, parameters: params, success:
+        manager.POST(url, parameters: params, success:
         {
         (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
             if let reslutDic = responseObject.objectForKey("result") as? NSArray {
