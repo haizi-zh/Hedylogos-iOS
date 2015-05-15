@@ -33,7 +33,6 @@ class LocationMessage: BaseMessage {
         if let name = contentsDic.objectForKey("name") as? String {
             address = name
         }
-
     }
 }
 

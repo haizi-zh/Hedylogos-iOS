@@ -16,11 +16,13 @@ import UIKit
     case AudioMessageType = 1
     case ImageMessageType = 2
     case LocationMessageType = 3
-    case CityPoiMessageType = 10
-    case TravelNoteMessageType = 11
-    case SpotPoiMessageType = 12
-    case RestaurantMessageType = 13
-    case HotelMessageType = 14
+    case GuideMessageType = 10
+    case CityPoiMessageType = 11
+    case TravelNoteMessageType = 12
+    case SpotMessageType = 13
+    case RestaurantMessageType = 14
+    case ShoppingMessageType = 15
+    case HotelMessageType = 16
 }
 
 /**

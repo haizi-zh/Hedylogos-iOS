@@ -24,6 +24,14 @@
 		D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D912452B1AFDDA2800480181 /* GroupTableViewController.swift */; };
 		D91245371AFE0BBD00480181 /* IMGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245361AFE0BBD00480181 /* IMGroupModel.swift */; };
 		D91643B71B05BA4C00C56F12 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643B61B05BA4C00C56F12 /* LocationModel.swift */; };
+		D91643BB1B05DEF900C56F12 /* IMPoiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643BA1B05DEF900C56F12 /* IMPoiModel.swift */; };
+		D91643BD1B05DF4E00C56F12 /* IMCityMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643BC1B05DF4E00C56F12 /* IMCityMessage.swift */; };
+		D91643BF1B05DFA900C56F12 /* IMGuideMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643BE1B05DFA900C56F12 /* IMGuideMessage.swift */; };
+		D91643C11B05DFBB00C56F12 /* IMTravelNoteMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643C01B05DFBB00C56F12 /* IMTravelNoteMessage.swift */; };
+		D91643C31B05DFCF00C56F12 /* IMSpotMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643C21B05DFCF00C56F12 /* IMSpotMessage.swift */; };
+		D91643C51B05DFE800C56F12 /* IMRestaurantMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643C41B05DFE800C56F12 /* IMRestaurantMessage.swift */; };
+		D91643C71B05DFF800C56F12 /* IMShoppingMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643C61B05DFF800C56F12 /* IMShoppingMessage.swift */; };
+		D91643C91B05E00A00C56F12 /* IMHotelMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643C81B05E00A00C56F12 /* IMHotelMessage.swift */; };
 		D921BFA31AEA20830054DD99 /* IMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D921BFA21AEA20830054DD99 /* IMConstants.swift */; };
 		D92439F81B00C28100A7AAA4 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92439F71B00C28100A7AAA4 /* AccountModel.swift */; };
 		D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8061AE25B2F00031C63 /* AppDelegate.swift */; };
@@ -129,6 +137,14 @@
 		D912452B1AFDDA2800480181 /* GroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewController.swift; sourceTree = "<group>"; };
 		D91245361AFE0BBD00480181 /* IMGroupModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupModel.swift; sourceTree = "<group>"; };
 		D91643B61B05BA4C00C56F12 /* LocationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
+		D91643BA1B05DEF900C56F12 /* IMPoiModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMPoiModel.swift; sourceTree = "<group>"; };
+		D91643BC1B05DF4E00C56F12 /* IMCityMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMCityMessage.swift; sourceTree = "<group>"; };
+		D91643BE1B05DFA900C56F12 /* IMGuideMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGuideMessage.swift; sourceTree = "<group>"; };
+		D91643C01B05DFBB00C56F12 /* IMTravelNoteMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMTravelNoteMessage.swift; sourceTree = "<group>"; };
+		D91643C21B05DFCF00C56F12 /* IMSpotMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMSpotMessage.swift; sourceTree = "<group>"; };
+		D91643C41B05DFE800C56F12 /* IMRestaurantMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMRestaurantMessage.swift; sourceTree = "<group>"; };
+		D91643C61B05DFF800C56F12 /* IMShoppingMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMShoppingMessage.swift; sourceTree = "<group>"; };
+		D91643C81B05E00A00C56F12 /* IMHotelMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMHotelMessage.swift; sourceTree = "<group>"; };
 		D921BFA21AEA20830054DD99 /* IMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMConstants.swift; sourceTree = "<group>"; };
 		D92439F71B00C28100A7AAA4 /* AccountModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		D92BF8011AE25B2F00031C63 /* TZIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TZIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -372,9 +388,25 @@
 			name = Text;
 			sourceTree = "<group>";
 		};
+		D91643B91B05DEE800C56F12 /* Poi */ = {
+			isa = PBXGroup;
+			children = (
+				D91643BA1B05DEF900C56F12 /* IMPoiModel.swift */,
+				D91643BC1B05DF4E00C56F12 /* IMCityMessage.swift */,
+				D91643BE1B05DFA900C56F12 /* IMGuideMessage.swift */,
+				D91643C01B05DFBB00C56F12 /* IMTravelNoteMessage.swift */,
+				D91643C21B05DFCF00C56F12 /* IMSpotMessage.swift */,
+				D91643C41B05DFE800C56F12 /* IMRestaurantMessage.swift */,
+				D91643C61B05DFF800C56F12 /* IMShoppingMessage.swift */,
+				D91643C81B05E00A00C56F12 /* IMHotelMessage.swift */,
+			);
+			name = Poi;
+			sourceTree = "<group>";
+		};
 		D921BFA41AEA27590054DD99 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D91643B91B05DEE800C56F12 /* Poi */,
 				D91643B11B05B9E100C56F12 /* Location */,
 				D91643B21B05BA1F00C56F12 /* Audio */,
 				D91643B31B05BA2900C56F12 /* Super */,
@@ -683,7 +715,6 @@
 			isa = PBXGroup;
 			children = (
 				D908E91E1AE8EADC00C984C7 /* MessageManager.swift */,
-				D921BFA41AEA27590054DD99 /* Model */,
 			);
 			name = MessageModel;
 			sourceTree = "<group>";
@@ -703,6 +734,7 @@
 		D9E6B9EA1AE498A100C95767 /* MessageManager */ = {
 			isa = PBXGroup;
 			children = (
+				D921BFA41AEA27590054DD99 /* Model */,
 				D97097891AEE68A600B9D3AF /* MetadataManager */,
 				D9E6B9E81AE4984800C95767 /* MessageModel */,
 				D92BF8501AE25B5C00031C63 /* MessageTransferManager.swift */,
@@ -934,6 +966,7 @@
 				D92BF8711AE25B5C00031C63 /* ConnectionManager.swift in Sources */,
 				D92BF87B1AE25B5C00031C63 /* LvAppDelegate.swift in Sources */,
 				D90840A01AE5F90900FA31C0 /* ChatConversation.swift in Sources */,
+				D91643C51B05DFE800C56F12 /* IMRestaurantMessage.swift in Sources */,
 				D92BF87A1AE25B5C00031C63 /* LocationMessage.swift in Sources */,
 				D92BF86B1AE25B5C00031C63 /* NSString+Base64.m in Sources */,
 				D92BF8A51AE25B6B00031C63 /* UIBubbleHeaderTableViewCell.m in Sources */,
@@ -941,6 +974,7 @@
 				D92BF8801AE25B5C00031C63 /* MessageSendManager.swift in Sources */,
 				D92BF8A61AE25B6B00031C63 /* UIBubbleTableView.m in Sources */,
 				D9C932011AE66B66003FEBA3 /* FrendModel.swift in Sources */,
+				D91643C71B05DFF800C56F12 /* IMShoppingMessage.swift in Sources */,
 				D9E6B9F81AE51D2C00C95767 /* NetworkTransportAPI.swift in Sources */,
 				D92BF87E1AE25B5C00031C63 /* MessageProtocol.swift in Sources */,
 				D92BF87F1AE25B5C00031C63 /* MessageReceiveManager.swift in Sources */,
@@ -964,7 +998,9 @@
 				D92BF8A91AE25B6B00031C63 /* ChatViewController.m in Sources */,
 				D96393431AE7963500725E4C /* AudioDeviceManager.swift in Sources */,
 				D92BF8721AE25B5C00031C63 /* DaoHelper.swift in Sources */,
+				D91643C11B05DFBB00C56F12 /* IMTravelNoteMessage.swift in Sources */,
 				D911377F1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift in Sources */,
+				D91643BF1B05DFA900C56F12 /* IMGuideMessage.swift in Sources */,
 				D92BF8A71AE25B6B00031C63 /* UIBubbleTableViewCell.m in Sources */,
 				D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */,
 				D907C9F51AFCE0DB0034D444 /* FrendTableViewController.swift in Sources */,
@@ -973,6 +1009,7 @@
 				D9E6B9F11AE4FA5000C95767 /* FrendDaoHelper.swift in Sources */,
 				D9B9EFF31AF0C69E000331B5 /* MessageReceivePool.swift in Sources */,
 				D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */,
+				D91643BB1B05DEF900C56F12 /* IMPoiModel.swift in Sources */,
 				D96393451AE79FB000725E4C /* ChatManagerAudio.swift in Sources */,
 				D907E2181AE75A3400B37D56 /* ChatManager.swift in Sources */,
 				D92BF8691AE25B5C00031C63 /* NSData+Base64.m in Sources */,
@@ -987,11 +1024,14 @@
 				D92BF8AB1AE25B6B00031C63 /* ConversationViewController.m in Sources */,
 				D9C931FD1AE605C6003FEBA3 /* ConversationDaoHelper.swift in Sources */,
 				D92BF8811AE25B5C00031C63 /* MetaDataDaoHelper.swift in Sources */,
+				D91643C31B05DFCF00C56F12 /* IMSpotMessage.swift in Sources */,
 				D92BF8761AE25B5C00031C63 /* FMDatabasePool.m in Sources */,
 				D92BF8771AE25B5C00031C63 /* FMDatabaseQueue.m in Sources */,
 				D91137821B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift in Sources */,
+				D91643C91B05E00A00C56F12 /* IMHotelMessage.swift in Sources */,
 				D92BF8871AE25B5C00031C63 /* VoiceConverter.mm in Sources */,
 				D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */,
+				D91643BD1B05DF4E00C56F12 /* IMCityMessage.swift in Sources */,
 				D92BF8751AE25B5C00031C63 /* FMDatabaseAdditions.m in Sources */,
 				D91245371AFE0BBD00480181 /* IMGroupModel.swift in Sources */,
 			);
