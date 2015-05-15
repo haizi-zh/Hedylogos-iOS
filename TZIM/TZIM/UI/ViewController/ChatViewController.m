@@ -177,23 +177,23 @@ static NSString *messageCellIdentifier = @"messageCell";
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
         } else if (message.messageType == IMMessageTypeGuideMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMGuideMessage *)message).guideName];
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld guide：%@", (long)message.localId, (long)message.serverId, ((IMGuideMessage *)message).guideName];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
         } else if (message.messageType == IMMessageTypeTravelNoteMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMTravelNoteMessage *)message).name];
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld Note：%@", (long)message.localId, (long)message.serverId, ((IMTravelNoteMessage *)message).name];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
         } else if (message.messageType == IMMessageTypeRestaurantMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld RestaurantId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
         } else if (message.messageType == IMMessageTypeShoppingMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMShoppingMessage *)message).poiName];
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld ShoppintId：%@", (long)message.localId, (long)message.serverId, ((IMShoppingMessage *)message).poiName];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-        } else if (message.messageType == IMMessageTypeRestaurantMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
+        } else if (message.messageType == IMMessageTypeHotelMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld HotelId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
         }
@@ -240,23 +240,23 @@ static NSString *messageCellIdentifier = @"messageCell";
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
         } else if (message.messageType == IMMessageTypeGuideMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMGuideMessage *)message).guideName];
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld guide：%@", (long)message.localId, (long)message.serverId, ((IMGuideMessage *)message).guideName];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
         } else if (message.messageType == IMMessageTypeTravelNoteMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMTravelNoteMessage *)message).name];
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld note：%@", (long)message.localId, (long)message.serverId, ((IMTravelNoteMessage *)message).name];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
         } else if (message.messageType == IMMessageTypeRestaurantMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld restaurant：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
         } else if (message.messageType == IMMessageTypeShoppingMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMShoppingMessage *)message).poiName];
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld ShopId：%@", (long)message.localId, (long)message.serverId, ((IMShoppingMessage *)message).poiName];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
-        } else if (message.messageType == IMMessageTypeRestaurantMessageType) {
-            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld cityId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
+        } else if (message.messageType == IMMessageTypeHotelMessageType) {
+            NSString *content = [NSString stringWithFormat:@"localId:%ld,  serverId:%ld hotelId：%@", (long)message.localId, (long)message.serverId, ((IMRestaurantMessage *)message).poiName];
             
             bubbleData = [NSBubbleData dataWithText:content date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
         }
