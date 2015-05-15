@@ -9,12 +9,31 @@
 import UIKit
 
 class LocationMessage: BaseMessage {
-    var longitude: Double = 0
-    var latitude: Double = 0
+    var longitude: Float = 0
+    var latitude: Float = 0
     var address: String = ""
     
     override init() {
         super.init()
-        messageType = .TextMessageType
+        messageType = .LocationMessageType
+    }
+    
+    override func fillContentWithContent(contents: String) {
+        var imageDic = super.jsonObjcWithString(contents)
+        self.fillContentWithContentDic(imageDic)
+    }
+    
+    override func fillContentWithContentDic(contentsDic: NSDictionary) {
+        if let lng = contentsDic.objectForKey("lng") as? Float {
+            longitude = lng
+        }
+        if let lat = contentsDic.objectForKey("lat") as? Float {
+            latitude = lat
+        }
+        if let name = contentsDic.objectForKey("name") as? String {
+            address = name
+        }
+
     }
 }
+

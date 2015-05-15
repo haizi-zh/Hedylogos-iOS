@@ -301,6 +301,9 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
                 
             case .LocationMessageType:
                 retMessage = LocationMessage()
+                var contents = rs.stringForColumn("Message")
+                retMessage?.fillContentWithContent(contents)
+                retMessage?.message = contents
             
             default:
                 break

@@ -104,7 +104,10 @@ class MessageManager: NSObject {
         
         switch message.messageType {
         case .LocationMessageType :
-            retDic .setValue("locationMessage", forKey: "contents")
+            var location = ["name": (message as! LocationMessage).address, "lng": (message as! LocationMessage).longitude, "lat": (message as! LocationMessage).latitude]
+            var contentStr = message.contentsStrWithJsonObjc(location)
+            retDic.setValue(contentStr, forKey: "contents")
+            
         case .TextMessageType :
             retDic.setValue(message.message, forKey: "contents")
             
@@ -155,6 +158,8 @@ class MessageManager: NSObject {
                     messageModel = AudioMessage()
                     messageModel?.metadataId = NSUUID().UUIDString
 
+                case .LocationMessageType:
+                    messageModel = LocationMessage()
                 default :
                     break
                 }
@@ -180,6 +185,7 @@ class MessageManager: NSObject {
                 if let messageId = messageDic.objectForKey("id") as? String {
                     messageModel?.messageId = messageId
                 }
+                
             }
         } else {
             println(" ****解析消息出错******")

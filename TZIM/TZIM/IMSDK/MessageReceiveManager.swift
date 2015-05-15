@@ -227,7 +227,7 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                 if message.messageType == .ImageMessageType {
                     self.downloadPreviewImageAndDistribution(message as! ImageMessage)
                     
-                } else if message.messageType == .TextMessageType {
+                } else if message.messageType == .TextMessageType || message.messageType == .LocationMessageType {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
                             (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)

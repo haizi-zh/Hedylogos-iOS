@@ -23,6 +23,7 @@
 		D912452A1AFDB55900480181 /* IMGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245291AFDB55900480181 /* IMGroupManager.swift */; };
 		D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D912452B1AFDDA2800480181 /* GroupTableViewController.swift */; };
 		D91245371AFE0BBD00480181 /* IMGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245361AFE0BBD00480181 /* IMGroupModel.swift */; };
+		D91643B71B05BA4C00C56F12 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91643B61B05BA4C00C56F12 /* LocationModel.swift */; };
 		D921BFA31AEA20830054DD99 /* IMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D921BFA21AEA20830054DD99 /* IMConstants.swift */; };
 		D92439F81B00C28100A7AAA4 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92439F71B00C28100A7AAA4 /* AccountModel.swift */; };
 		D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8061AE25B2F00031C63 /* AppDelegate.swift */; };
@@ -127,6 +128,7 @@
 		D91245291AFDB55900480181 /* IMGroupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupManager.swift; sourceTree = "<group>"; };
 		D912452B1AFDDA2800480181 /* GroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewController.swift; sourceTree = "<group>"; };
 		D91245361AFE0BBD00480181 /* IMGroupModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupModel.swift; sourceTree = "<group>"; };
+		D91643B61B05BA4C00C56F12 /* LocationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
 		D921BFA21AEA20830054DD99 /* IMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMConstants.swift; sourceTree = "<group>"; };
 		D92439F71B00C28100A7AAA4 /* AccountModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		D92BF8011AE25B2F00031C63 /* TZIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TZIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -329,14 +331,55 @@
 			name = GroupManager;
 			sourceTree = "<group>";
 		};
-		D921BFA41AEA27590054DD99 /* Model */ = {
+		D91643B11B05B9E100C56F12 /* Location */ = {
 			isa = PBXGroup;
 			children = (
 				D92BF84D1AE25B5C00031C63 /* LocationMessage.swift */,
+				D91643B61B05BA4C00C56F12 /* LocationModel.swift */,
+			);
+			name = Location;
+			sourceTree = "<group>";
+		};
+		D91643B21B05BA1F00C56F12 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
 				D92BF8341AE25B5B00031C63 /* AudioMessage.swift */,
+			);
+			name = Audio;
+			sourceTree = "<group>";
+		};
+		D91643B31B05BA2900C56F12 /* Super */ = {
+			isa = PBXGroup;
+			children = (
 				D92BF8361AE25B5B00031C63 /* BaseMessage.swift */,
+			);
+			name = Super;
+			sourceTree = "<group>";
+		};
+		D91643B41B05BA3200C56F12 /* Image */ = {
+			isa = PBXGroup;
+			children = (
 				D92BF84C1AE25B5C00031C63 /* ImageMessage.swift */,
+			);
+			name = Image;
+			sourceTree = "<group>";
+		};
+		D91643B51B05BA3700C56F12 /* Text */ = {
+			isa = PBXGroup;
+			children = (
 				D908E9201AE8ECD100C984C7 /* TextMessage.swift */,
+			);
+			name = Text;
+			sourceTree = "<group>";
+		};
+		D921BFA41AEA27590054DD99 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D91643B11B05B9E100C56F12 /* Location */,
+				D91643B21B05BA1F00C56F12 /* Audio */,
+				D91643B31B05BA2900C56F12 /* Super */,
+				D91643B41B05BA3200C56F12 /* Image */,
+				D91643B51B05BA3700C56F12 /* Text */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -909,6 +952,7 @@
 				D92BF8701AE25B5C00031C63 /* ChatMessageDaoHelper.swift in Sources */,
 				D911377C1B019A8000B4A3A3 /* AccountDaoHelper.swift in Sources */,
 				D96393471AE79FE200725E4C /* ChatManagerMessage.swift in Sources */,
+				D91643B71B05BA4C00C56F12 /* LocationModel.swift in Sources */,
 				D9C932041AE6852C003FEBA3 /* FrendManager.swift in Sources */,
 				D966BAEB1AFB9C0B00FA53E7 /* ChatConversationManager.swift in Sources */,
 				D92BF8791AE25B5C00031C63 /* ImageMessage.swift in Sources */,

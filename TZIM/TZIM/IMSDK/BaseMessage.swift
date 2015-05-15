@@ -53,7 +53,7 @@ class BaseMessage: NSObject {
     }
     
     /**
-    初始化通过 contents 将具体消息的其他内容补充全
+    初始化通过 contents 将具体消息的其他内容补充全,  子类重写
     :param: contents
     */
     func fillContentWithContent(contents: String) {
@@ -61,7 +61,7 @@ class BaseMessage: NSObject {
     }
     
     /**
-    初始化通过 contents 将具体消息的其他内容补充全
+    初始化通过 contents 将具体消息的其他内容补充全， 子类重写
     :param: contents
     */
     func fillContentWithContentDic(contentsDic: NSDictionary) {

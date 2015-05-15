@@ -70,6 +70,23 @@ class MessageSendManager: MessageTransferManager {
         return textMessage
     }
     
+    func sendLocationMessage(location: LocationModel, receiver: Int, conversationId: String?) -> LocationMessage {
+        var locationMessage = LocationMessage()
+        locationMessage.latitude = location.latitude
+        locationMessage.longitude = location.longitude
+        locationMessage.address = location.address
+        locationMessage.chatterId = receiver
+        locationMessage.sendType = IMMessageSendType.MessageSendMine
+        locationMessage.conversationId = conversationId
+        
+        var daoHelper = DaoHelper.shareInstance()
+        daoHelper.insertChatMessage("chat_\(receiver)", message: locationMessage)
+        
+        sendMessage(locationMessage, receiver: receiver, conversationId: conversationId)
+
+        return locationMessage
+    }
+    
     /**
     发送一条图片消息
     
@@ -78,7 +95,7 @@ class MessageSendManager: MessageTransferManager {
     :param: image   发送的图片，必选
     :returns:
     */
-    func sendImageMessage(chatterId: Int, conversationId: String, image: UIImage, progress:(progressValue: Float) -> ()) -> ImageMessage {
+    func sendImageMessage(chatterId: Int, conversationId: String?, image: UIImage, progress:(progressValue: Float) -> ()) -> ImageMessage {
         var imageMessage = ImageMessage()
         imageMessage.chatterId = chatterId
         imageMessage.sendType = IMMessageSendType.MessageSendMine
@@ -105,7 +122,7 @@ class MessageSendManager: MessageTransferManager {
             (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(imageMessage)
         }
         
-        MetadataUploadManager.asyncRequestUploadToken2SendMessage(1, completionBlock: { (isSuccess, key, token) -> () in
+        MetadataUploadManager.asyncRequestUploadToken2SendMessage(QiniuGetTokeAction.uploadChatMetadata, completionBlock: { (isSuccess, key, token) -> () in
             if isSuccess {
                 MetadataUploadManager.uploadMetadata2Qiniu(imageMessage, token: token!, key: key!, metadata: imageData, progress: { (progressValue) -> () in
                     println("上传了: \(progressValue)")
@@ -141,7 +158,7 @@ class MessageSendManager: MessageTransferManager {
     :param: progress     发送进度的回调
     :returns:
     */
-    func sendAudioMessageWithWavFormat(chatterId: Int, conversationId: String, wavAudioPath: String, progress:(progressValue: Float) -> ()) -> AudioMessage {
+    func sendAudioMessageWithWavFormat(chatterId: Int, conversationId: String?, wavAudioPath: String, progress:(progressValue: Float) -> ()) -> AudioMessage {
         var audioMessage = AudioMessage()
         audioMessage.chatterId = chatterId
         audioMessage.sendType = IMMessageSendType.MessageSendMine
@@ -182,7 +199,7 @@ class MessageSendManager: MessageTransferManager {
         
         if let audioData = audioData {
         
-            MetadataUploadManager.asyncRequestUploadToken2SendMessage(1, completionBlock: { (isSuccess, key, token) -> () in
+            MetadataUploadManager.asyncRequestUploadToken2SendMessage(QiniuGetTokeAction.uploadChatMetadata, completionBlock: { (isSuccess, key, token) -> () in
                 if isSuccess {
                     MetadataUploadManager.uploadMetadata2Qiniu(audioMessage, token: token!, key: key!, metadata: audioData, progress: { (progressValue) -> () in
                         println("上传了: \(progressValue)")

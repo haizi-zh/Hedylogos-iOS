@@ -37,6 +37,10 @@ class MetaDataManager: NSObject {
     }
 }
 
+enum QiniuGetTokeAction: Int {
+    case uploadChatMetadata = 1
+}
+
 class MetadataUploadManager: NSObject {
     
     /**
@@ -44,7 +48,7 @@ class MetadataUploadManager: NSObject {
     
     :param: completionBlock 获取完后的回调
     */
-    class func asyncRequestUploadToken2SendMessage(actionCode: Int, completionBlock: (isSuccess: Bool, key: String?, token: String?) -> ()) {
+    class func asyncRequestUploadToken2SendMessage(actionCode: QiniuGetTokeAction, completionBlock: (isSuccess: Bool, key: String?, token: String?) -> ()) {
         let manager = AFHTTPRequestOperationManager()
         
         let requestSerializer = AFJSONRequestSerializer()
@@ -54,7 +58,7 @@ class MetadataUploadManager: NSObject {
         manager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
         manager.requestSerializer.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
-        manager.POST(requestQiniuTokenToUploadMetadata, parameters: ["action": actionCode], success:
+        manager.POST(requestQiniuTokenToUploadMetadata, parameters: ["action": actionCode.rawValue], success:
             {
                 (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
                 if let reslutDic = responseObject.objectForKey("result") as? NSDictionary {

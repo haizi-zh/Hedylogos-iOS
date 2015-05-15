@@ -158,7 +158,17 @@ static NSString *messageCellIdentifier = @"messageCell";
             
             playBtn.tag = _chatDataSource.count;
             [playBtn addTarget:self action:@selector(playAudio:) forControlEvents:UIControlEventTouchUpInside];
-        }
+            
+        } else if (message.messageType == IMMessageTypeLocationMessageType) {
+                UIButton *locationBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 250, 40)];
+                locationBtn.titleLabel.font = [UIFont systemFontOfSize:12.0];
+                
+                locationBtn.backgroundColor = [UIColor greenColor];
+                [locationBtn setTitle:[NSString stringWithFormat:@"addr: %@  lat：%f lng: %f",((LocationMessage *)message).address, ((LocationMessage *)message).latitude, ((LocationMessage *)message).longitude] forState:UIControlStateNormal];
+                [locationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                bubbleData  = [NSBubbleData dataWithView:locationBtn date:[NSDate date] type:BubbleTypeMine insets:UIEdgeInsetsZero];
+                locationBtn.tag = _chatDataSource.count;
+            }
         
     } else {
         if (message.messageType == IMMessageTypeImageMessageType) {
@@ -181,7 +191,18 @@ static NSString *messageCellIdentifier = @"messageCell";
             bubbleData  = [NSBubbleData dataWithView:playBtn date:[NSDate date] type:BubbleTypeSomeoneElse insets:UIEdgeInsetsZero];
             playBtn.tag = _chatDataSource.count;
             [playBtn addTarget:self action:@selector(playAudio:) forControlEvents:UIControlEventTouchUpInside];
+            
+        } else if (message.messageType == IMMessageTypeLocationMessageType) {
+            UIButton *locationBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 250, 40)];
+            locationBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
+            
+            locationBtn.backgroundColor = [UIColor greenColor];
+            [locationBtn setTitle:[NSString stringWithFormat:@"addr: %@  lat：%f lng: %f",((LocationMessage *)message).address, ((LocationMessage *)message).latitude, ((LocationMessage *)message).longitude] forState:UIControlStateNormal];
+            [locationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            bubbleData  = [NSBubbleData dataWithView:locationBtn date:[NSDate date] type:BubbleTypeSomeoneElse insets:UIEdgeInsetsZero];
+            locationBtn.tag = _chatDataSource.count;
         }
+
     }
     return bubbleData;
     
@@ -328,6 +349,16 @@ static NSString *messageCellIdentifier = @"messageCell";
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
     [self presentViewController:picker animated:YES completion:nil];
+}
+- (IBAction)sendLocation:(id)sender {
+    IMClientManager *imClientManager = [IMClientManager shareInstance];
+    LocationModel *model = [[LocationModel alloc] init];
+    model.longitude = 116.24;
+    model.latitude = 39.28;
+    model.address = @"北京";
+    BaseMessage *message = [imClientManager.messageSendManager sendLocationMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    [_messageToSend setText:@""];
+    [self addMessageToDataSource:message];
 }
 
 - (void)audioRecordEnd:(NSString * __nonnull)audioPath
