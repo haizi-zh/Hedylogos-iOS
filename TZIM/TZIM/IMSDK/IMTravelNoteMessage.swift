@@ -14,6 +14,7 @@ class IMTravelNoteMessage: BaseMessage {
     var name: String?
     var image: String?
     var desc: String?
+    var detailUrl: String?
     
     override init() {
         super.init()
@@ -37,6 +38,9 @@ class IMTravelNoteMessage: BaseMessage {
         }
         if let desc = contentsDic.objectForKey("desc") as? String {
             self.desc = desc
+        }
+        if let url = contentsDic.objectForKey("detailUrl") as? String {
+            self.detailUrl = url
         }
     }
 

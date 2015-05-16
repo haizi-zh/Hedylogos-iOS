@@ -26,7 +26,7 @@ class IMPoiModel: NSObject {
     var image: String?
     var address: String?
     var rating: String?
-    var url: String?
+    var detailUrl: String?
     var price: String?
     var timeCost: String?
     
@@ -57,8 +57,8 @@ class IMPoiModel: NSObject {
             contentDic.setObject(rating, forKey: "rating")
 
         }
-        if let url = url {
-            contentDic.setObject(url, forKey: "url")
+        if let url = detailUrl {
+            contentDic.setObject(url, forKey: "detailUrl")
 
         }
         if let price = price {

@@ -168,6 +168,7 @@ class MessageManager: NSObject {
             travelNoteMsg.name = poiModel.poiName
             travelNoteMsg.image = poiModel.image
             travelNoteMsg.desc = poiModel.desc
+            travelNoteMsg.detailUrl = poiModel.detailUrl
             message = travelNoteMsg
 
         case IMPoiType.Restaurant:
