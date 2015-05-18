@@ -271,6 +271,14 @@ public class DaoHelper:NSObject {
             self.conversationHelper.updateTimestampInConversation(timeStamp, userId: userId)
         })
     }
+    
+    func updateConversationIdInConversation(conversationId: String, userId: Int) {
+        dispatch_async(databaseWriteQueue, { () -> Void in
+            self.conversationHelper.updateConversationIdInConversation(conversationId, userId: userId)
+        })
+
+    }
+
 
     
 }

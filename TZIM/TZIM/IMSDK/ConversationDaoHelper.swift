@@ -49,6 +49,15 @@ protocol ConversationDaoProtocol {
     :param: userId    
     */
     func updateTimestampInConversation(timeStamp: Int, userId: Int)
+    
+    
+    /**
+    更新会话的会话 id
+    
+    :param: conversationId
+    :param: userId         
+    */
+    func updateConversationIdInConversation(conversationId: String, userId: Int)
 
 }
 
@@ -179,6 +188,20 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
         }
     }
 
+    func updateConversationIdInConversation(conversationId: String, userId: Int) {
+        databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
+            var sql = "update \(conversationTableName) set ConversationId = ? where UserId = ?"
+            println("执行 updateConversationIdInConversation userId: \(userId)")
+            var array = [conversationId, userId]
+            if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
+                println("success 执行 sql 语句：\(sql)")
+                
+            } else {
+                println("error 执行 sql 语句：\(sql)")
+            }
+        }
+    }
+    
     func removeConversationfromDB(chatterId: Int) {
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 

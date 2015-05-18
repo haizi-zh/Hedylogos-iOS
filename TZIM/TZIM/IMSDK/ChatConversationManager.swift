@@ -185,6 +185,11 @@ class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
             if !conversation.isCurrentConversation {
                 conversation.unReadMessageCount++
             }
+            if conversation.conversationId == nil {
+                conversation.conversationId = message.conversationId
+                var daoHelper = DaoHelper.shareInstance()
+                daoHelper.updateConversationIdInConversation(conversation.conversationId!, userId: conversation.chatterId)
+            }
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 delegate?.conversationStatusHasChanged(conversation)
             })
