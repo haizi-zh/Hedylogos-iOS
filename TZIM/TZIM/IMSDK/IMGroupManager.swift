@@ -44,8 +44,6 @@ class IMGroupManager: NSObject {
         }
     }
     
-
-    
     func asyncLoadAllMyGroupsFromServer(completionBlock: (isSuccess: Bool, errorCode: Int, groupList: Array<IMGroupModel>) -> ()) {
         let groupListUrl = "\(userUrl)/\(AccountManager.shareInstance().account.userId)/groups"
         NetworkTransportAPI.asyncGET(requestUrl: groupListUrl, parameters: nil) { (isSuccess, errorCode, retMessage) -> () in

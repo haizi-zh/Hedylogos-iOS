@@ -14,6 +14,8 @@ class IMDiscussionGroup: NSObject {
     var subject: String!
     
     init(jsonData: NSDictionary) {
+        groupId = jsonData.objectForKey("groupId") as! Int
+        subject = jsonData.objectForKey("name") as! String
     }
 
 }

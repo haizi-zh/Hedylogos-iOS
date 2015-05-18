@@ -20,13 +20,13 @@ class MessageSendManager: MessageTransferManager {
     
 //MARK: private methods
     
-    private func sendMessage(message: BaseMessage, receiver: Int, conversationId: String?) {
+    private func sendMessage(message: BaseMessage, receiver: Int, chatType:IMChatType, conversationId: String?) {
         var daoHelper = DaoHelper.shareInstance()
         for messageManagerDelegate in super.messageTransferManagerDelegateArray {
             (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(message)
         }
         var accountManager = AccountManager.shareInstance()
-        NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.account.userId, message: message), completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
+        NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.account.userId, conversationId: conversationId, chatType: chatType, message: message), completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
             if isSuccess {
                 message.status = IMMessageStatus.IMMessageSuccessful
                 if let retMessage = retMessage {
@@ -54,7 +54,7 @@ class MessageSendManager: MessageTransferManager {
     :param: message     消息的内容
     :returns: 被发送的 message
     */
-    func sendTextMessage(message: String, receiver: Int, conversationId: String?) -> BaseMessage {
+    func sendTextMessage(message: String, receiver: Int, chatType:IMChatType, conversationId: String?) -> BaseMessage {
         var textMessage = TextMessage()
         textMessage.createTime = Int(NSDate().timeIntervalSince1970)
         textMessage.status = IMMessageStatus.IMMessageSending
@@ -66,11 +66,11 @@ class MessageSendManager: MessageTransferManager {
         var daoHelper = DaoHelper.shareInstance()
         daoHelper.insertChatMessage("chat_\(receiver)", message: textMessage)
         
-        sendMessage(textMessage, receiver: receiver, conversationId: conversationId)
+        sendMessage(textMessage, receiver: receiver, chatType: chatType, conversationId: conversationId)
         return textMessage
     }
     
-    func sendLocationMessage(location: LocationModel, receiver: Int, conversationId: String?) -> BaseMessage {
+    func sendLocationMessage(location: LocationModel, receiver: Int, chatType:IMChatType, conversationId: String?) -> BaseMessage {
         var locationMessage = LocationMessage()
         locationMessage.latitude = location.latitude
         locationMessage.longitude = location.longitude
@@ -82,19 +82,19 @@ class MessageSendManager: MessageTransferManager {
         var daoHelper = DaoHelper.shareInstance()
         daoHelper.insertChatMessage("chat_\(receiver)", message: locationMessage)
         
-        sendMessage(locationMessage, receiver: receiver, conversationId: conversationId)
+        sendMessage(locationMessage, receiver: receiver, chatType: chatType, conversationId: conversationId)
 
         return locationMessage
     }
     
-    func sendPoiMessage(poiModel: IMPoiModel, receiver: Int, conversationId: String?) -> BaseMessage {
+    func sendPoiMessage(poiModel: IMPoiModel, receiver: Int, chatType: IMChatType, conversationId: String?) -> BaseMessage {
         let message = MessageManager.messageModelWithPoiModel(poiModel)
         message.chatterId = receiver
         message.sendType = IMMessageSendType.MessageSendMine
         message.conversationId = conversationId
         var daoHelper = DaoHelper.shareInstance()
         daoHelper.insertChatMessage("chat_\(receiver)", message: message)
-        sendMessage(message, receiver: receiver, conversationId: conversationId)
+        sendMessage(message, receiver: receiver, chatType: chatType, conversationId: conversationId)
         
         return message
     }
@@ -107,7 +107,7 @@ class MessageSendManager: MessageTransferManager {
     :param: image   发送的图片，必选
     :returns:
     */
-    func sendImageMessage(chatterId: Int, conversationId: String?, image: UIImage, progress:(progressValue: Float) -> ()) -> BaseMessage {
+    func sendImageMessage(chatterId: Int, conversationId: String?, image: UIImage, chatType: IMChatType, progress:(progressValue: Float) -> ()) -> BaseMessage {
         var imageMessage = ImageMessage()
         imageMessage.chatterId = chatterId
         imageMessage.sendType = IMMessageSendType.MessageSendMine
@@ -170,7 +170,7 @@ class MessageSendManager: MessageTransferManager {
     :param: progress     发送进度的回调
     :returns:
     */
-    func sendAudioMessageWithWavFormat(chatterId: Int, conversationId: String?, wavAudioPath: String, progress:(progressValue: Float) -> ()) -> BaseMessage {
+    func sendAudioMessageWithWavFormat(chatterId: Int, conversationId: String?, wavAudioPath: String, chatType:IMChatType, progress:(progressValue: Float) -> ()) -> BaseMessage {
         var audioMessage = AudioMessage()
         audioMessage.chatterId = chatterId
         audioMessage.sendType = IMMessageSendType.MessageSendMine

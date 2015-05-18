@@ -66,6 +66,27 @@ class IMDiscussionGroupManager: NSObject {
     }
     
     /**
+    获取我所有的讨论组
+    
+    :param: completionBlock 
+    */
+    func asyncLoadAllMyDiscussionGroupsFromServer(completionBlock: (isSuccess: Bool, errorCode: Int, groupList: Array<IMDiscussionGroup>) -> ()) {
+        let groupListUrl = "\(userUrl)/\(AccountManager.shareInstance().account.userId)/groups"
+        NetworkTransportAPI.asyncGET(requestUrl: groupListUrl, parameters: nil) { (isSuccess, errorCode, retMessage) -> () in
+            var groupList = Array<IMDiscussionGroup>()
+            if let retData = retMessage as? NSArray {
+                for groupData in retData  {
+                    var group = IMDiscussionGroup(jsonData: groupData as! NSDictionary)
+                    groupList.append(group)
+                    var frendManager = FrendManager()
+                    frendManager.addFrend2DB(self.convertDiscussionGroupModel2FrendModel(group))
+                }
+            }
+            completionBlock(isSuccess: isSuccess, errorCode: errorCode, groupList: groupList)
+        }
+    }
+    
+    /**
     申请加入讨论组
     
     :param: groupId

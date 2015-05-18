@@ -19,10 +19,10 @@ class GroupTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         var groupManager = IMDiscussionGroupManager.shareInstance()
-//        groupManager.asyncLoadAllMyGroupsFromServer({ (isSuccess, errorCode, groupList) -> () in
-//            self.dataSource = groupList
-//            self.tableView.reloadData()
-//        })
+        groupManager.asyncLoadAllMyDiscussionGroupsFromServer({ (isSuccess, errorCode, groupList) -> () in
+            self.dataSource = groupList
+            self.tableView.reloadData()
+        })
     }
 
     @IBAction func addGroup(sender: AnyObject) {
@@ -61,6 +61,17 @@ class GroupTableViewController: UITableViewController {
         cell.textLabel?.text = "\(group.groupId)"
 
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var manager = IMClientManager.shareInstance()
+        var conversation = manager.conversationManager.getConversationWithChatterId(dataSource[indexPath.row].groupId)
+        manager.conversationManager.addConversation(conversation)
+        conversation.chatterId = dataSource[indexPath.row].groupId
+        conversation.chatType = IMChatType.IMChatDiscussionGroupType
+        var viewController = ChatViewController()
+        viewController.conversation = conversation
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 

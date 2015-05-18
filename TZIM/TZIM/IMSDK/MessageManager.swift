@@ -90,17 +90,28 @@ class MessageManager: NSObject {
     :param: message
     :returns:
     */
-    class func prepareMessage2Send(#receiverId: Int, senderId: Int, message:BaseMessage) ->  NSDictionary {
+    class func prepareMessage2Send(#receiverId: Int, senderId: Int, conversationId: String?, chatType: IMChatType, message:BaseMessage) ->  NSDictionary {
         var retDic = NSMutableDictionary()
         retDic.setValue(message.messageType.rawValue, forKey: "msgType")
         retDic.setValue(senderId, forKey: "sender")
         retDic.setValue(message.message, forKey: "contents")
-        if let conversationId = message.conversationId {
+        if let conversationId = conversationId {
             retDic.setValue(conversationId, forKey: "conversation")
-        } else {
+            
+        } else if chatType == IMChatType.IMChatSingleType {
             retDic.setValue(receiverId, forKey: "receiver")
+            
+        } else {
+            retDic.setValue(receiverId, forKey: "receiverGroup")
         }
         
+        if chatType == IMChatType.IMChatSingleType {
+            retDic.setValue("single", forKey: "chatType")
+            
+            } else {
+            retDic.setValue("group", forKey: "chatType")
+        }
+    
         switch message.messageType {
         case .LocationMessageType :
             var location = ["name": (message as! LocationMessage).address, "lng": (message as! LocationMessage).longitude, "lat": (message as! LocationMessage).latitude]

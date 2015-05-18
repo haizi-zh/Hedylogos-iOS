@@ -387,7 +387,8 @@ static NSString *messageCellIdentifier = @"messageCell";
     NSLog(@"%lf", [[NSDate date] timeIntervalSince1970]);
        
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-    BaseMessage *message = [imClientManager.messageSendManager sendTextMessage:_messageToSend.text receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    
+    BaseMessage *message = [imClientManager.messageSendManager sendTextMessage:_messageToSend.text receiver:_conversation.chatterId chatType:_conversation.chatType conversationId:_conversation.conversationId];
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 }
@@ -414,7 +415,8 @@ static NSString *messageCellIdentifier = @"messageCell";
     model.longitude = 116.24;
     model.latitude = 39.28;
     model.address = @"北京";
-    BaseMessage *message = [imClientManager.messageSendManager sendLocationMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    
+    BaseMessage *message = [imClientManager.messageSendManager sendLocationMessage:model receiver:_conversation.chatterId chatType:_conversation.chatType conversationId:_conversation.conversationId];
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 }
@@ -426,7 +428,8 @@ static NSString *messageCellIdentifier = @"messageCell";
     model.image = @"http://imageurl....";
     IMClientManager *imClientManager = [IMClientManager shareInstance];
 
-    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId chatType:_conversation.chatType conversationId:_conversation.conversationId];
+    
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 
@@ -439,7 +442,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     model.image = @"http://imageurl....";
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     
-    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId chatType:_conversation.chatType conversationId:_conversation.conversationId];
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 }
@@ -451,7 +454,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     model.image = @"http://imageurl....";
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     
-    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId chatType:_conversation.chatType conversationId:_conversation.conversationId];
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 }
@@ -463,7 +466,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     model.image = @"http://imageurl....";
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     
-    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId chatType:_conversation.chatType conversationId:_conversation.conversationId];
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 }
@@ -476,7 +479,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     model.image = @"http://imageurl....";
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     
-    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId chatType:_conversation.chatType conversationId:_conversation.conversationId];
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 }
@@ -489,7 +492,7 @@ static NSString *messageCellIdentifier = @"messageCell";
     model.image = @"http://imageurl....";
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     
-    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId conversationId:_conversation.conversationId];
+    BaseMessage *message = [imClientManager.messageSendManager sendPoiMessage:model receiver:_conversation.chatterId chatType:_conversation.chatType conversationId:_conversation.conversationId];
     [_messageToSend setText:@""];
     [self addMessageToDataSource:message];
 }
@@ -497,7 +500,7 @@ static NSString *messageCellIdentifier = @"messageCell";
 - (void)audioRecordEnd:(NSString * __nonnull)audioPath
 {
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-    BaseMessage *audioMessage = [imClientManager.messageSendManager sendAudioMessageWithWavFormat:_conversation.chatterId conversationId:_conversation.conversationId wavAudioPath:audioPath progress:^(float progress) {
+    BaseMessage *audioMessage = [imClientManager.messageSendManager sendAudioMessageWithWavFormat:_conversation.chatterId conversationId:_conversation.conversationId wavAudioPath:audioPath chatType:_conversation.chatType progress:^(float progress) {
         
     }];
     
@@ -522,12 +525,12 @@ static NSString *messageCellIdentifier = @"messageCell";
     UIImage *headerImage = [info objectForKey:UIImagePickerControllerEditedImage];
     IMClientManager *imClientManager = [IMClientManager shareInstance];
     
-    ImageMessage *image = [imClientManager.messageSendManager sendImageMessage:_conversation.chatterId conversationId:_conversation.conversationId image:headerImage progress:^(float progressValue) {
+    BaseMessage *imageMessage = [imClientManager.messageSendManager sendImageMessage:_conversation.chatterId conversationId:_conversation.conversationId image:headerImage chatType:_conversation.chatType progress:^(float progressValue) {
         
     }];
     
     NSLog(@"info: %@", info);
-    [self addMessageToDataSource:image];
+    [self addMessageToDataSource:imageMessage];
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
