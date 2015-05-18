@@ -10,5 +10,10 @@ import UIKit
 
 class IMDiscussionGroup: NSObject {
     
-   
+    var groupId: Int!
+    var subject: String!
+    
+    init(jsonData: NSDictionary) {
+    }
+
 }

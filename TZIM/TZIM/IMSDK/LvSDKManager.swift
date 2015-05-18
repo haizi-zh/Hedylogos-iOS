@@ -22,7 +22,6 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
     var messageReceiveManager: MessageReceiveManager!
     var messageSendManager: MessageSendManager!
     var conversationManager: ChatConversationManager!
-    var groupManager: IMGroupManager!
     
     weak var delegate: IMClientDelegate?
     
@@ -51,7 +50,6 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
             
             self.messageReceiveManager = MessageReceiveManager.shareInstance()
             self.messageSendManager = MessageSendManager.shareInstance()
-            self.groupManager = IMGroupManager()
             self.conversationManager = ChatConversationManager()
             self.addMessageDelegate(conversationManager)
             self.messageReceiveManager.ACKMessageWithReceivedMessages(nil)

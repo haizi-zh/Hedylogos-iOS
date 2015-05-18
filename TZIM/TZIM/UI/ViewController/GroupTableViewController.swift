@@ -10,7 +10,7 @@ import UIKit
 
 class GroupTableViewController: UITableViewController {
     
-    var dataSource :Array<IMGroupModel> = Array()
+    var dataSource :Array<IMDiscussionGroup> = Array()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,19 +18,27 @@ class GroupTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        var imClient = IMClientManager.shareInstance()
-        imClient.groupManager.asyncLoadAllMyGroupsFromServer({ (isSuccess, errorCode, groupList) -> () in
-            self.dataSource = groupList
-            self.tableView.reloadData()
-        })
+        var groupManager = IMDiscussionGroupManager.shareInstance()
+//        groupManager.asyncLoadAllMyGroupsFromServer({ (isSuccess, errorCode, groupList) -> () in
+//            self.dataSource = groupList
+//            self.tableView.reloadData()
+//        })
     }
 
     @IBAction func addGroup(sender: AnyObject) {
         var imClient = IMClientManager.shareInstance()
         SVProgressHUD.show()
-        imClient.groupManager.asyncCreateGroup(subject: "第一个群组", description: "大家好", isPublic: true, invitees: [100001, 100002], welcomeMessage: "大家好") { (isSuccess, errorCode, retMessage) -> () in
-            SVProgressHUD.dismiss()
+        var groupManager = IMDiscussionGroupManager.shareInstance()
+       groupManager.asyncCreateDiscussionGroup([100001, 100002], completionBlock: { (isSuccess, errorCode, discussionGroup) -> () in
+        if isSuccess {
+            SVProgressHUD.showSuccessWithStatus("新建成功")
+            self.dataSource.append(discussionGroup!)
+            self.tableView.reloadData()
+        } else {
+            SVProgressHUD.showErrorWithStatus("新建失败")
         }
+        
+       })
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,7 +59,6 @@ class GroupTableViewController: UITableViewController {
         var group = dataSource[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.text = "\(group.groupId)"
-        cell.detailTextLabel?.text = "\(group.subject)  \(group.conversationId)"
 
         return cell
     }

@@ -10,10 +10,41 @@ import UIKit
 
 let groupUrl = "http://hedy.zephyre.me/groups"
 
+let groupManager = IMGroupManager()
 
 class IMGroupManager: NSObject {
+    private var delegateQueue: Array<IMGroupManager> = Array()
     
 //MARK: public function
+    
+    class func shareInstance() -> IMGroupManager {
+        return groupManager
+    }
+    
+    /**
+    添加一个讨论组的 delegate
+    
+    :param: delegate
+    */
+    func addDelegate(delegate: IMGroupManager) {
+        delegateQueue.append(delegate)
+    }
+    
+    /**
+    删除一个讨论组的 delegate
+    
+    :param: delegate
+    */
+    func removeDelegate(delegate: IMGroupManager) {
+        for (index, value) in enumerate(delegateQueue) {
+            if value === delegate {
+                delegateQueue.removeAtIndex(index)
+                return
+            }
+        }
+    }
+    
+
     
     func asyncLoadAllMyGroupsFromServer(completionBlock: (isSuccess: Bool, errorCode: Int, groupList: Array<IMGroupModel>) -> ()) {
         let groupListUrl = "\(userUrl)/\(AccountManager.shareInstance().account.userId)/groups"

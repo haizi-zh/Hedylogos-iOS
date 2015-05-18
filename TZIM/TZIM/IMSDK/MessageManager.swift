@@ -59,7 +59,6 @@ class MessageManager: NSObject {
         }
     }
     
-    
     func ackMessageWhenTimeout() {
         self.shouldACK()
     }
@@ -205,6 +204,7 @@ class MessageManager: NSObject {
             message = BaseMessage()
 
         }
+        
         if let content = poiModel.getContentStr() {
             message.message = content as String
         }
