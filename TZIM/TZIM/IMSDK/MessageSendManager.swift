@@ -231,6 +231,7 @@ class MessageSendManager: MessageTransferManager {
                                         MessageManager.shareInsatance().updateLastServerMessage(audioMessage)
                                     }
                                 }
+                                
                             } else {
                                 audioMessage.status = IMMessageStatus.IMMessageFailed
                             }

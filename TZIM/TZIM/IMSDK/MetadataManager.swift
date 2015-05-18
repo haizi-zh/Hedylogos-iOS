@@ -96,22 +96,16 @@ class MetadataUploadManager: NSObject {
         
         if let conversationId = conversationId {
             params.setValue(conversationId, forKey: "conversation")
-            
-        } else if chatType == IMChatType.IMChatSingleType {
-            params.setObject("\(metadataMessage.chatterId)", forKey: "x:receiver")
-            
-        } else {
-            params.setObject("\(metadataMessage.chatterId)", forKey: "x:receiverGroup")
-
         }
+        params.setValue(metadataMessage.chatterId, forKey: "receiver")
         
         if chatType == IMChatType.IMChatSingleType {
-            params.setValue("single", forKey: "x:chatType")
+            params.setValue("single", forKey: "chatType")
             
         } else {
-            params.setValue("group", forKey: "x:chatType")
+            params.setValue("group", forKey: "chatType")
         }
-
+        
         var opt = QNUploadOption(mime: "text/plain", progressHandler: { (key: String!, progressValue: Float) -> Void in
             progress(progressValue: progressValue)
             }, params: params as [NSObject : AnyObject], checkCrc: true, cancellationSignal: nil)

@@ -97,13 +97,8 @@ class MessageManager: NSObject {
         retDic.setValue(message.message, forKey: "contents")
         if let conversationId = conversationId {
             retDic.setValue(conversationId, forKey: "conversation")
-            
-        } else if chatType == IMChatType.IMChatSingleType {
-            retDic.setValue(receiverId, forKey: "receiver")
-            
-        } else {
-            retDic.setValue(receiverId, forKey: "receiverGroup")
         }
+        retDic.setValue(receiverId, forKey: "receiver")
         
         if chatType == IMChatType.IMChatSingleType {
             retDic.setValue("single", forKey: "chatType")
