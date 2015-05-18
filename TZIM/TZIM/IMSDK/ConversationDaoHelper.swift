@@ -111,7 +111,7 @@ class ConversationDaoHelper: BaseDaoHelper, ConversationDaoProtocol {
     func createConversationsTable() {
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
 
-            var sql = "create table '\(conversationTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, LastUpdateTime INTEGER, ConversationId INTEGER, UnreadMessageCount INTEGER)"
+            var sql = "create table '\(conversationTableName)' (UserId INTEGER PRIMARY KEY NOT NULL, LastUpdateTime INTEGER, ConversationId String, UnreadMessageCount INTEGER)"
             
             if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
                 println("success 执行 sql 语句：\(sql)")
