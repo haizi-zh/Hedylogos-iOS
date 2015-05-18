@@ -136,7 +136,7 @@ class MessageSendManager: MessageTransferManager {
         
         MetadataUploadManager.asyncRequestUploadToken2SendMessage(QiniuGetTokeAction.uploadChatMetadata, completionBlock: { (isSuccess, key, token) -> () in
             if isSuccess {
-                MetadataUploadManager.uploadMetadata2Qiniu(imageMessage, token: token!, key: key!, metadata: imageData, progress: { (progressValue) -> () in
+                MetadataUploadManager.uploadMetadata2Qiniu(imageMessage, token: token!, key: key!, metadata: imageData, chatType:chatType, conversationId: conversationId, progress: { (progressValue) -> () in
                     println("上传了: \(progressValue)")
                     })
                     { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
@@ -213,7 +213,7 @@ class MessageSendManager: MessageTransferManager {
         
             MetadataUploadManager.asyncRequestUploadToken2SendMessage(QiniuGetTokeAction.uploadChatMetadata, completionBlock: { (isSuccess, key, token) -> () in
                 if isSuccess {
-                    MetadataUploadManager.uploadMetadata2Qiniu(audioMessage, token: token!, key: key!, metadata: audioData, progress: { (progressValue) -> () in
+                    MetadataUploadManager.uploadMetadata2Qiniu(audioMessage, token: token!, key: key!, metadata: audioData, chatType:chatType, conversationId:conversationId, progress: { (progressValue) -> () in
                         println("上传了: \(progressValue)")
                         })
                         { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in

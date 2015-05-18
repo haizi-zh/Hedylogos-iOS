@@ -87,14 +87,31 @@ class MetadataUploadManager: NSObject {
     :param: progress        上传进度回调
     :param: completion      完成回调
     */
-    class func uploadMetadata2Qiniu(metadataMessage: BaseMessage, token: String, key: String, metadata: NSData, progress: (progressValue: Float) -> (), completion:(isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> ()) {
+    class func uploadMetadata2Qiniu(metadataMessage: BaseMessage, token: String, key: String, metadata: NSData, chatType: IMChatType, conversationId: String?, progress: (progressValue: Float) -> (), completion:(isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> ()) {
         var uploadManager = QNUploadManager()
         
         var params = NSMutableDictionary()
-        params.setObject("\(metadataMessage.chatterId)", forKey: "x:receiver")
         params.setObject("\(AccountManager.shareInstance().account.userId)", forKey: "x:sender")
         params.setObject("\(metadataMessage.messageType.rawValue)", forKey: "x:msgType")
         
+        if let conversationId = conversationId {
+            params.setValue(conversationId, forKey: "conversation")
+            
+        } else if chatType == IMChatType.IMChatSingleType {
+            params.setObject("\(metadataMessage.chatterId)", forKey: "x:receiver")
+            
+        } else {
+            params.setObject("\(metadataMessage.chatterId)", forKey: "x:receiverGroup")
+
+        }
+        
+        if chatType == IMChatType.IMChatSingleType {
+            params.setValue("single", forKey: "x:chatType")
+            
+        } else {
+            params.setValue("group", forKey: "x:chatType")
+        }
+
         var opt = QNUploadOption(mime: "text/plain", progressHandler: { (key: String!, progressValue: Float) -> Void in
             progress(progressValue: progressValue)
             }, params: params as [NSObject : AnyObject], checkCrc: true, cancellationSignal: nil)
