@@ -29,7 +29,7 @@ class GroupTableViewController: UITableViewController {
         var imClient = IMClientManager.shareInstance()
         SVProgressHUD.show()
         var groupManager = IMDiscussionGroupManager.shareInstance()
-       groupManager.asyncCreateDiscussionGroup([100001, 100002], completionBlock: { (isSuccess, errorCode, discussionGroup) -> () in
+       groupManager.asyncCreateDiscussionGroup([100001,100002,100003,100004,100014, 100015], completionBlock: { (isSuccess, errorCode, discussionGroup) -> () in
         if isSuccess {
             SVProgressHUD.showSuccessWithStatus("新建成功")
             self.dataSource.append(discussionGroup!)

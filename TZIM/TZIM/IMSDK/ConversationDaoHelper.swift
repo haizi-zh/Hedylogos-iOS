@@ -28,6 +28,7 @@ protocol ConversationDaoProtocol {
     :returns:
     */
     func getAllCoversation() -> Array<ChatConversation>
+    
     /**
     移除一个 conversation
     :param: chatterId 需要移除的 ID
@@ -49,7 +50,6 @@ protocol ConversationDaoProtocol {
     :param: userId    
     */
     func updateTimestampInConversation(timeStamp: Int, userId: Int)
-    
     
     /**
     更新会话的会话 id

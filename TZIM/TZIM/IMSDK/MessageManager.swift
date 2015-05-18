@@ -278,9 +278,16 @@ class MessageManager: NSObject {
                 messageModel!.conversationId = messageDic.objectForKey("conversation") as? String
                 messageModel!.createTime = messageDic.objectForKey("timestamp") as! Int
                 
-                if let senderId = messageDic.objectForKey("senderId") as? Int {
-                    messageModel!.chatterId = senderId
+                if let chatType = messageDic.objectForKey("chatType") as? String {
+                    if chatType == "single" {
+                        messageModel!.chatterId = messageDic.objectForKey("senderId") as! Int
+                        
+                    } else {
+                        messageModel!.chatterId = messageDic.objectForKey("groupId") as! Int
+                    }
                 }
+                messageModel!.senderId = messageDic.objectForKey("senderId") as! Int
+                
                 if let senderId = messageDic.objectForKey("msgId") as? Int {
                     messageModel!.serverId = senderId
                 }

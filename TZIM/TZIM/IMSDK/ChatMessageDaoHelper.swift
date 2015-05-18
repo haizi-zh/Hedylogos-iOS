@@ -88,7 +88,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
     func createChatTable(tableName: String) {
         
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
-            var sql = "create table '\(tableName)' (LocalId INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, ServerId INTEGER, Status int(4), Type int(4), Message TEXT, CreateTime INTEGER, SendType int, ChatterId int)"
+            var sql = "create table '\(tableName)' (LocalId INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, ServerId INTEGER, Status int(4), Type int(4), Message TEXT, CreateTime INTEGER, SendType int, SenderId int)"
             if (dataBase.executeUpdate(sql, withArgumentsInArray: nil)) {
                 println("success 执行 sql 语句：\(sql)")
             } else {
@@ -109,8 +109,8 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         
         databaseQueue.inDatabase { (dataBase: FMDatabase!) -> Void in
            
-            var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType, ChatterId) values (?,?,?,?,?,?,?)"
-            var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue, message.chatterId]
+            var sql = "insert into \(tableName) (ServerId, Status, Type, Message, CreateTime, SendType, SenderId) values (?,?,?,?,?,?,?)"
+            var array = [message.serverId, message.status.rawValue, message.messageType.rawValue, message.message, message.createTime, message.sendType.rawValue, message.senderId]
             if dataBase.executeUpdate(sql, withArgumentsInArray:array as [AnyObject]) {
                 message.localId = Int(dataBase.lastInsertRowId())
                 println("success 执行 sql 语句：\(sql) message:\(message.message)  serverId:\(message.serverId)")
@@ -246,7 +246,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
         for tableName in allTables {
             var message = self.selectLastServerMessage(tableName as! String)
             if let message = message {
-                retDic .setObject(message.serverId, forKey: message.chatterId)
+                retDic.setObject(message.serverId, forKey: message.chatterId)
             }
         }
         return retDic
@@ -308,7 +308,7 @@ class ChatMessageDaoHelper:BaseDaoHelper, ChatMessageDaoHelperProtocol{
             default:
                 break
             }
-            retMessage?.chatterId  = Int(rs.intForColumn("ChatterId"))
+            retMessage?.senderId  = Int(rs.intForColumn("SenderId"))
             retMessage?.sendType = IMMessageSendType(rawValue: Int(rs.intForColumn("SendType")))!
             retMessage?.createTime = Int(rs.intForColumn("CreateTime"))
             retMessage?.localId = Int(rs.intForColumn("LocalId"))
