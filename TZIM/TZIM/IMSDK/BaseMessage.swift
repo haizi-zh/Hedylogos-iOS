@@ -18,7 +18,7 @@ class BaseMessage: NSObject {
     var createTime: Int
     var sendType: IMMessageSendType
     var chatterId: Int   //与你对话的人，如果是单聊那么是用户 id 如果是群组的话那么是群组 id
-    var senderId: Int    //发送消息的人
+    var senderId: Int    //发送消息的人, 如果是单聊是用户 id， 如果是群聊，那么是发送消息的那个人的 id
     var messageSenderId: Int   //发送消息的人
     var metadataId: String?
     var chatType: IMChatType = IMChatType.IMChatSingleType

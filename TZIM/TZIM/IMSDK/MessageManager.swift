@@ -230,11 +230,14 @@ class MessageManager: NSObject {
         
             if let messageType = IMMessageType(rawValue: messageTypeInteger) {
                 switch messageType {
+                    
                 case .TextMessageType :
                     messageModel = TextMessage()
+                    
                 case .ImageMessageType :
                     messageModel = ImageMessage()
                     messageModel?.metadataId = NSUUID().UUIDString
+                    
                 case .AudioMessageType:
                     messageModel = AudioMessage()
                     messageModel?.metadataId = NSUUID().UUIDString
