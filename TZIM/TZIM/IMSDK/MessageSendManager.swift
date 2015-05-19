@@ -9,21 +9,64 @@
 import UIKit
 import AVFoundation
 
+@objc protocol MessageSendManagerDelegate {
+    
+    /**
+    发送新消息
+    :param: message
+    */
+    optional func sendNewMessage(message: BaseMessage)
+    
+    /**
+    发送的消息已经发送成功
+    :param: message 发送成功的消息
+    */
+    optional func messageHasSended(message: BaseMessage)
+}
+
+
 private let messageSendManager = MessageSendManager()
 
-class MessageSendManager: MessageTransferManager {
-    weak var messageManagerDelegate: MessageTransferManagerDelegate?
+class MessageSendManager: NSObject {
+    
+    private var sendDelegateList: Array<MessageSendManagerDelegate> = Array()
     
     class func shareInstance() -> MessageSendManager {
         return messageSendManager
     }
     
+    /**
+    注册消息的监听
+    
+    :param: monitor        监听的对象
+    :param: withRoutingKey 需要监听消息的key
+    */
+    func addMessageSendDelegate(listener: MessageSendManagerDelegate) {
+        sendDelegateList.append(listener)
+    }
+    
+    /**
+    移除消息的监听者
+    
+    :param: listener   监听对象
+    :param: routingKey 监听消息的 key
+    */
+    func removeMessageSendDelegate(listener: MessageSendManagerDelegate) {
+        for (index, value) in enumerate(sendDelegateList) {
+            if value === listener {
+                sendDelegateList.removeAtIndex(index)
+                return
+            }
+        }
+    }
+
+    
 //MARK: private methods
     
     private func sendMessage(message: BaseMessage, receiver: Int, chatType:IMChatType, conversationId: String?) {
         var daoHelper = DaoHelper.shareInstance()
-        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-            (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(message)
+        for messageManagerDelegate in self.sendDelegateList {
+            messageManagerDelegate.sendNewMessage?(message)
         }
         var accountManager = AccountManager.shareInstance()
         NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.account.userId, conversationId: conversationId, chatType: chatType, message: message), completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
@@ -39,8 +82,8 @@ class MessageSendManager: MessageTransferManager {
                 message.status = IMMessageStatus.IMMessageFailed
             }
             daoHelper.updateMessageInDB("chat_\(receiver)", message: message)
-            for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(message)
+            for messageManagerDelegate in self.sendDelegateList {
+                messageManagerDelegate.messageHasSended?(message)
             }
         })
     }
@@ -130,8 +173,8 @@ class MessageSendManager: MessageTransferManager {
         daoHelper.insertChatMessage("chat_\(chatterId)", message: imageMessage)
         NSLog("开始上传  图像为\(image)")
         
-        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-            (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(imageMessage)
+        for messageManagerDelegate in self.sendDelegateList {
+            messageManagerDelegate.sendNewMessage?(imageMessage)
         }
         
         MetadataUploadManager.asyncRequestUploadToken2SendMessage(QiniuGetTokeAction.uploadChatMetadata, completionBlock: { (isSuccess, key, token) -> () in
@@ -152,9 +195,11 @@ class MessageSendManager: MessageTransferManager {
                             imageMessage.status = IMMessageStatus.IMMessageFailed
                         }
                         daoHelper.updateMessageInDB("chat_\(imageMessage.chatterId)", message: imageMessage)
-                        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                            (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(imageMessage)
+                        for messageManagerDelegate in self.sendDelegateList {
+                            messageManagerDelegate.messageHasSended?(imageMessage)
                         }
+                        
+                        
                 }
             }
         })
@@ -203,8 +248,8 @@ class MessageSendManager: MessageTransferManager {
 
         daoHelper.insertChatMessage("chat_\(chatterId)", message: audioMessage)
         
-        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-            (messageManagerDelegate as! MessageTransferManagerDelegate).sendNewMessage?(audioMessage)
+        for messageManagerDelegate in self.sendDelegateList {
+            messageManagerDelegate.sendNewMessage?(audioMessage)
         }
         
         var audioData = NSData(contentsOfFile: tempAmrPath)
@@ -236,9 +281,10 @@ class MessageSendManager: MessageTransferManager {
                                 audioMessage.status = IMMessageStatus.IMMessageFailed
                             }
                             daoHelper.updateMessageInDB("chat_\(audioMessage.chatterId)", message: audioMessage)
-                            for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                                (messageManagerDelegate as! MessageTransferManagerDelegate).messageHasSended?(audioMessage)
+                            for messageManagerDelegate in self.sendDelegateList {
+                                messageManagerDelegate.messageHasSended?(audioMessage)
                             }
+
                     }
                 }
             })

@@ -10,7 +10,7 @@
 #import "ChatViewController.h"
 #import "TZIM-swift.h"
 
-@interface ConversationViewController () <MessageTransferManagerDelegate, ChatConversationManagerDelegate>
+@interface ConversationViewController () <ChatConversationManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
@@ -21,7 +21,6 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = YES;
     IMClientManager *imClientManager = [IMClientManager shareInstance];
-    [imClientManager addMessageDelegate:self];
     imClientManager.conversationManager.delegate = self;
     _dataSource = [[imClientManager.conversationManager getConversationList] mutableCopy];
     [self.tableView reloadData];

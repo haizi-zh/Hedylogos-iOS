@@ -30,7 +30,7 @@ import UIKit
     
 }
 
-class ChatConversationManager: NSObject, MessageTransferManagerDelegate {
+class ChatConversationManager: NSObject, MessageReceiveManagerDelegate, MessageSendManagerDelegate {
     
     private var conversationList: Array<ChatConversation>
     

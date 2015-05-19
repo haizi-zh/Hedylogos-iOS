@@ -39,10 +39,6 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
         return iMClientManager
     }
     
-    func addMessageDelegate(messageDelegate: MessageTransferManagerDelegate) {
-        messageReceiveManager.addMessageDelegate(messageDelegate)
-        messageSendManager.addMessageDelegate(messageDelegate)
-    }
     
 //MARK: ConnectionManager
     func connectionSetup(isSuccess: Bool, errorCode: Int) {
@@ -51,7 +47,10 @@ class IMClientManager: NSObject, ConnectionManagerDelegate {
             self.messageReceiveManager = MessageReceiveManager.shareInstance()
             self.messageSendManager = MessageSendManager.shareInstance()
             self.conversationManager = ChatConversationManager()
-            self.addMessageDelegate(conversationManager)
+            self.messageSendManager.addMessageSendDelegate(conversationManager)
+            let cmdMessageManager = CMDMessageManager.shareInstance()
+            self.messageReceiveManager.addMessageReceiveListener(cmdMessageManager, withRoutingKey: MessageReceiveDelegateRoutingKey.cmd)
+            self.messageReceiveManager.addMessageReceiveListener(conversationManager, withRoutingKey: MessageReceiveDelegateRoutingKey.normal)
             self.messageReceiveManager.ACKMessageWithReceivedMessages(nil)
         }
         delegate?.userDidLogin(isSuccess, errorCode: errorCode)

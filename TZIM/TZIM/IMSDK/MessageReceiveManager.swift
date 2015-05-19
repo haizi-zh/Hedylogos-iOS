@@ -8,11 +8,27 @@
 
 import UIKit
 
+enum MessageReceiveDelegateRoutingKey: Int {
+    case normal = 1
+    case cmd = 2
+}
+
+@objc protocol MessageReceiveManagerDelegate {
+    /**
+    收到新消息
+    :param: message 消息内容
+    */
+    optional func receiveNewMessage(message: BaseMessage)
+}
+
 private let messageReceiveManager = MessageReceiveManager()
 
-class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, MessageReceivePoolDelegate, MessageManagerDelegate {
+class MessageReceiveManager: NSObject, PushMessageDelegate, MessageReceivePoolDelegate, MessageManagerDelegate {
     
     private let messageReceiveQueue = dispatch_queue_create("messageReceiveQueue", nil)
+    
+    /// 收到消息的监听队列，不同的消息有不同的监听者，由 routingkey 区分
+    private var receiveDelegateList: Array<[MessageReceiveDelegateRoutingKey: MessageReceiveManagerDelegate]> = Array()
     
     let pushSDKManager = PushSDKManager.shareInstance()
     let messagePool = MessageReceivePool.shareInstance()
@@ -29,6 +45,31 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
         pushSDKManager.addPushMessageListener(self, withRoutingKey: "IM")
         messagePool.delegate = self
         messageManager.delegate = self
+    }
+    
+    /**
+    注册消息的监听
+    
+    :param: monitor        监听的对象
+    :param: withRoutingKey 需要监听消息的key
+    */
+    func addMessageReceiveListener(listener: MessageReceiveManagerDelegate, withRoutingKey routingKey: MessageReceiveDelegateRoutingKey) {
+        receiveDelegateList.append([routingKey: listener])
+    }
+    
+    /**
+    移除消息的监听者
+    
+    :param: listener   监听对象
+    :param: routingKey 监听消息的 key
+    */
+    func removeMessageReceiveListener(listener: MessageReceiveManagerDelegate, withRoutingKey routingKey: MessageReceiveDelegateRoutingKey) {
+        for (index, value) in enumerate(receiveDelegateList) {
+            if value[routingKey] === listener {
+                receiveDelegateList.removeAtIndex(index)
+                return
+            }
+        }
     }
     
 //MARK: private method
@@ -232,8 +273,18 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
                     
                 } else  {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                            (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(message)
+                        if message.messageType == IMMessageType.CMDMessageType {
+                            for delegateDic in self.receiveDelegateList {
+                                if let delegate = delegateDic[MessageReceiveDelegateRoutingKey.cmd] {
+                                    delegate.receiveNewMessage?(message)
+                                }
+                            }
+                        } else {
+                            for delegateDic in self.receiveDelegateList {
+                                if let delegate = delegateDic[MessageReceiveDelegateRoutingKey.normal] {
+                                    delegate.receiveNewMessage?(message)
+                                }
+                            }
                         }
                     })
                 }
@@ -248,8 +299,18 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     private func downloadPreviewImageAndDistribution(message: ImageMessage) {
         MetadataDownloadManager.asyncDownloadThumbImage(message, completion: { (isSuccess: Bool, retMessage: ImageMessage) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                    (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(retMessage)
+                if retMessage.messageType == IMMessageType.CMDMessageType {
+                    for delegateDic in self.receiveDelegateList {
+                        if let delegate = delegateDic[MessageReceiveDelegateRoutingKey.cmd] {
+                            delegate.receiveNewMessage?(retMessage)
+                        }
+                    }
+                } else {
+                    for delegateDic in self.receiveDelegateList {
+                        if let delegate = delegateDic[MessageReceiveDelegateRoutingKey.normal] {
+                            delegate.receiveNewMessage?(retMessage)
+                        }
+                    }
                 }
             })
         })
@@ -262,8 +323,18 @@ class MessageReceiveManager: MessageTransferManager, PushMessageDelegate, Messag
     private func downloadAudioDataAndDistribution(message: AudioMessage) {
         MetadataDownloadManager.asyncDownloadAudioData(message, completion: { (isSuccess: Bool, retMessage: AudioMessage) -> () in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                for messageManagerDelegate in super.messageTransferManagerDelegateArray {
-                    (messageManagerDelegate as! MessageTransferManagerDelegate).receiveNewMessage?(retMessage)
+                if retMessage.messageType == IMMessageType.CMDMessageType {
+                    for delegateDic in self.receiveDelegateList {
+                        if let delegate = delegateDic[MessageReceiveDelegateRoutingKey.cmd] {
+                            delegate.receiveNewMessage?(retMessage)
+                        }
+                    }
+                } else {
+                    for delegateDic in self.receiveDelegateList {
+                        if let delegate = delegateDic[MessageReceiveDelegateRoutingKey.normal] {
+                            delegate.receiveNewMessage?(retMessage)
+                        }
+                    }
                 }
             })
         })

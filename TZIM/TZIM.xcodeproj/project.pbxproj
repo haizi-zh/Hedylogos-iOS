@@ -60,7 +60,6 @@
 		D92BF87A1AE25B5C00031C63 /* LocationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF84D1AE25B5C00031C63 /* LocationMessage.swift */; };
 		D92BF87B1AE25B5C00031C63 /* LvAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF84E1AE25B5C00031C63 /* LvAppDelegate.swift */; };
 		D92BF87C1AE25B5C00031C63 /* LvSDKManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF84F1AE25B5C00031C63 /* LvSDKManager.swift */; };
-		D92BF87D1AE25B5C00031C63 /* MessageTransferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8501AE25B5C00031C63 /* MessageTransferManager.swift */; };
 		D92BF87E1AE25B5C00031C63 /* MessageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8511AE25B5C00031C63 /* MessageProtocol.swift */; };
 		D92BF87F1AE25B5C00031C63 /* MessageReceiveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8521AE25B5C00031C63 /* MessageReceiveManager.swift */; };
 		D92BF8801AE25B5C00031C63 /* MessageSendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92BF8531AE25B5C00031C63 /* MessageSendManager.swift */; };
@@ -191,7 +190,6 @@
 		D92BF84D1AE25B5C00031C63 /* LocationMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationMessage.swift; sourceTree = "<group>"; };
 		D92BF84E1AE25B5C00031C63 /* LvAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LvAppDelegate.swift; sourceTree = "<group>"; };
 		D92BF84F1AE25B5C00031C63 /* LvSDKManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LvSDKManager.swift; sourceTree = "<group>"; };
-		D92BF8501AE25B5C00031C63 /* MessageTransferManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTransferManager.swift; sourceTree = "<group>"; };
 		D92BF8511AE25B5C00031C63 /* MessageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageProtocol.swift; sourceTree = "<group>"; };
 		D92BF8521AE25B5C00031C63 /* MessageReceiveManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageReceiveManager.swift; sourceTree = "<group>"; };
 		D92BF8531AE25B5C00031C63 /* MessageSendManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSendManager.swift; sourceTree = "<group>"; };
@@ -741,7 +739,6 @@
 			children = (
 				D921BFA41AEA27590054DD99 /* Model */,
 				D97097891AEE68A600B9D3AF /* MetadataManager */,
-				D92BF8501AE25B5C00031C63 /* MessageTransferManager.swift */,
 				D9120A0A1B0AD6C90070B34F /* CMDMessageManager.swift */,
 				D908E91E1AE8EADC00C984C7 /* MessageManager.swift */,
 				D92BF8511AE25B5C00031C63 /* MessageProtocol.swift */,
@@ -1026,7 +1023,6 @@
 				D9120A081B0AD14E0070B34F /* IMCMDMessage.swift in Sources */,
 				D92BF86D1AE25B5C00031C63 /* BaseDaoHelper.swift in Sources */,
 				D908E91D1AE8D6F500C984C7 /* NetworkUserAPI.swift in Sources */,
-				D92BF87D1AE25B5C00031C63 /* MessageTransferManager.swift in Sources */,
 				D92BF8681AE25B5C00031C63 /* AESCrypt.m in Sources */,
 				D92BF8AB1AE25B6B00031C63 /* ConversationViewController.m in Sources */,
 				D9C931FD1AE605C6003FEBA3 /* ConversationDaoHelper.swift in Sources */,

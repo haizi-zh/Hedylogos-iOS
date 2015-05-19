@@ -72,7 +72,7 @@ enum CMDMessageRoutingKey: Int {
 
 private let manager = CMDMessageManager()
 
-class CMDMessageManager: NSObject, MessageTransferManagerDelegate {
+class CMDMessageManager: NSObject, MessageReceiveManagerDelegate {
     
     private var listenerQueue: Array<[CMDMessageRoutingKey: CMDMessageManager]> = Array()
     
@@ -98,7 +98,7 @@ class CMDMessageManager: NSObject, MessageTransferManagerDelegate {
     */
     func removePushMessageListener(listener: CMDMessageManager, withRoutingKey routingKey: CMDMessageRoutingKey) {
         for (index, value) in enumerate(listenerQueue) {
-            if value[routingKey] == listener {
+            if value[routingKey] === listener {
                 listenerQueue.removeAtIndex(index)
                 return
             }
