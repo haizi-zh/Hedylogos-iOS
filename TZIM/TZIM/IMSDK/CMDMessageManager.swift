@@ -39,7 +39,7 @@ class CMDMessageManager: NSObject {
     :param: routingKey 监听消息的 key
     */
     func removePushMessageListener(listener: CMDMessageManager, withRoutingKey routingKey: CMDMessageRoutingKey) {
-        for (value, index) in enumerate(listenerQueue) {
+        for (index, value) in enumerate(listenerQueue) {
             if value[routingKey] == listener {
                 listenerQueue.removeAtIndex(index)
                 return
