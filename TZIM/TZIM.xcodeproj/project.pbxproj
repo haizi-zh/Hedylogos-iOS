@@ -20,6 +20,8 @@
 		D911377C1B019A8000B4A3A3 /* AccountDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D911377B1B019A8000B4A3A3 /* AccountDaoHelper.swift */; };
 		D911377F1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D911377E1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift */; };
 		D91137821B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91137811B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift */; };
+		D9120A081B0AD14E0070B34F /* IMCMDMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9120A071B0AD14E0070B34F /* IMCMDMessage.swift */; };
+		D9120A0B1B0AD6C90070B34F /* CMDMessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9120A0A1B0AD6C90070B34F /* CMDMessageManager.swift */; };
 		D912452A1AFDB55900480181 /* IMGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245291AFDB55900480181 /* IMGroupManager.swift */; };
 		D912452C1AFDDA2800480181 /* GroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D912452B1AFDDA2800480181 /* GroupTableViewController.swift */; };
 		D91245371AFE0BBD00480181 /* IMGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91245361AFE0BBD00480181 /* IMGroupModel.swift */; };
@@ -133,6 +135,8 @@
 		D911377B1B019A8000B4A3A3 /* AccountDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDaoHelper.swift; sourceTree = "<group>"; };
 		D911377E1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMDiscussionGroup.swift; sourceTree = "<group>"; };
 		D91137811B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMDiscussionGroupManager.swift; sourceTree = "<group>"; };
+		D9120A071B0AD14E0070B34F /* IMCMDMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMCMDMessage.swift; sourceTree = "<group>"; };
+		D9120A0A1B0AD6C90070B34F /* CMDMessageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMDMessageManager.swift; sourceTree = "<group>"; };
 		D91245291AFDB55900480181 /* IMGroupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupManager.swift; sourceTree = "<group>"; };
 		D912452B1AFDDA2800480181 /* GroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewController.swift; sourceTree = "<group>"; };
 		D91245361AFE0BBD00480181 /* IMGroupModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGroupModel.swift; sourceTree = "<group>"; };
@@ -338,6 +342,14 @@
 			name = IMGroup;
 			sourceTree = "<group>";
 		};
+		D9120A091B0AD5950070B34F /* CMD */ = {
+			isa = PBXGroup;
+			children = (
+				D9120A071B0AD14E0070B34F /* IMCMDMessage.swift */,
+			);
+			name = CMD;
+			sourceTree = "<group>";
+		};
 		D91245251AFDAA6300480181 /* GroupManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -412,6 +424,7 @@
 				D91643B31B05BA2900C56F12 /* Super */,
 				D91643B41B05BA3200C56F12 /* Image */,
 				D91643B51B05BA3700C56F12 /* Text */,
+				D9120A091B0AD5950070B34F /* CMD */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -711,14 +724,6 @@
 			name = UserManager;
 			sourceTree = "<group>";
 		};
-		D9E6B9E81AE4984800C95767 /* MessageModel */ = {
-			isa = PBXGroup;
-			children = (
-				D908E91E1AE8EADC00C984C7 /* MessageManager.swift */,
-			);
-			name = MessageModel;
-			sourceTree = "<group>";
-		};
 		D9E6B9E91AE4987800C95767 /* Dao */ = {
 			isa = PBXGroup;
 			children = (
@@ -736,8 +741,9 @@
 			children = (
 				D921BFA41AEA27590054DD99 /* Model */,
 				D97097891AEE68A600B9D3AF /* MetadataManager */,
-				D9E6B9E81AE4984800C95767 /* MessageModel */,
 				D92BF8501AE25B5C00031C63 /* MessageTransferManager.swift */,
+				D9120A0A1B0AD6C90070B34F /* CMDMessageManager.swift */,
+				D908E91E1AE8EADC00C984C7 /* MessageManager.swift */,
 				D92BF8511AE25B5C00031C63 /* MessageProtocol.swift */,
 				D9E6B9EC1AE49A2000C95767 /* MessageReceiveManager */,
 				D9E6B9ED1AE49A2C00C95767 /* MessageSendManager */,
@@ -1017,6 +1023,7 @@
 				D92BF86A1AE25B5C00031C63 /* NSData+CommonCrypto.m in Sources */,
 				D92439F81B00C28100A7AAA4 /* AccountModel.swift in Sources */,
 				D908E91F1AE8EADC00C984C7 /* MessageManager.swift in Sources */,
+				D9120A081B0AD14E0070B34F /* IMCMDMessage.swift in Sources */,
 				D92BF86D1AE25B5C00031C63 /* BaseDaoHelper.swift in Sources */,
 				D908E91D1AE8D6F500C984C7 /* NetworkUserAPI.swift in Sources */,
 				D92BF87D1AE25B5C00031C63 /* MessageTransferManager.swift in Sources */,
@@ -1029,6 +1036,7 @@
 				D92BF8771AE25B5C00031C63 /* FMDatabaseQueue.m in Sources */,
 				D91137821B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift in Sources */,
 				D91643C91B05E00A00C56F12 /* IMHotelMessage.swift in Sources */,
+				D9120A0B1B0AD6C90070B34F /* CMDMessageManager.swift in Sources */,
 				D92BF8871AE25B5C00031C63 /* VoiceConverter.mm in Sources */,
 				D92BF8071AE25B2F00031C63 /* AppDelegate.swift in Sources */,
 				D91643BD1B05DF4E00C56F12 /* IMCityMessage.swift in Sources */,

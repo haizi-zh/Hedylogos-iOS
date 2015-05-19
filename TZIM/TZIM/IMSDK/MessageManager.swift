@@ -266,6 +266,9 @@ class MessageManager: NSObject {
                 case .HotelMessageType:
                     messageModel = IMHotelMessage()
                     
+                case .CMDMessageType:
+                    messageModel = IMCMDMessage()
+                    
                 default :
                     break
                 }

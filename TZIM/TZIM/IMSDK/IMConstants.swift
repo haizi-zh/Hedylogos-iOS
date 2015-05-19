@@ -23,6 +23,7 @@ import UIKit
     case RestaurantMessageType = 14
     case ShoppingMessageType = 15
     case HotelMessageType = 16
+    case CMDMessageType = 100
 }
 
 /**

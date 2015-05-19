@@ -59,3 +59,8 @@ class MessageTransferManager: NSObject {
     }
    
 }
+
+
+
+
+
