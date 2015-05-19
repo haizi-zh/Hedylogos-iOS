@@ -270,10 +270,6 @@ class MessageManager: NSObject {
                     messageModel = IMCMDMessage()
                     
                 default :
-                    break
-                }
-                
-                if messageModel == nil {
                     return nil
                 }
                 
@@ -291,7 +287,12 @@ class MessageManager: NSObject {
                     } else {
                         messageModel!.chatterId = messageDic.objectForKey("groupId") as! Int
                     }
+                    
+                } else {
+                    messageModel!.chatterId = messageDic.objectForKey("senderId") as! Int
+
                 }
+                
                 messageModel!.senderId = messageDic.objectForKey("senderId") as! Int
                 
                 if let senderId = messageDic.objectForKey("msgId") as? Int {
