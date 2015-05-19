@@ -16,11 +16,69 @@ enum CMDMessageRoutingKey: Int {
 
 @objc protocol CMDMessageManagerDelegate {
     
+    //MARK: 好友
+    
+    /**
+    请求添加好友
+    
+    :param: requestContent 请求的信息
+    */
+    optional func requestAddFrend(requestContent: NSDictionary)
+    
+    //MARK: 讨论组
+    
+    /**
+    邀请加入讨论组
+    
+    :param: inviteContent 邀请的内容
+    */
+    optional func inviteAddDiscussionGroup(inviteContent: NSDictionary)
+    
+    /**
+    某人退出了讨论组
+    
+    :param: content
+    */
+    optional func someoneQuiteDiscussionGroup(content: NSDictionary)
+    
+    
+    
+    //MARK: 群组
+    
+    /**
+    邀请加入群组
+    
+    :param: inviteContent 邀请的内容
+    */
+    optional func inviteAddGroup(inviteContent: NSDictionary)
+    
+    /**
+    某人退出了群组
+    
+    :param: content
+    */
+    optional func someoneQuiteGroup(content: NSDictionary)
+    
+    /**
+    群组被销毁
+    
+    :param: content
+    */
+    optional func groupDestroyed(content: NSDictionary)
+    
+    
+    
 }
 
-class CMDMessageManager: NSObject {
+private let manager = CMDMessageManager()
+
+class CMDMessageManager: NSObject, MessageTransferManagerDelegate {
     
     private var listenerQueue: Array<[CMDMessageRoutingKey: CMDMessageManager]> = Array()
+    
+    class func shareInstance() -> CMDMessageManager {
+        return manager
+    }
 
     /**
     注册消息的监听
@@ -46,6 +104,14 @@ class CMDMessageManager: NSObject {
             }
         }
     }
+    
+    
+    //MARK: MessageTransferManagerDelegate
+    
+    func receiveNewMessage(message: BaseMessage) {
+        
+    }
+    
 
    
 }
