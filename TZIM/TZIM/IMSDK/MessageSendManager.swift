@@ -113,6 +113,16 @@ class MessageSendManager: NSObject {
         return textMessage
     }
     
+    /**
+    发送一条位置信息
+    
+    :param: location       位置 model，包括 lat，lng，address
+    :param: receiver       接收者
+    :param: chatType       聊天类型
+    :param: conversationId
+    
+    :returns: 发送前的消息
+    */
     func sendLocationMessage(location: LocationModel, receiver: Int, chatType:IMChatType, conversationId: String?) -> BaseMessage {
         var locationMessage = LocationMessage()
         locationMessage.latitude = location.latitude
@@ -130,6 +140,16 @@ class MessageSendManager: NSObject {
         return locationMessage
     }
     
+    /**
+    发送 poi 信息
+    
+    :param: poiModel       poimodel
+    :param: receiver       接收者
+    :param: chatType       聊天类型
+    :param: conversationId
+    
+    :returns:
+    */
     func sendPoiMessage(poiModel: IMPoiModel, receiver: Int, chatType: IMChatType, conversationId: String?) -> BaseMessage {
         let message = MessageManager.messageModelWithPoiModel(poiModel)
         message.chatterId = receiver

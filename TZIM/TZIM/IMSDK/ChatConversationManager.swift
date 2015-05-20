@@ -275,10 +275,20 @@ class ChatConversationManager: NSObject, MessageReceiveManagerDelegate, MessageS
         self.handleReceiveMessage(message)
     }
     
+    /**
+    消息已经被发送，包含成功和失败的情况
+    
+    :param: message
+    */
     func messageHasSended(message: BaseMessage) {
         self.handleSendedMessage(message)
     }
     
+    /**
+    新发送了一条消息
+    
+    :param: message
+    */
     func sendNewMessage(message: BaseMessage) {
         self.handleSendingMessage(message)
     }
