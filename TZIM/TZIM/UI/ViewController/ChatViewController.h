@@ -11,6 +11,8 @@
 #import "UIBubbleTableView.h"
 #import "NSBubbleData.h"
 
+#import "Constants.h"
+
 @class ChatConversation;
 
 @interface ChatViewController : UIViewController<UIBubbleTableViewDataSource, UITextViewDelegate>
@@ -22,6 +24,8 @@
 @property (strong, nonatomic) UIImage *otherImage;
 @property (copy, nonatomic) NSString *otherUserID;
 @property (nonatomic) NSInteger userID;
+
+@property (nonatomic) IM_CONNECT_STATE status;
 
 @property (nonatomic, strong) ChatConversation *conversation;
 

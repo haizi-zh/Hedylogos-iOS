@@ -68,7 +68,7 @@ class MessageSendManager: NSObject {
         for messageManagerDelegate in self.sendDelegateList {
             messageManagerDelegate.sendNewMessage?(message)
         }
-        var accountManager = AccountManager.shareInstance()
+        var accountManager = IMAccountManager.shareInstance()
         NetworkTransportAPI.asyncSendMessage(MessageManager.prepareMessage2Send(receiverId: receiver, senderId: accountManager.account.userId, conversationId: conversationId, chatType: chatType, message: message), completionBlock: { (isSuccess: Bool, errorCode: Int, retMessage: NSDictionary?) -> () in
             if isSuccess {
                 message.status = IMMessageStatus.IMMessageSuccessful
@@ -180,7 +180,7 @@ class MessageSendManager: NSObject {
         var imageData = UIImageJPEGRepresentation(image, 1)
         
         var metadataId = NSUUID().UUIDString
-        var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(metadataId).jpeg")
+        var imagePath = IMAccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(metadataId).jpeg")
         MetaDataManager.moveMetadata2Path(imageData, toPath: imagePath)
         
         imageMessage.localPath = imagePath
@@ -244,9 +244,9 @@ class MessageSendManager: NSObject {
         
         var metadataId = NSUUID().UUIDString
         
-        var tempAmrPath = AccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(metadataId).amr")
+        var tempAmrPath = IMAccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(metadataId).amr")
 
-        var audioWavPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(metadataId).wav")
+        var audioWavPath = IMAccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(metadataId).wav")
         MetaDataManager.moveMetadataFromOnePath2AnotherPath(wavAudioPath, toPath: audioWavPath)
         
         VoiceConverter.wavToAmr(wavAudioPath, amrSavePath: tempAmrPath)

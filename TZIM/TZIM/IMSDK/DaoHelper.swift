@@ -30,7 +30,7 @@ public class DaoHelper:NSObject {
     
     override init() {
         
-        var userId = AccountManager.shareInstance().account.userId
+        var userId = IMAccountManager.shareInstance().account.userId
         
         var dbPath: String = documentPath.stringByAppendingPathComponent("\(userId)/user.sqlite")
         

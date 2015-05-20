@@ -139,7 +139,7 @@ class MessageReceiveManager: NSObject, PushMessageDelegate, MessageReceivePoolDe
     :param: receivedMessages 已经收到的消息
     */
     func ACKMessageWithReceivedMessages(receivedMessages: NSArray?) {
-        var accountManager = AccountManager.shareInstance()
+        var accountManager = IMAccountManager.shareInstance()
         
         println("fetchOmitMessageWithReceivedMessages queue: \(NSThread.currentThread())")
         

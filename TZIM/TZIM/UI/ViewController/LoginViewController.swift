@@ -14,7 +14,7 @@ class LoginViewController: UIViewController, IMClientDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-        var accountManager = AccountManager.shareInstance()
+        var accountManager = IMAccountManager.shareInstance()
         if accountManager.account != nil {
             userIdTextField.text = "\(accountManager.account.userId)"
 //            self.login(0)

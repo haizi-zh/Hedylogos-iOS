@@ -17,6 +17,7 @@
 		D908E9211AE8ECD100C984C7 /* TextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9201AE8ECD100C984C7 /* TextMessage.swift */; };
 		D908E9231AE90E0F00C984C7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9221AE90E0F00C984C7 /* LoginViewController.swift */; };
 		D908E9251AE9E33100C984C7 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908E9241AE9E33100C984C7 /* AccountManager.swift */; };
+		D90930181B0C837600F0F35F /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = D90930171B0C837600F0F35F /* Constants.m */; };
 		D911377C1B019A8000B4A3A3 /* AccountDaoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D911377B1B019A8000B4A3A3 /* AccountDaoHelper.swift */; };
 		D911377F1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D911377E1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift */; };
 		D91137821B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91137811B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift */; };
@@ -131,6 +132,8 @@
 		D908E9201AE8ECD100C984C7 /* TextMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextMessage.swift; sourceTree = "<group>"; };
 		D908E9221AE90E0F00C984C7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D908E9241AE9E33100C984C7 /* AccountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		D90930161B0C837600F0F35F /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		D90930171B0C837600F0F35F /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		D911377B1B019A8000B4A3A3 /* AccountDaoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDaoHelper.swift; sourceTree = "<group>"; };
 		D911377E1B01E5DE00B4A3A3 /* IMDiscussionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMDiscussionGroup.swift; sourceTree = "<group>"; };
 		D91137811B01E7B200B4A3A3 /* IMDiscussionGroupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMDiscussionGroupManager.swift; sourceTree = "<group>"; };
@@ -675,6 +678,8 @@
 				D912452B1AFDDA2800480181 /* GroupTableViewController.swift */,
 				D907C9F41AFCE0DB0034D444 /* FrendTableViewController.swift */,
 				D907C9F61AFCE0FC0034D444 /* HomeViewController.swift */,
+				D90930161B0C837600F0F35F /* Constants.h */,
+				D90930171B0C837600F0F35F /* Constants.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -969,6 +974,7 @@
 				D92BF8711AE25B5C00031C63 /* ConnectionManager.swift in Sources */,
 				D92BF87B1AE25B5C00031C63 /* LvAppDelegate.swift in Sources */,
 				D90840A01AE5F90900FA31C0 /* ChatConversation.swift in Sources */,
+				D90930181B0C837600F0F35F /* Constants.m in Sources */,
 				D91643C51B05DFE800C56F12 /* IMRestaurantMessage.swift in Sources */,
 				D92BF87A1AE25B5C00031C63 /* LocationMessage.swift in Sources */,
 				D92BF86B1AE25B5C00031C63 /* NSString+Base64.m in Sources */,

@@ -91,7 +91,7 @@ class MetadataUploadManager: NSObject {
         var uploadManager = QNUploadManager()
         
         var params = NSMutableDictionary()
-        params.setObject("\(AccountManager.shareInstance().account.userId)", forKey: "x:sender")
+        params.setObject("\(IMAccountManager.shareInstance().account.userId)", forKey: "x:sender")
         params.setObject("\(metadataMessage.messageType.rawValue)", forKey: "x:msgType")
         
         if let conversationId = conversationId {
@@ -147,7 +147,7 @@ class MetadataDownloadManager:NSObject{
                     
                     dispatch_async(metadataOperationQueue, { () -> Void in
                         
-                        var imagePath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageMessage.metadataId!).jpeg")
+                        var imagePath = IMAccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageMessage.metadataId!).jpeg")
                         
                         if let imageData = data {
                             var fileManager =  NSFileManager()
@@ -193,9 +193,9 @@ class MetadataDownloadManager:NSObject{
                 } else {
                     
                     dispatch_async(metadataOperationQueue, { () -> Void in
-                        var audioWavPath = AccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).wav")
+                        var audioWavPath = IMAccountManager.shareInstance().userChatAudioPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).wav")
                         
-                        var tempAmrPath = AccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).amr")
+                        var tempAmrPath = IMAccountManager.shareInstance().userTempPath.stringByAppendingPathComponent("\(audioMessage.metadataId!).amr")
                         
                         if let audioData = data {
                             var fileManager =  NSFileManager()

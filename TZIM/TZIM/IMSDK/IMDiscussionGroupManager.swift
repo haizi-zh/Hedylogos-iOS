@@ -71,7 +71,7 @@ class IMDiscussionGroupManager: NSObject {
     :param: completionBlock 
     */
     func asyncLoadAllMyDiscussionGroupsFromServer(completionBlock: (isSuccess: Bool, errorCode: Int, groupList: Array<IMDiscussionGroup>) -> ()) {
-        let groupListUrl = "\(userUrl)/\(AccountManager.shareInstance().account.userId)/groups"
+        let groupListUrl = "\(userUrl)/\(IMAccountManager.shareInstance().account.userId)/groups"
         NetworkTransportAPI.asyncGET(requestUrl: groupListUrl, parameters: nil) { (isSuccess, errorCode, retMessage) -> () in
             var groupList = Array<IMDiscussionGroup>()
             if let retData = retMessage as? NSArray {

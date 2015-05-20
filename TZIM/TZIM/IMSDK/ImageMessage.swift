@@ -34,7 +34,7 @@ class ImageMessage: BaseMessage {
         thumbUrl = contentsDic.objectForKey("thumb") as? String
         fullUrl = contentsDic.objectForKey("full") as? String
         if let imageId = contentsDic.objectForKey("metadataId") as? String {
-            localPath = AccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageId).jpeg")
+            localPath = IMAccountManager.shareInstance().userChatImagePath.stringByAppendingPathComponent("\(imageId).jpeg")
         }
     }
     

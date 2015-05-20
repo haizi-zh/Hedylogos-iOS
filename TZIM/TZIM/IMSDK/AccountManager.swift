@@ -1,5 +1,5 @@
 //
-//  AccountManager.swift
+//  IMAccountManager.swift
 //  TZIM
 //
 //  Created by liangpengshuai on 4/24/15.
@@ -11,13 +11,13 @@ import UIKit
 let userUrl = "http://hedy.zephyre.me/users"
 
 
-private let accountManager = AccountManager()
+private let accountManager = IMAccountManager()
 
-class AccountManager: NSObject {
+class IMAccountManager: NSObject {
     
     var account: AccountModel!
 
-    class func shareInstance() -> AccountManager {
+    class func shareInstance() -> IMAccountManager {
         return accountManager
     }
     
